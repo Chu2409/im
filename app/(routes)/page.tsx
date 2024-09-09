@@ -1,5 +1,5 @@
-const page = () => {
+const RootPage = () => {
   return <div>Hola</div>
 }
 
-export default page
+export default RootPage

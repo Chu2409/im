@@ -1,5 +1,5 @@
-const page = () => {
-  return <div>Productos</div>
+const InventoryPage = () => {
+  return <div>Inventory</div>
 }
 
-export default page
+export default InventoryPage
