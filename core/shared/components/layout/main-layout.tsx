@@ -2,8 +2,8 @@
 
 import { IRoute } from '../../types'
 import { usePathname } from 'next/navigation'
-import Sidebar from './Sidebar'
-import Topbar from './Topbar'
+import Sidebar from './sidebar'
+import Topbar from './topbar'
 
 const MainLayout = ({
   children,

@@ -1,5 +1,7 @@
+import LocationClient from '@/core/locations/components/client'
+
 const LocationPage = () => {
-  return <div>Locations</div>
+  return <LocationClient />
 }
 
 export default LocationPage
