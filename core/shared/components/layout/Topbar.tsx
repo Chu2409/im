@@ -22,7 +22,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { IRoute } from '../../types'
 
-const Topbar = ({
+export const Topbar = ({
   routes,
   pathname,
 }: {
@@ -116,5 +116,3 @@ const Topbar = ({
     </header>
   )
 }
-
-export default Topbar

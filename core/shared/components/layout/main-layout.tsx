@@ -2,10 +2,10 @@
 
 import { IRoute } from '../../types'
 import { usePathname } from 'next/navigation'
-import Sidebar from './sidebar'
-import Topbar from './topbar'
+import { Sidebar } from './sidebar'
+import { Topbar } from './topbar'
 
-const MainLayout = ({
+export const MainLayout = ({
   children,
   routes,
 }: {
@@ -28,5 +28,3 @@ const MainLayout = ({
     </div>
   )
 }
-
-export default MainLayout

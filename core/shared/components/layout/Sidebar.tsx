@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { IRoute } from '../../types'
 import { cn } from '@/lib/utils'
 
-const Sidebar = ({
+export const Sidebar = ({
   routes,
   pathname,
 }: {
@@ -43,5 +43,3 @@ const Sidebar = ({
     </div>
   )
 }
-
-export default Sidebar
