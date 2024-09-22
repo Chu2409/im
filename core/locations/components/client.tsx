@@ -1,5 +1,3 @@
-'use client'
-
 import { Header } from '@/core/shared/components/head/header'
 import { DataTable } from '@/core/shared/components/table/data-table'
 import { Location } from '@prisma/client'
@@ -16,7 +14,7 @@ const generateUniqueLaboratoryOptions = (locations: Location[]): IOption[] => {
   }))
 }
 
-export const LocationClient = ({ locations }: { locations: Location[] }) => {
+export const LocationsClient = ({ locations }: { locations: Location[] }) => {
   const filters = [
     {
       key: 'laboratory',

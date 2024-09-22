@@ -1,12 +1,12 @@
 import { getLocations } from '@/core/locations/actions/get-locations'
-import { LocationClient } from '@/core/locations/components/client'
+import { LocationsClient } from '@/core/locations/components/client'
 
 export const revalidate = 0
 
-const LocationPage = async () => {
+const LocationsPage = async () => {
   const locations = await getLocations()
 
-  return <LocationClient locations={locations} />
+  return <LocationsClient locations={locations} />
 }
 
-export default LocationPage
+export default LocationsPage
