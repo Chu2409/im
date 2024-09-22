@@ -1,9 +1,8 @@
 'use server'
 
 import prisma from '@/lib/prisma'
-import { Location } from '@prisma/client'
 
-export const getLocations = async (): Promise<Location[]> => {
+export const getLocations = async () => {
   try {
     const locations = prisma.location.findMany({
       orderBy: {
