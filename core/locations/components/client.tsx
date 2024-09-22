@@ -4,9 +4,9 @@ import { Header } from '@/core/shared/components/head/header'
 import { DataTable } from '@/core/shared/components/table/data-table'
 import { Location } from '@prisma/client'
 import { locationColumns } from './columns'
-import { Option } from '@/core/shared/components/table/types'
+import { IOption } from '@/core/shared/components/table/types'
 
-const generateUniqueLaboratoryOptions = (locations: Location[]): Option[] => {
+const generateUniqueLaboratoryOptions = (locations: Location[]): IOption[] => {
   const uniqueLaboratories = Array.from(
     new Set(locations.map((location) => location.laboratory)),
   )

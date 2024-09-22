@@ -25,13 +25,13 @@ import {
 import { DataTableToolbar } from './data-table-toolbar'
 import { DataTablePagination } from './data-table-pagination'
 import { useState } from 'react'
-import { Filter } from './types'
+import { IFilter } from './types'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   inputFilterKey?: string
-  filters?: Filter[]
+  filters?: IFilter[]
 }
 
 export function DataTable<TData, TValue>({

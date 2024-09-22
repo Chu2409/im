@@ -1,9 +1,9 @@
-export interface Option {
+export interface IOption {
   label: string
   value: string
 }
 
-export interface Filter {
+export interface IFilter {
   key: string
-  values: Option[]
+  values: IOption[]
 }

@@ -7,13 +7,13 @@ import { Button } from '@/ui/button'
 import { Input } from '@/ui/input'
 
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
-import { Filter } from './types'
+import { IFilter } from './types'
 import { DataTableViewOptions } from './data-table-view-options'
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
   inputFilterKey?: string
-  filters?: Filter[]
+  filters?: IFilter[]
 }
 
 export function DataTableToolbar<TData>({
