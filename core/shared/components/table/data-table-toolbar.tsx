@@ -30,7 +30,7 @@ export function DataTableToolbar<TData>({
       <div className='flex flex-1 items-center space-x-2'>
         {inputColumn && (
           <Input
-            placeholder={`Filtrar por ${(inputColumn.columnDef.header as string).toLowerCase()}...`}
+            placeholder={`Filtrar por ${(inputColumn.columnDef.id || (inputColumn.columnDef.header as string)).toLowerCase()}...`}
             value={(inputColumn?.getFilterValue() as string) ?? ''}
             onChange={(event) => inputColumn.setFilterValue(event.target.value)}
             className='h-8 w-[200px] lg:w-[250px] '
@@ -45,7 +45,9 @@ export function DataTableToolbar<TData>({
               key={filter.key}
               enableSearch={filter.values.length > 20}
               column={column}
-              title={column?.columnDef.header as string}
+              title={
+                column?.columnDef.id || (column?.columnDef.header as string)
+              }
               options={filter.values}
             />
           )

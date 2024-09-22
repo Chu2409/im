@@ -1,5 +1,6 @@
 'use client'
 
+import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { Location } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
@@ -11,7 +12,10 @@ export const locationColumns: ColumnDef<Location>[] = [
   },
   {
     accessorKey: 'code',
-    header: 'Code',
+    id: 'Código',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Código' />
+    ),
   },
   {
     accessorKey: 'laboratory',
@@ -20,7 +24,7 @@ export const locationColumns: ColumnDef<Location>[] = [
       filterValue.includes(row.original.laboratory),
   },
   {
-    id: 'actions',
+    id: 'Acciones',
     cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ]

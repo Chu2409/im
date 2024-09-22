@@ -85,7 +85,8 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
+                            header.column.columnDef.id ||
+                              header.column.columnDef.header,
                             header.getContext(),
                           )}
                     </TableHead>
@@ -118,7 +119,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className='h-24 text-center'
                 >
-                  No results.
+                  No se encontraron resultados
                 </TableCell>
               </TableRow>
             )}
