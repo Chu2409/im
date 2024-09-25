@@ -31,7 +31,7 @@ export function DataTableToolbar<TData>({
         <div className='flex items-center gap-2 flex-wrap'>
           {inputColumn && (
             <Input
-              placeholder={`Filtrar por ${(inputColumn.columnDef.id || (inputColumn.columnDef.header as string)).toLowerCase()}...`}
+              placeholder={`Filtrar por ${((inputColumn.columnDef.meta as string) || (inputColumn.columnDef.header as string)).toLowerCase()}...`}
               value={(inputColumn?.getFilterValue() as string) ?? ''}
               onChange={(event) =>
                 inputColumn.setFilterValue(event.target.value)

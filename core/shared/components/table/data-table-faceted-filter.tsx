@@ -89,6 +89,7 @@ export function DataTableFacetedFilter<TData, TValue>({
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value)
+
                 return (
                   <CommandItem
                     key={option.value}
@@ -100,8 +101,6 @@ export function DataTableFacetedFilter<TData, TValue>({
                       column?.setFilterValue(
                         filterValues.length ? filterValues : undefined,
                       )
-
-                      // console.log(column?.getFilterValue())
                     }}
                     className='cursor-pointer capitalize'
                   >
