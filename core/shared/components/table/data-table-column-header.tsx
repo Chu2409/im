@@ -54,19 +54,28 @@ export function DataTableColumnHeader<TData, TValue>({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align='start'>
-          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+          <DropdownMenuItem
+            onClick={() => column.toggleSorting(false)}
+            className='cursor-pointer'
+          >
             <ArrowUpIcon className='mr-2 h-3.5 w-3.5 text-muted-foreground/70' />
             Asc
           </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+          <DropdownMenuItem
+            onClick={() => column.toggleSorting(true)}
+            className='cursor-pointer'
+          >
             <ArrowDownIcon className='mr-2 h-3.5 w-3.5 text-muted-foreground/70' />
             Desc
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
+          <DropdownMenuItem
+            onClick={() => column.toggleVisibility(false)}
+            className='cursor-pointer'
+          >
             <EyeNoneIcon className='mr-2 h-3.5 w-3.5 text-muted-foreground/70' />
             Hide
           </DropdownMenuItem>

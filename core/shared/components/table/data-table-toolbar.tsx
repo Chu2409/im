@@ -49,7 +49,8 @@ export function DataTableToolbar<TData>({
                 enableSearch={filter.values.length > 20}
                 column={column}
                 title={
-                  column?.columnDef.id || (column?.columnDef.header as string)
+                  (column?.columnDef.meta as string) ||
+                  (column?.columnDef.header as string)
                 }
                 options={filter.values}
               />
