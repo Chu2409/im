@@ -1,5 +1,6 @@
 'use client'
 
+import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { Provider } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
@@ -7,7 +8,10 @@ import { ColumnDef } from '@tanstack/react-table'
 export const providersColumns: ColumnDef<Provider>[] = [
   {
     accessorKey: 'name',
-    header: 'Nombre',
+    meta: 'Nombre',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Nombre' />
+    ),
   },
   {
     accessorKey: 'contact',
