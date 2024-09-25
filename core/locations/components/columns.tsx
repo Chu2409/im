@@ -4,6 +4,7 @@ import { DataTableColumnHeader } from '@/core/shared/components/table/data-table
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { Location } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
+import { deleteLocation } from '../actions/delete-location'
 
 export const locationColumns: ColumnDef<Location>[] = [
   {
@@ -25,6 +26,12 @@ export const locationColumns: ColumnDef<Location>[] = [
   },
   {
     id: 'Acciones',
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row }) => (
+      <DataTableRowActions
+        id={row.original.id}
+        onDelete={deleteLocation}
+        path='locations'
+      />
+    ),
   },
 ]
