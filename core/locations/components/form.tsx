@@ -81,8 +81,8 @@ export const LocationForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-        <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 w-full mt-4 mb-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className=''>
+        <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 w-full mb-6'>
           <FormField
             control={form.control}
             name='name'
