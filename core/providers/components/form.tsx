@@ -59,7 +59,7 @@ export const ProviderForm = ({
       if (initialData) updateProvider(initialData.id, values)
       else createProvider(values)
 
-      router.push('/locations')
+      router.push('/providers')
       router.refresh()
     } catch (error) {
     } finally {
