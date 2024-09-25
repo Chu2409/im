@@ -23,3 +23,12 @@ model Provider {
 
   @@map("providers")
 }
+
+model Product {
+  id          Int    @id @default(autoincrement()) @map("id")
+  name        String @map("name")
+  description String @map("description")
+  category    String @map("category")
+
+  @@map("products")
+}
