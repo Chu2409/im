@@ -108,7 +108,7 @@ export const LocationForm = ({
 
                 <FormControl>
                   <Input
-                    placeholder='Tu código de la locación'
+                    placeholder='SL1-L1'
                     disabled={isLoading}
                     {...field}
                     value={field.value.toUpperCase()}
