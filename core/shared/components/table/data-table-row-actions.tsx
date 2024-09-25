@@ -1,30 +1,44 @@
 'use client'
 
-import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { Row } from '@tanstack/react-table'
+import {
+  DotsHorizontalIcon,
+  Pencil1Icon,
+  TrashIcon,
+} from '@radix-ui/react-icons'
 
 import { Button } from '@/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
+import { useRouter } from 'next/navigation'
 
-interface DataTableRowActionsProps<TData> {
-  row: Row<TData>
+interface DataTableRowActionsProps {
+  id: number
+  onDelete: (id: number) => Promise<boolean>
+  path: string
 }
 
-export function DataTableRowActions<TData>({
-  row,
-}: DataTableRowActionsProps<TData>) {
+export function DataTableRowActions({
+  id,
+  onDelete,
+  path,
+}: DataTableRowActionsProps) {
+  const router = useRouter()
+
+  const handleEditClick = () => {
+    router.push(`${path}/${id}`)
+  }
+
+  const handleDeleteClick = async () => {
+    try {
+      await onDelete(id)
+    } catch (error) {}
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -33,30 +47,25 @@ export function DataTableRowActions<TData>({
           className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
         >
           <DotsHorizontalIcon className='h-4 w-4' />
-          <span className='sr-only'>Open menu</span>
+          <span className='sr-only'>Abrir menú</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='w-[160px]'>
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>Make a copy</DropdownMenuItem>
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
+
+      <DropdownMenuContent align='end' className='w-[100px]'>
+        <DropdownMenuItem
+          className='flex items-center justify-between cursor-pointer'
+          onClick={handleEditClick}
+        >
+          Editar <Pencil1Icon />
+        </DropdownMenuItem>
+
         <DropdownMenuSeparator />
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup>
-              {[1, 2, 3].map((label) => (
-                <DropdownMenuRadioItem key={label} value={label.toString()}>
-                  {label}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+
+        <DropdownMenuItem
+          className='flex items-center justify-between cursor-pointer'
+          onClick={handleDeleteClick}
+        >
+          Eliminar <TrashIcon />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
