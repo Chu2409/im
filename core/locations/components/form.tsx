@@ -66,8 +66,8 @@ export const LocationForm = ({
     ? 'La locación ha sido actualizada'
     : 'La locación ha sido creada'
   const errorMessage = initialData
-    ? 'La locación no pudo ser actualizada'
-    : 'La locación no pudo ser creada'
+    ? 'Hubo un error al actualizar la locación'
+    : 'Hubo un error al crear la locación'
   const action = initialData ? 'Actualizar locación' : 'Crear locación'
 
   const [isLoading, setIsLoading] = useState(false)
@@ -177,7 +177,9 @@ export const LocationForm = ({
           />
         </div>
 
-        <Button type='submit'>{action}</Button>
+        <Button disabled={isLoading} type='submit'>
+          {action}
+        </Button>
       </form>
     </Form>
   )

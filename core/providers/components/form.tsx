@@ -18,6 +18,7 @@ import { useState } from 'react'
 import { createProvider } from '../actions/create-provider'
 import { updateProvider } from '../actions/update-provider'
 import { useRouter } from 'next/navigation'
+import { useToast } from '@/hooks/use-toast'
 
 const formSchema = z.object({
   name: z
@@ -38,6 +39,7 @@ export const ProviderForm = ({
   initialData: Provider | null
 }) => {
   const router = useRouter()
+  const { toast } = useToast()
 
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
@@ -47,24 +49,43 @@ export const ProviderForm = ({
     },
   })
 
-  // const toastMessage = initialData ? 'Locación actualizada' : 'Locación creada'
+  const toastTitle = initialData ? 'Proveedor actualizado' : 'Proveedor creado'
+  const toastDescription = initialData
+    ? 'El proveedor ha sido actualizado correctamente'
+    : 'El proveedor ha sido creado correctamente'
+  const errorMessage = initialData
+    ? 'Hubo un error al actualizar el proveedor'
+    : 'Hubo un error al crear el proveedor'
   const action = initialData ? 'Actualizar proveedor' : 'Crear proveedor'
 
   const [isLoading, setIsLoading] = useState(false)
 
   const onSubmit = (values: formType) => {
-    try {
-      setIsLoading(true)
+    setIsLoading(true)
 
-      if (initialData) updateProvider(initialData.id, values)
-      else createProvider(values)
+    let result
+
+    if (initialData) result = updateProvider(initialData.id, values)
+    else result = createProvider(values)
+
+    if (result != null) {
+      toast({
+        variant: 'success',
+        title: toastTitle,
+        description: toastDescription,
+      })
 
       router.push('/providers')
       router.refresh()
-    } catch (error) {
-    } finally {
-      setIsLoading(false)
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Algo salió mal',
+        description: errorMessage,
+      })
     }
+
+    setIsLoading(false)
   }
 
   return (
@@ -112,7 +133,9 @@ export const ProviderForm = ({
           />
         </div>
 
-        <Button type='submit'>{action}</Button>
+        <Button disabled={isLoading} type='submit'>
+          {action}
+        </Button>
       </form>
     </Form>
   )

@@ -24,6 +24,7 @@ export const providersColumns: ColumnDef<Provider>[] = [
       <DataTableRowActions
         id={row.original.id}
         path='providers'
+        deleteMessage='El proveedor ha sido eliminado correctamente'
         onDelete={deleteProvider}
       />
     ),
