@@ -30,5 +30,28 @@ model Product {
   description String @map("description")
   category    String @map("category")
 
+  items Item[]
+
   @@map("products")
+}
+
+model Record {
+  id   Int      @id @default(autoincrement()) @map("id")
+  date DateTime @map("date")
+
+  items Item[]
+
+  @@map("records")
+}
+
+model Item {
+  id       Int   @id @default(autoincrement()) @map("id")
+  quantity Float @map("quantity")
+
+  productId Int     @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+  recordId  Int     @map("record_id")
+  record    Record  @relation(fields: [recordId], references: [id])
+
+  @@map("items")
 }

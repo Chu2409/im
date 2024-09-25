@@ -2,6 +2,8 @@ import { PrismaClient } from '@prisma/client'
 import { locations } from './data/locations'
 import { providers } from './data/providers'
 import { products } from './data/products'
+import { records } from './data/record'
+import { items } from './data/items'
 
 const prisma = new PrismaClient()
 
@@ -16,6 +18,14 @@ const main = async () => {
 
   await prisma.product.createMany({
     data: products,
+  })
+
+  await prisma.record.createMany({
+    data: records,
+  })
+
+  await prisma.item.createMany({
+    data: items,
   })
 }
 
