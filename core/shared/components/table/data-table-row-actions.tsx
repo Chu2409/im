@@ -16,6 +16,8 @@ import {
 } from '@/ui/dropdown-menu'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
+import { useState } from 'react'
+import { AlertModal } from '../modal/alert-modal'
 
 interface DataTableRowActionsProps {
   id: number
@@ -33,11 +35,16 @@ export function DataTableRowActions({
   const router = useRouter()
   const { toast } = useToast()
 
+  const [isLoading, setIsLoading] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+
   const handleEditClick = () => {
     router.push(`${path}/${id}`)
   }
 
-  const handleDeleteClick = async () => {
+  const onDeleteClick = async () => {
+    setIsLoading(true)
+
     const deleted = await onDelete(id)
 
     if (deleted) {
@@ -55,37 +62,49 @@ export function DataTableRowActions({
         description: 'El elemento no pudo ser eliminado correctamente',
       })
     }
+
+    setIsLoading(false)
+    setIsOpen(false)
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant='ghost'
-          className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
-        >
-          <DotsHorizontalIcon className='h-4 w-4' />
-          <span className='sr-only'>Abrir menú</span>
-        </Button>
-      </DropdownMenuTrigger>
+    <>
+      <AlertModal
+        isOpen={isOpen}
+        isLoading={isLoading}
+        onClose={() => setIsOpen(false)}
+        onConfirm={onDeleteClick}
+      />
 
-      <DropdownMenuContent align='end' className='w-[100px]'>
-        <DropdownMenuItem
-          className='flex items-center justify-between cursor-pointer'
-          onClick={handleEditClick}
-        >
-          Editar <Pencil1Icon />
-        </DropdownMenuItem>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant='ghost'
+            className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
+          >
+            <DotsHorizontalIcon className='h-4 w-4' />
+            <span className='sr-only'>Abrir menú</span>
+          </Button>
+        </DropdownMenuTrigger>
 
-        <DropdownMenuSeparator />
+        <DropdownMenuContent align='end' className='w-[100px]'>
+          <DropdownMenuItem
+            className='flex items-center justify-between cursor-pointer'
+            onClick={handleEditClick}
+          >
+            Editar <Pencil1Icon />
+          </DropdownMenuItem>
 
-        <DropdownMenuItem
-          className='flex items-center justify-between cursor-pointer'
-          onClick={handleDeleteClick}
-        >
-          Eliminar <TrashIcon />
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            className='flex items-center justify-between cursor-pointer'
+            onClick={() => setIsOpen(true)}
+          >
+            Eliminar <TrashIcon />
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   )
 }
