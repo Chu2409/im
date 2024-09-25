@@ -15,3 +15,11 @@ model Location {
 
   @@map("locations")
 }
+
+model Provider {
+  id      Int    @id @default(autoincrement()) @map("id")
+  name    String @map("name")
+  contact String @map("contact")
+
+  @@map("providers")
+}
