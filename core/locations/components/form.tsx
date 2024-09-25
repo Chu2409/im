@@ -26,6 +26,7 @@ import { laboratories } from '../data'
 import { createLocation } from '../actions/create-location'
 import { updateLocation } from '../actions/update-location'
 import { useRouter } from 'next/navigation'
+import { useToast } from '@/hooks/use-toast'
 
 const formSchema = z.object({
   name: z
@@ -49,6 +50,7 @@ export const LocationForm = ({
   initialData: Location | null
 }) => {
   const router = useRouter()
+  const { toast } = useToast()
 
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
@@ -59,24 +61,42 @@ export const LocationForm = ({
     },
   })
 
-  // const toastMessage = initialData ? 'Locación actualizada' : 'Locación creada'
+  const toastTitle = initialData ? 'Locación actualizada' : 'Locación creada'
+  const toastDescription = initialData
+    ? 'La locación ha sido actualizada'
+    : 'La locación ha sido creada'
+  const errorMessage = initialData
+    ? 'La locación no pudo ser actualizada'
+    : 'La locación no pudo ser creada'
   const action = initialData ? 'Actualizar locación' : 'Crear locación'
 
   const [isLoading, setIsLoading] = useState(false)
 
   const onSubmit = (values: formType) => {
-    try {
-      setIsLoading(true)
+    setIsLoading(true)
 
-      if (initialData) updateLocation(initialData.id, values)
-      else createLocation(values)
+    let result
 
+    if (initialData) result = updateLocation(initialData.id, values)
+    else result = createLocation(values)
+
+    if (result != null) {
+      toast({
+        variant: 'success',
+        title: toastTitle,
+        description: toastDescription,
+      })
       router.push('/locations')
       router.refresh()
-    } catch (error) {
-    } finally {
-      setIsLoading(false)
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Algo salió mal',
+        description: errorMessage,
+      })
     }
+
+    setIsLoading(false)
   }
 
   return (

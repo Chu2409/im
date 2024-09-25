@@ -42,6 +42,7 @@ export function DataTableRowActions({
 
     if (deleted) {
       toast({
+        variant: 'success',
         title: 'Eliminado correctamente',
         description: deleteMessage || 'El elemento ha sido eliminado',
       })
