@@ -66,13 +66,11 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className='space-y-4'>
-      {(inputFilterKey || (filters && filters.length > 0)) && (
-        <DataTableToolbar
-          table={table}
-          inputFilterKey={inputFilterKey}
-          filters={filters}
-        />
-      )}
+      <DataTableToolbar
+        table={table}
+        inputFilterKey={inputFilterKey}
+        filters={filters}
+      />
 
       <div className='rounded-md border'>
         <Table>

@@ -26,44 +26,48 @@ export function DataTableToolbar<TData>({
   const inputColumn = inputFilterKey ? table.getColumn(inputFilterKey) : null
 
   return (
-    <div className='flex items-center justify-between'>
-      <div className='flex flex-1 items-center space-x-2'>
-        {inputColumn && (
-          <Input
-            placeholder={`Filtrar por ${(inputColumn.columnDef.id || (inputColumn.columnDef.header as string)).toLowerCase()}...`}
-            value={(inputColumn?.getFilterValue() as string) ?? ''}
-            onChange={(event) => inputColumn.setFilterValue(event.target.value)}
-            className='h-8 w-[200px] lg:w-[250px] '
-          />
-        )}
-
-        {filters?.map((filter) => {
-          const column = table.getColumn(filter.key)
-
-          return (
-            <DataTableFacetedFilter
-              key={filter.key}
-              enableSearch={filter.values.length > 20}
-              column={column}
-              title={
-                column?.columnDef.id || (column?.columnDef.header as string)
+    <div className='flex items-center justify-between gap-2 flex-wrap'>
+      {(inputFilterKey || (filters && filters.length > 0)) && (
+        <div className='flex items-center gap-2 flex-wrap'>
+          {inputColumn && (
+            <Input
+              placeholder={`Filtrar por ${(inputColumn.columnDef.id || (inputColumn.columnDef.header as string)).toLowerCase()}...`}
+              value={(inputColumn?.getFilterValue() as string) ?? ''}
+              onChange={(event) =>
+                inputColumn.setFilterValue(event.target.value)
               }
-              options={filter.values}
+              className='h-8 w-[200px] lg:w-[250px] '
             />
-          )
-        })}
+          )}
 
-        {isFiltered && (
-          <Button
-            variant='ghost'
-            onClick={() => table.resetColumnFilters()}
-            className='h-8 px-2 lg:px-3 bg-gray-200 hover:bg-gray-300 text-black '
-          >
-            Limpiar filtros
-            <Cross2Icon className='ml-2 h-4 w-4' />
-          </Button>
-        )}
-      </div>
+          {filters?.map((filter) => {
+            const column = table.getColumn(filter.key)
+
+            return (
+              <DataTableFacetedFilter
+                key={filter.key}
+                enableSearch={filter.values.length > 20}
+                column={column}
+                title={
+                  column?.columnDef.id || (column?.columnDef.header as string)
+                }
+                options={filter.values}
+              />
+            )
+          })}
+
+          {isFiltered && (
+            <Button
+              variant='ghost'
+              onClick={() => table.resetColumnFilters()}
+              className='h-8 px-2 lg:px-3 bg-gray-200 hover:bg-gray-300 text-black'
+            >
+              Limpiar filtros
+              <Cross2Icon className='ml-2 h-4 w-4' />
+            </Button>
+          )}
+        </div>
+      )}
 
       <DataTableViewOptions table={table} />
     </div>
