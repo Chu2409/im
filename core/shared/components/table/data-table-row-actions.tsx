@@ -15,30 +15,45 @@ import {
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
 import { useRouter } from 'next/navigation'
+import { useToast } from '@/hooks/use-toast'
 
 interface DataTableRowActionsProps {
   id: number
   onDelete: (id: number) => Promise<boolean>
+  deleteMessage?: string
   path: string
 }
 
 export function DataTableRowActions({
   id,
   onDelete,
+  deleteMessage,
   path,
 }: DataTableRowActionsProps) {
   const router = useRouter()
+  const { toast } = useToast()
 
   const handleEditClick = () => {
     router.push(`${path}/${id}`)
   }
 
   const handleDeleteClick = async () => {
-    try {
-      await onDelete(id)
+    const deleted = await onDelete(id)
+
+    if (deleted) {
+      toast({
+        title: 'Eliminado correctamente',
+        description: deleteMessage || 'El elemento ha sido eliminado',
+      })
 
       router.refresh()
-    } catch (error) {}
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Algo salió mal',
+        description: 'El elemento no pudo ser eliminado correctamente',
+      })
+    }
   }
 
   return (
