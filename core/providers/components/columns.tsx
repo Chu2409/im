@@ -4,6 +4,7 @@ import { DataTableColumnHeader } from '@/core/shared/components/table/data-table
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { Provider } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
+import { deleteProvider } from '../actions/delete-provider'
 
 export const providersColumns: ColumnDef<Provider>[] = [
   {
@@ -19,6 +20,12 @@ export const providersColumns: ColumnDef<Provider>[] = [
   },
   {
     id: 'Acciones',
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row }) => (
+      <DataTableRowActions
+        id={row.original.id}
+        path='providers'
+        onDelete={deleteProvider}
+      />
+    ),
   },
 ]
