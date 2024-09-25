@@ -12,16 +12,16 @@ export const locationColumns: ColumnDef<Location>[] = [
   },
   {
     accessorKey: 'code',
-    id: 'Código',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Código' />
-    ),
+    header: 'Código',
   },
   {
     accessorKey: 'laboratory',
-    header: 'Laboratorio',
     filterFn: (row, id, filterValue) =>
       filterValue.includes(row.original.laboratory),
+    meta: 'Laboratorio',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Laboratorio' />
+    ),
   },
   {
     id: 'Acciones',
