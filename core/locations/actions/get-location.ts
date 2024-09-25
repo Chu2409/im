@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 
 export const getLocation = async (id: number) => {
   try {
-    const location = prisma.location.findUnique({
+    const location = await prisma.location.findUnique({
       where: {
         id,
       },

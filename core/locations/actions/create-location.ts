@@ -5,7 +5,7 @@ import { Location } from '@prisma/client'
 
 export const createLocation = async (data: Omit<Location, 'id'>) => {
   try {
-    const location = prisma.location.create({
+    const location = await prisma.location.create({
       data,
     })
 

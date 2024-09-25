@@ -36,6 +36,8 @@ export function DataTableRowActions({
   const handleDeleteClick = async () => {
     try {
       await onDelete(id)
+
+      router.refresh()
     } catch (error) {}
   }
 

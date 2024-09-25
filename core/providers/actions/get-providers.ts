@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 
 export const getProviders = async () => {
   try {
-    const providers = prisma.provider.findMany({})
+    const providers = await prisma.provider.findMany({})
 
     return providers
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

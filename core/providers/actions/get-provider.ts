@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 
 export const getProvider = async (id: number) => {
   try {
-    const provider = prisma.provider.findUnique({
+    const provider = await prisma.provider.findUnique({
       where: {
         id,
       },

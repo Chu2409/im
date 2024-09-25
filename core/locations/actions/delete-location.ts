@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 
 export const deleteLocation = async (id: number) => {
   try {
-    const provider = prisma.location.delete({
+    const provider = await prisma.location.delete({
       where: {
         id,
       },

@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 
 export const getLocations = async () => {
   try {
-    const locations = prisma.location.findMany({
+    const locations = await prisma.location.findMany({
       orderBy: {
         laboratory: 'asc',
       },

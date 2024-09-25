@@ -8,7 +8,7 @@ export const updateProvider = async (
   data: Omit<Provider, 'id'>,
 ) => {
   try {
-    const location = prisma.provider.update({
+    const location = await prisma.provider.update({
       where: {
         id,
       },

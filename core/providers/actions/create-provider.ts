@@ -5,7 +5,7 @@ import { Provider } from '@prisma/client'
 
 export const createProvider = async (data: Omit<Provider, 'id'>) => {
   try {
-    const provider = prisma.provider.create({
+    const provider = await prisma.provider.create({
       data,
     })
 
