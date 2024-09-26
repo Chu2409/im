@@ -1,5 +1,7 @@
 import { Header } from '@/core/shared/components/head/header'
 import { Record } from '@prisma/client'
+import { recordsColumns } from './columns'
+import { DataTable } from '@/core/shared/components/table/data-table'
 
 export const RecordsClient = ({ records }: { records: Record[] }) => {
   return (
@@ -10,11 +12,7 @@ export const RecordsClient = ({ records }: { records: Record[] }) => {
         buttonLabel='Nuevo registro'
       />
 
-      {/* <DataTable
-        data={records}
-        columns={providersColumns}
-        inputFilterKey='name'
-      /> */}
+      <DataTable data={records} columns={recordsColumns} />
     </>
   )
 }
