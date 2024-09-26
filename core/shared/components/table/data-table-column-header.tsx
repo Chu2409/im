@@ -21,12 +21,14 @@ interface DataTableColumnHeaderProps<TData, TValue>
   extends HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>
   title: string
+  toggleVisibility?: boolean
 }
 
 export function DataTableColumnHeader<TData, TValue>({
   column,
   title,
   className,
+  toggleVisibility,
 }: DataTableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>
@@ -70,15 +72,19 @@ export function DataTableColumnHeader<TData, TValue>({
             Desc
           </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
+          {toggleVisibility && (
+            <>
+              <DropdownMenuSeparator />
 
-          <DropdownMenuItem
-            onClick={() => column.toggleVisibility(false)}
-            className='cursor-pointer'
-          >
-            <EyeNoneIcon className='mr-2 h-3.5 w-3.5 text-muted-foreground/70' />
-            Hide
-          </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => column.toggleVisibility(false)}
+                className='cursor-pointer'
+              >
+                <EyeNoneIcon className='mr-2 h-3.5 w-3.5 text-muted-foreground/70' />
+                Hide
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
