@@ -1,5 +1,6 @@
-import { Item, Record } from '@prisma/client'
+import { IItemWithProduct } from '@/core/items/types'
+import { Record } from '@prisma/client'
 
 export interface IRecordWithItems extends Record {
-  items: Item[]
+  items: IItemWithProduct[]
 }
