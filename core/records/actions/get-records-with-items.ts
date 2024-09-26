@@ -7,7 +7,11 @@ export const getRecordsWithItems = async (): Promise<IRecordWithItems[]> => {
   try {
     const records = await prisma.record.findMany({
       include: {
-        items: true,
+        items: {
+          include: {
+            product: true,
+          },
+        },
       },
     })
 
