@@ -70,7 +70,9 @@ export function DataTableToolbar<TData>({
         </div>
       )}
 
-      <DataTableViewOptions table={table} />
+      {table.getAllColumns().length > 2 && (
+        <DataTableViewOptions table={table} />
+      )}
     </div>
   )
 }
