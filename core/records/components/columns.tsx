@@ -20,7 +20,7 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
 
       return (
         <div
-          className='capitalize cursor-pointer w-full h-full flex justify-between items-center'
+          className='capitalize cursor-pointer w-full h-full flex justify-between items-center py-0.5'
           onClick={() => setRecord(row.original)}
         >
           {formatDate(cell.getValue() as Date)}

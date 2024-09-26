@@ -1,9 +1,15 @@
+'use client'
+
 import { Header } from '@/core/shared/components/head/header'
 import { recordsColumns } from './columns'
 import { DataTable } from '@/core/shared/components/table/data-table'
 import { IRecordWithItems } from '../types'
+import { useRecord } from '../hooks/use-record'
+import { itemsColumns } from '@/core/items/components/columns'
 
 export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
+  const currentRecord = useRecord((state) => state.record)
+
   return (
     <>
       <Header
@@ -17,7 +23,11 @@ export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
           <DataTable data={records} columns={recordsColumns} />
         </div>
 
-        <div className='order-1 lg:order-2'>Probando</div>
+        <div className='order-1 lg:order-2'>
+          {currentRecord && (
+            <DataTable data={currentRecord.items} columns={itemsColumns} />
+          )}
+        </div>
       </div>
     </>
   )
