@@ -1,10 +1,15 @@
 'use server'
 
 import prisma from '@/lib/prisma'
+import { IRecordWithItems } from '../types'
 
-export const getRecords = async () => {
+export const getRecordsWithItems = async (): Promise<IRecordWithItems[]> => {
   try {
-    const records = await prisma.record.findMany({})
+    const records = await prisma.record.findMany({
+      include: {
+        items: true,
+      },
+    })
 
     return records
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
