@@ -35,20 +35,11 @@ type formType = z.infer<typeof formSchema>
 
 export const ProviderForm = ({
   initialData,
+  onModalClose,
 }: {
-  initialData: Provider | null
+  initialData?: Provider
+  onModalClose: () => void
 }) => {
-  const router = useRouter()
-  const { toast } = useToast()
-
-  const form = useForm<formType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: initialData?.name || '',
-      contact: initialData?.contact || '',
-    },
-  })
-
   const toastTitle = initialData ? 'Proveedor actualizado' : 'Proveedor creado'
   const toastDescription = initialData
     ? 'El proveedor ha sido actualizado correctamente'
@@ -58,7 +49,17 @@ export const ProviderForm = ({
     : 'Hubo un error al crear el proveedor'
   const action = initialData ? 'Actualizar proveedor' : 'Crear proveedor'
 
+  const router = useRouter()
+  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
+
+  const form = useForm<formType>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: initialData?.name || '',
+      contact: initialData?.contact || '',
+    },
+  })
 
   const onSubmit = (values: formType) => {
     setIsLoading(true)
@@ -86,6 +87,8 @@ export const ProviderForm = ({
     }
 
     setIsLoading(false)
+    form.reset()
+    onModalClose()
   }
 
   return (
