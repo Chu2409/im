@@ -27,8 +27,8 @@ const formSchema = z.object({
     .max(50, 'Máximo 50 caracteres'),
   contact: z
     .string({ message: 'Ingrese un número de contacto' })
-    .min(2, 'Mínimo 9 caracteres')
-    .max(10, 'Máximo 12 caracteres'),
+    .min(9, 'Mínimo 9 caracteres')
+    .max(12, 'Máximo 12 caracteres'),
 })
 
 type formType = z.infer<typeof formSchema>
@@ -93,8 +93,8 @@ export const ProviderForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className=''>
-        <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 w-full mb-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+        <div className='grid gap-4 sm:grid-cols-2 2xl:grid-cols-3 w-full'>
           <FormField
             control={form.control}
             name='name'
