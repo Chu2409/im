@@ -36,8 +36,9 @@ model Product {
 }
 
 model Record {
-  id   Int      @id @default(autoincrement()) @map("id")
-  date DateTime @map("date")
+  id    Int      @id @default(autoincrement()) @map("id")
+  start DateTime @map("start")
+  end   DateTime @map("end")
 
   items Item[]
 
