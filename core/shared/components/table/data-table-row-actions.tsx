@@ -23,24 +23,20 @@ interface DataTableRowActionsProps {
   id: number
   onDelete: (id: number) => Promise<boolean>
   deleteMessage?: string
-  path: string
+  onEdit: () => void
 }
 
 export function DataTableRowActions({
   id,
   onDelete,
+  onEdit,
   deleteMessage,
-  path,
 }: DataTableRowActionsProps) {
   const router = useRouter()
   const { toast } = useToast()
 
   const [isLoading, setIsLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-
-  const handleEditClick = () => {
-    router.push(`${path}/${id}`)
-  }
 
   const onDeleteClick = async () => {
     setIsLoading(true)
@@ -90,7 +86,7 @@ export function DataTableRowActions({
         <DropdownMenuContent align='end' className='w-[100px]'>
           <DropdownMenuItem
             className='flex items-center justify-between cursor-pointer'
-            onClick={handleEditClick}
+            onClick={() => onEdit()}
           >
             Editar <Pencil1Icon />
           </DropdownMenuItem>
