@@ -46,8 +46,10 @@ type formType = z.infer<typeof formSchema>
 
 export const LocationForm = ({
   initialData,
+  onModalClose,
 }: {
-  initialData: Location | null
+  initialData?: Location
+  onModalClose: () => void
 }) => {
   const router = useRouter()
   const { toast } = useToast()
@@ -97,12 +99,14 @@ export const LocationForm = ({
     }
 
     setIsLoading(false)
+    form.reset()
+    onModalClose()
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className=''>
-        <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 w-full mb-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+        <div className='grid gap-4 sm:grid-cols-2 2xl:grid-cols-3 w-full'>
           <FormField
             control={form.control}
             name='name'

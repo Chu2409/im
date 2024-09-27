@@ -5,6 +5,7 @@ import { DataTableRowActions } from '@/core/shared/components/table/data-table-r
 import { Location } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 import { deleteLocation } from '../actions/delete-location'
+import { useLocationrModal } from '../hooks/use-location-modal'
 
 export const locationColumns: ColumnDef<Location>[] = [
   {
@@ -26,13 +27,18 @@ export const locationColumns: ColumnDef<Location>[] = [
   },
   {
     id: 'Acciones',
-    cell: ({ row }) => (
-      <DataTableRowActions
-        id={row.original.id}
-        onDelete={deleteLocation}
-        deleteMessage='La ubicación o locación ha sido eliminada correctamente'
-        path='locations'
-      />
-    ),
+    cell: ({ row }) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const onOpen = useLocationrModal((state) => state.onOpen)
+
+      return (
+        <DataTableRowActions
+          id={row.original.id}
+          onDelete={deleteLocation}
+          deleteMessage='La ubicación o locación ha sido eliminada correctamente'
+          onEdit={() => onOpen(row.original)}
+        />
+      )
+    },
   },
 ]
