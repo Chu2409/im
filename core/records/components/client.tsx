@@ -17,6 +17,7 @@ export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
         title='Registros'
         description='Administra los registros en tu laboratorio'
         buttonLabel='Nuevo registro'
+        onButtonClick={() => {}}
       />
 
       <div className='grid grid-cols-1 lg:grid-cols-7 gap-4'>
