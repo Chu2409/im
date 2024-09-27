@@ -2,7 +2,7 @@ import { Modal } from '@/core/shared/components/modal/modal'
 import { ProviderForm } from './form'
 import { useProviderModal } from '../hooks/use-provider-modal'
 
-export const ProvidersModal = () => {
+export const ProviderModal = () => {
   const initialData = useProviderModal((state) => state.provider)
   const isOpen = useProviderModal((state) => state.isOpen)
   const onClose = useProviderModal((state) => state.onClose)

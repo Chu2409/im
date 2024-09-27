@@ -4,7 +4,7 @@ import { Header } from '@/core/shared/components/head/header'
 import { DataTable } from '@/core/shared/components/table/data-table'
 import { Provider } from '@prisma/client'
 import { providersColumns } from './columns'
-import { ProvidersModal } from './modal'
+import { ProviderModal } from './modal'
 import { useProviderModal } from '../hooks/use-provider-modal'
 
 export const ProvidersClient = ({ providers }: { providers: Provider[] }) => {
@@ -19,7 +19,7 @@ export const ProvidersClient = ({ providers }: { providers: Provider[] }) => {
         onButtonClick={() => onOpen()}
       />
 
-      <ProvidersModal />
+      <ProviderModal />
 
       <DataTable
         data={providers}
