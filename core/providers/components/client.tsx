@@ -5,10 +5,10 @@ import { DataTable } from '@/core/shared/components/table/data-table'
 import { Provider } from '@prisma/client'
 import { providersColumns } from './columns'
 import { ProvidersModal } from './modal'
-import { useState } from 'react'
+import { useProviderModal } from '../hooks/use-provider-modal'
 
 export const ProvidersClient = ({ providers }: { providers: Provider[] }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const onOpen = useProviderModal((state) => state.onOpen)
 
   return (
     <>
@@ -16,10 +16,10 @@ export const ProvidersClient = ({ providers }: { providers: Provider[] }) => {
         title='Proveedores'
         description='Administra los proveedores de tus productos.'
         buttonLabel='Nuevo proveedor'
-        onButtonClick={() => setIsOpen(true)}
+        onButtonClick={() => onOpen()}
       />
 
-      <ProvidersModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <ProvidersModal />
 
       <DataTable
         data={providers}
