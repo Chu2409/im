@@ -19,8 +19,8 @@ export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
         buttonLabel='Nuevo registro'
       />
 
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
-        <div className='order-2 lg:order-1'>
+      <div className='grid grid-cols-1 lg:grid-cols-7 gap-4'>
+        <div className='order-2 lg:order-1 lg:col-span-3'>
           <p className='text-sm text-muted-foreground '>
             Revise los registros de su laboratorio dando click
           </p>
@@ -28,7 +28,7 @@ export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
           <DataTable data={records} columns={recordsColumns} />
         </div>
 
-        <div className='order-1 lg:order-2'>
+        <div className='order-1 lg:order-2 lg:col-span-4'>
           {currentRecord && (
             <>
               <p className='text-sm'>
