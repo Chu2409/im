@@ -20,7 +20,7 @@ export const providersColumns: ColumnDef<Provider>[] = [
     header: 'Contacto',
   },
   {
-    id: 'Acciones',
+    id: 'actions',
     cell: ({ row }) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const onOpen = useProviderModal((state) => state.onOpen)

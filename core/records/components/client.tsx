@@ -35,7 +35,10 @@ export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
               <p className='text-sm'>
                 Items del registro:{' '}
                 <span className='capitalize font-semibold'>
-                  {formatDate(currentRecord.date)}
+                  {formatDate(currentRecord.start)} -{' '}
+                </span>
+                <span className='capitalize font-semibold'>
+                  {formatDate(currentRecord.end)}
                 </span>
               </p>
               <DataTable data={currentRecord.items} columns={itemsColumns} />
