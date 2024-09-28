@@ -5,7 +5,9 @@ import { formatDate } from '@/lib/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { useRecord } from '../hooks/use-record'
 import { IRecordWithItems } from '../types'
-import { EyeOpenIcon } from '@radix-ui/react-icons'
+import { useRecordModal } from '../hooks/use-record-modal'
+import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
+import { deleteRecord } from '../actions/delete-record'
 
 export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
   {
@@ -14,19 +16,34 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Fecha' />
     ),
-    cell: ({ cell, row }) => {
+    cell: ({ row }) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const setRecord = useRecord((state) => state.setRecord)
 
       return (
         <div
-          className='capitalize cursor-pointer w-full h-full flex justify-between items-center py-0.5'
+          className='capitalize cursor-pointer w-full h-full py-0.5'
           onClick={() => setRecord(row.original)}
         >
-          {formatDate(cell.getValue() as Date)}
-
-          <EyeOpenIcon />
+          {formatDate(row.original.start)} - {formatDate(row.original.end)}
         </div>
+      )
+    },
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const onOpen = useRecordModal((state) => state.onOpen)
+
+      return (
+        <DataTableRowActions
+          id={row.original.id}
+          onDelete={deleteRecord}
+          deleteMessage='El registro ha sido eliminado correctamente'
+          errorMessage='Elimine los items del registro primero'
+          onEdit={() => onOpen()}
+        />
       )
     },
   },
