@@ -21,16 +21,18 @@ import { AlertModal } from '../modal/alert-modal'
 
 interface DataTableRowActionsProps {
   id: number
-  onDelete: (id: number) => Promise<boolean>
+  onDelete?: (id: number) => Promise<boolean>
   deleteMessage?: string
+  errorMessage?: string
   onEdit: () => void
 }
 
 export function DataTableRowActions({
   id,
   onDelete,
-  onEdit,
   deleteMessage,
+  errorMessage,
+  onEdit,
 }: DataTableRowActionsProps) {
   const router = useRouter()
   const { toast } = useToast()
@@ -41,7 +43,7 @@ export function DataTableRowActions({
   const onDeleteClick = async () => {
     setIsLoading(true)
 
-    const deleted = await onDelete(id)
+    const deleted = await onDelete!(id)
 
     if (deleted) {
       toast({
@@ -55,7 +57,8 @@ export function DataTableRowActions({
       toast({
         variant: 'destructive',
         title: 'Algo salió mal',
-        description: 'El elemento no pudo ser eliminado correctamente',
+        description:
+          errorMessage || 'El elemento no pudo ser eliminado correctamente',
       })
     }
 
@@ -91,14 +94,17 @@ export function DataTableRowActions({
             Editar <Pencil1Icon />
           </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            className='flex items-center justify-between cursor-pointer'
-            onClick={() => setIsOpen(true)}
-          >
-            Eliminar <TrashIcon />
-          </DropdownMenuItem>
+          {onDelete && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className='flex items-center justify-between cursor-pointer'
+                onClick={() => setIsOpen(true)}
+              >
+                Eliminar <TrashIcon />
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>
