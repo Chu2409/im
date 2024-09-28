@@ -35,6 +35,13 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
     cell: ({ row }) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const onOpen = useRecordModal((state) => state.onOpen)
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const setRecord = useRecord((state) => state.setRecord)
+
+      const handleClick = () => {
+        setRecord(row.original)
+        onOpen()
+      }
 
       return (
         <DataTableRowActions
@@ -42,7 +49,7 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
           onDelete={deleteRecord}
           deleteMessage='El registro ha sido eliminado correctamente'
           errorMessage='Elimine los items del registro primero'
-          onEdit={() => onOpen()}
+          onEdit={handleClick}
         />
       )
     },

@@ -7,9 +7,18 @@ import { IRecordWithItems } from '../types'
 import { useRecord } from '../hooks/use-record'
 import { itemsColumns } from '@/core/items/components/columns'
 import { formatDate } from '@/lib/utils'
+import { RecordModal } from './modal'
+import { useRecordModal } from '../hooks/use-record-modal'
 
 export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
   const currentRecord = useRecord((state) => state.record)
+  const setRecord = useRecord((state) => state.setRecord)
+  const onOpen = useRecordModal((state) => state.onOpen)
+
+  const handleClick = () => {
+    setRecord(undefined)
+    onOpen()
+  }
 
   return (
     <>
@@ -17,8 +26,10 @@ export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
         title='Registros'
         description='Administra los registros en tu laboratorio'
         buttonLabel='Nuevo registro'
-        onButtonClick={() => {}}
+        onButtonClick={handleClick}
       />
+
+      <RecordModal />
 
       <div className='grid grid-cols-1 lg:grid-cols-7 gap-4'>
         <div className='order-2 lg:order-1 lg:col-span-3'>
