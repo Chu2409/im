@@ -8,8 +8,15 @@ import { useRecord } from '../hooks/use-record'
 import { RecordModal } from './modal'
 import { useRecordModal } from '../hooks/use-record-modal'
 import { ItemsClient } from '@/core/items/components/client'
+import { Product } from '@prisma/client'
 
-export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
+export const RecordsClient = ({
+  records,
+  products,
+}: {
+  records: IRecordWithItems[]
+  products: Product[]
+}) => {
   const currentRecord = useRecord((state) => state.record)
   const setRecord = useRecord((state) => state.setRecord)
   const onOpen = useRecordModal((state) => state.onOpen)
@@ -28,7 +35,7 @@ export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
         onButtonClick={handleClick}
       />
 
-      <RecordModal />
+      <RecordModal products={products} />
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
         <div className='order-2 lg:order-1'>

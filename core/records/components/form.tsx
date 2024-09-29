@@ -17,7 +17,12 @@ import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { IRecordWithItems } from '../types'
 import { Input } from '@/ui/input'
-import { Separator } from '@/ui/separator'
+import {
+  IRowItem,
+  ItemFormDataTable,
+} from '@/core/items/components/form-data-table'
+import { Product } from '@prisma/client'
+import { ProductsSelector } from '@/core/items/components/product-selector'
 
 const formSchema = z.object({
   start: z.string(),
@@ -28,9 +33,11 @@ type formType = z.infer<typeof formSchema>
 
 export const RecordForm = ({
   initialData,
+  products,
   onModalClose,
 }: {
   initialData?: IRecordWithItems
+  products: Product[]
   onModalClose: () => void
 }) => {
   const toastTitle = initialData ? 'Registro actualizado' : 'Registro creado'
@@ -42,10 +49,6 @@ export const RecordForm = ({
     : 'Hubo un error al crear el registro'
   const action = initialData ? 'Actualizar registro' : 'Crear registro'
 
-  const router = useRouter()
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(false)
-
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,6 +59,32 @@ export const RecordForm = ({
         initialData?.end.toLocaleDateString('en-CA') ||
         new Date().toLocaleDateString('en-CA'),
     },
+  })
+
+  const router = useRouter()
+  const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [itemsTable, setItemsTable] = useState<IRowItem[]>(
+    () =>
+      initialData?.items.map((item) => ({
+        product: { id: item.productId, name: item.product.name },
+        quantity: { value: item.quantity },
+        isSaved: true,
+        toDelete: false,
+        toEdit: false,
+      })) || [],
+  )
+
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(() => {
+    const items = initialData?.items
+    if (items && items.length > 0) {
+      return products.filter(
+        (product) => !items.find((item) => item.product.id === product.id),
+      )
+    } else {
+      return products
+    }
   })
 
   const onSubmit = (values: formType) => {
@@ -92,60 +121,131 @@ export const RecordForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='flex flex-col gap-y-4'
+        className='flex flex-col gap-6'
         id='form'
       >
-        <div className='grid gap-4 sm:grid-cols-2 2xl:grid-cols-3 w-full'>
-          <FormField
-            control={form.control}
-            name='start'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Fecha de inicio</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isLoading}
-                    className='flex justify-between items-center'
-                    type='date'
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className='grid sm:grid-cols-2 gap-4'>
+          <div className='grid gap-3'>
+            <FormField
+              control={form.control}
+              name='start'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fecha de inicio</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      className='cursor-pointer'
+                      type='date'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name='end'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nombre</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isLoading}
-                    className='cursor-pointer'
-                    placeholder='Nike Fast'
-                    type='date'
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            <FormField
+              control={form.control}
+              name='end'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fecha de fin</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      className='cursor-pointer'
+                      type='date'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <ProductsSelector
+              products={filteredProducts}
+              onAdd={(id) => {
+                const product = products.find((product) => product.id === id)
+
+                if (product) {
+                  const updatedItemsTable = itemsTable.concat({
+                    product: {
+                      id: product.id,
+                      name: product.name,
+                    },
+                    quantity: { value: 1 },
+                    isSaved: false,
+                    toDelete: false,
+                    toEdit: false,
+                  })
+                  setItemsTable(updatedItemsTable)
+
+                  const updatedFilteredProducst = products.filter(
+                    (product) =>
+                      !updatedItemsTable.find(
+                        (item) => item.product.id === product.id,
+                      ),
+                  )
+                  setFilteredProducts(updatedFilteredProducst)
+                }
+              }}
+            />
+          </div>
+
+          <ItemFormDataTable
+            data={itemsTable}
+            onDelete={(isSaved, id) => {
+              if (isSaved) {
+                const updatedItemsTable = itemsTable.map((itemTable) => {
+                  if (itemTable.product.id === id)
+                    return {
+                      ...itemTable,
+                      toDelete: itemTable.toDelete ? !itemTable.toDelete : true,
+                    }
+
+                  return itemTable
+                })
+                setItemsTable(updatedItemsTable)
+              } else {
+                const updatedItemsTable = itemsTable.filter(
+                  (item) => item.product.id !== id,
+                )
+                setItemsTable(updatedItemsTable)
+
+                const updatedFilteredProducst = products.filter(
+                  (product) =>
+                    !updatedItemsTable.find(
+                      (item) => item.product.id === product.id,
+                    ),
+                )
+                setFilteredProducts(updatedFilteredProducst)
+              }
+            }}
+            onQuantityBlur={(isSaved, id, quantity) => {
+              const updatedItemsTable = itemsTable.map((itemTable) => {
+                if (itemTable.product.id === id)
+                  return {
+                    ...itemTable,
+                    quantity: { value: quantity, isEdited: !!isSaved },
+                  }
+
+                return itemTable
+              })
+              setItemsTable(updatedItemsTable)
+            }}
           />
         </div>
-
-        <Separator />
 
         <div className='ml-auto'>
           <Button
             type='submit'
             disabled={isLoading}
             form='form'
-            className='w-44'
+            className='px-6'
           >
-            Guardar
+            {action}
           </Button>
         </div>
       </form>

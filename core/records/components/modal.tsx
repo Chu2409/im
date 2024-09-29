@@ -2,8 +2,9 @@ import { Modal } from '@/core/shared/components/modal/modal'
 import { useRecordModal } from '../hooks/use-record-modal'
 import { useRecord } from '../hooks/use-record'
 import { RecordForm } from './form'
+import { Product } from '@prisma/client'
 
-export const RecordModal = () => {
+export const RecordModal = ({ products }: { products: Product[] }) => {
   const initialData = useRecord((state) => state.record)
   const isOpen = useRecordModal((state) => state.isOpen)
   const onClose = useRecordModal((state) => state.onClose)
@@ -16,9 +17,13 @@ export const RecordModal = () => {
       }
       isOpen={isOpen}
       onClose={onClose}
-      className='max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-2xl 2xl:max-w-4xl'
+      className='max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl max-h-[90vh] overflow-y-auto'
     >
-      <RecordForm initialData={initialData} onModalClose={onClose} />
+      <RecordForm
+        initialData={initialData}
+        products={products}
+        onModalClose={onClose}
+      />
     </Modal>
   )
 }
