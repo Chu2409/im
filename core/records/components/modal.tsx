@@ -1,6 +1,7 @@
 import { Modal } from '@/core/shared/components/modal/modal'
 import { useRecordModal } from '../hooks/use-record-modal'
 import { useRecord } from '../hooks/use-record'
+import { RecordForm } from './form'
 
 export const RecordModal = () => {
   const initialData = useRecord((state) => state.record)
@@ -17,7 +18,7 @@ export const RecordModal = () => {
       onClose={onClose}
       className='max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-2xl 2xl:max-w-4xl'
     >
-      Probando
+      <RecordForm initialData={initialData} onModalClose={onClose} />
     </Modal>
   )
 }

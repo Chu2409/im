@@ -5,10 +5,9 @@ import { recordsColumns } from './columns'
 import { DataTable } from '@/core/shared/components/table/data-table'
 import { IRecordWithItems } from '../types'
 import { useRecord } from '../hooks/use-record'
-import { itemsColumns } from '@/core/items/components/columns'
-import { formatDate } from '@/lib/utils'
 import { RecordModal } from './modal'
 import { useRecordModal } from '../hooks/use-record-modal'
+import { ItemsClient } from '@/core/items/components/client'
 
 export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
   const currentRecord = useRecord((state) => state.record)
@@ -31,8 +30,8 @@ export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
 
       <RecordModal />
 
-      <div className='grid grid-cols-1 lg:grid-cols-7 gap-4'>
-        <div className='order-2 lg:order-1 lg:col-span-3'>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+        <div className='order-2 lg:order-1'>
           <p className='text-sm text-muted-foreground '>
             Revise los registros de su laboratorio dando click
           </p>
@@ -40,21 +39,8 @@ export const RecordsClient = ({ records }: { records: IRecordWithItems[] }) => {
           <DataTable data={records} columns={recordsColumns} />
         </div>
 
-        <div className='order-1 lg:order-2 lg:col-span-4'>
-          {currentRecord && (
-            <>
-              <p className='text-sm'>
-                Items del registro:{' '}
-                <span className='capitalize font-semibold'>
-                  {formatDate(currentRecord.start)} -{' '}
-                </span>
-                <span className='capitalize font-semibold'>
-                  {formatDate(currentRecord.end)}
-                </span>
-              </p>
-              <DataTable data={currentRecord.items} columns={itemsColumns} />
-            </>
-          )}
+        <div className='order-1 lg:order-2'>
+          <ItemsClient record={currentRecord} />
         </div>
       </div>
     </>
