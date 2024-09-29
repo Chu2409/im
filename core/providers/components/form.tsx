@@ -94,7 +94,7 @@ export const ProviderForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-        <div className='grid gap-4 sm:grid-cols-2 2xl:grid-cols-3 w-full'>
+        <div className='grid gap-4 sm:grid-cols-2 w-full'>
           <FormField
             control={form.control}
             name='name'
