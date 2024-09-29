@@ -23,6 +23,10 @@ import {
 } from '@/core/items/components/form-data-table'
 import { Product } from '@prisma/client'
 import { ProductsSelector } from '@/core/items/components/product-selector'
+import { createRecordWithItems } from '../actions/create-record-with-items'
+import { updateRecordWithItems } from '../actions/update-record-with-items'
+import { useRecord } from '../hooks/use-record'
+import { getRecordWithItems } from '../actions/get-record-with-items'
 
 const formSchema = z.object({
   start: z.string(),
@@ -65,6 +69,8 @@ export const RecordForm = ({
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
 
+  const setRecord = useRecord((state) => state.setRecord)
+
   const [itemsTable, setItemsTable] = useState<IRowItem[]>(
     () =>
       initialData?.items.map((item) => ({
@@ -87,13 +93,23 @@ export const RecordForm = ({
     }
   })
 
-  const onSubmit = (values: formType) => {
+  const onSubmit = async (values: formType) => {
     setIsLoading(true)
 
     let result
 
-    // if (initialData) result = updateProvider(initialData.id, values)
-    // else result = createProvider(values)
+    if (initialData)
+      result = await updateRecordWithItems(initialData.id, {
+        start: new Date(values.start),
+        end: new Date(values.end),
+        items: itemsTable,
+      })
+    else
+      result = await createRecordWithItems({
+        start: new Date(values.start),
+        end: new Date(values.end),
+        items: itemsTable,
+      })
 
     if (result != null) {
       toast({
@@ -102,7 +118,8 @@ export const RecordForm = ({
         description: toastDescription,
       })
 
-      router.push('/providers')
+      const record = await getRecordWithItems(result)
+      setRecord(record || undefined)
       router.refresh()
     } else {
       toast({
@@ -110,6 +127,8 @@ export const RecordForm = ({
         title: 'Algo salió mal',
         description: errorMessage,
       })
+
+      setRecord(undefined)
     }
 
     setIsLoading(false)
@@ -229,6 +248,7 @@ export const RecordForm = ({
                   return {
                     ...itemTable,
                     quantity: { value: quantity, isEdited: !!isSaved },
+                    toEdit: !!isSaved,
                   }
 
                 return itemTable

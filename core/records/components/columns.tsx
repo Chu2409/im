@@ -43,10 +43,15 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
         onOpen()
       }
 
+      const onDelete = async (id: number) => {
+        setRecord(undefined)
+        return await deleteRecord(id)
+      }
+
       return (
         <DataTableRowActions
           id={row.original.id}
-          onDelete={deleteRecord}
+          onDelete={onDelete}
           deleteMessage='El registro ha sido eliminado correctamente'
           errorMessage='Elimine los items del registro primero'
           onEdit={handleClick}
