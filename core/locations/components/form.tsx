@@ -105,8 +105,12 @@ export const LocationForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-        <div className='grid gap-4 sm:grid-cols-2 2xl:grid-cols-3 w-full'>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='flex flex-col gap-6'
+        id='form'
+      >
+        <div className='grid gap-3 sm:grid-cols-2 w-full'>
           <FormField
             control={form.control}
             name='name'
@@ -181,9 +185,16 @@ export const LocationForm = ({
           />
         </div>
 
-        <Button disabled={isLoading} type='submit'>
-          {action}
-        </Button>
+        <div className='ml-auto'>
+          <Button
+            disabled={isLoading}
+            type='submit'
+            form='form'
+            className='px-6'
+          >
+            {action}
+          </Button>
+        </div>
       </form>
     </Form>
   )
