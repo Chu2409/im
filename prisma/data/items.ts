@@ -22,7 +22,7 @@ export const items: IItem[] = [
   },
   {
     quantity: 5,
-    productId: 2,
+    productId: 12,
     recordId: 1,
   },
   {
@@ -42,7 +42,7 @@ export const items: IItem[] = [
   },
   {
     quantity: 17,
-    productId: 2,
+    productId: 12,
     recordId: 2,
   },
   {
@@ -62,7 +62,7 @@ export const items: IItem[] = [
   },
   {
     quantity: 5,
-    productId: 2,
+    productId: 12,
     recordId: 3,
   },
 ]
