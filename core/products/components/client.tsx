@@ -7,6 +7,7 @@ import { IProductWithProviders } from '../types'
 import { productsColumns } from './columns'
 import { ProductModal } from './modal'
 import { CATEGORIES } from '../data/categories'
+import { Provider } from '@prisma/client'
 
 const filters = [
   {
@@ -20,8 +21,10 @@ const filters = [
 
 export const ProductsClient = ({
   products,
+  providers,
 }: {
   products: IProductWithProviders[]
+  providers: Provider[]
 }) => {
   const onOpen = useProductModal((state) => state.onOpen)
 
@@ -34,7 +37,7 @@ export const ProductsClient = ({
         onButtonClick={() => onOpen()}
       />
 
-      <ProductModal />
+      <ProductModal providers={providers} />
 
       <DataTable
         data={products}

@@ -1,7 +1,9 @@
 import { Modal } from '@/core/shared/components/modal/modal'
 import { useProductModal } from '../hooks/use-product-modal'
+import { ProductForm } from './form'
+import { Provider } from '@prisma/client'
 
-export const ProductModal = () => {
+export const ProductModal = ({ providers }: { providers: Provider[] }) => {
   const initialData = useProductModal((state) => state.product)
   const isOpen = useProductModal((state) => state.isOpen)
   const onClose = useProductModal((state) => state.onClose)
@@ -16,7 +18,11 @@ export const ProductModal = () => {
       onClose={onClose}
       className='max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-3xl'
     >
-      Si
+      <ProductForm
+        initialData={initialData}
+        onModalClose={onClose}
+        providers={providers}
+      />
     </Modal>
   )
 }
