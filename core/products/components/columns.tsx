@@ -26,6 +26,10 @@ export const productsColumns: ColumnDef<IProductWithProviders>[] = [
         toggleVisibility
       />
     ),
+    filterFn: (row, id, filterValue) => {
+      const category = getCategoryByName(row.original.category)
+      return filterValue.includes(category?.id)
+    },
     cell: ({ row }) => {
       const category = getCategoryByName(row.original.category)
 

@@ -6,6 +6,17 @@ import { useProductModal } from '../hooks/use-product-modal'
 import { IProductWithProviders } from '../types'
 import { productsColumns } from './columns'
 import { ProductModal } from './modal'
+import { CATEGORIES } from '../data/categories'
+
+const filters = [
+  {
+    key: 'category',
+    values: Object.values(CATEGORIES).map((category) => ({
+      value: category.id,
+      label: category.name,
+    })),
+  },
+]
 
 export const ProductsClient = ({
   products,
@@ -29,6 +40,7 @@ export const ProductsClient = ({
         data={products}
         columns={productsColumns}
         inputFilterKey='name'
+        filters={filters}
       />
     </>
   )
