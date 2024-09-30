@@ -12,23 +12,10 @@ import {
 import { cn } from '@/lib/utils'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { Trash } from 'lucide-react'
-
-export interface IRowItem {
-  product: {
-    id: number
-    name: string
-  }
-  quantity: {
-    value: number
-    isEdited?: boolean
-  }
-  isSaved: boolean
-  toDelete: boolean
-  toEdit: boolean
-}
+import { IEditableRowItem } from '../types'
 
 interface ItemFormDataTableProps {
-  data: IRowItem[]
+  data: IEditableRowItem[]
   onDelete(isSaved: boolean, id: number): void
   onQuantityBlur(isSaved: boolean, id: number, quantiy: number): void
 }
@@ -39,7 +26,7 @@ export function ItemFormDataTable({
   onQuantityBlur,
 }: ItemFormDataTableProps) {
   return (
-    <div className='rounded-md border overflow-y-auto max-h-64'>
+    <div className='rounded-md border overflow-y-auto h-64'>
       <Table>
         <TableHeader className='bg-foreground/90'>
           <TableRow className='hover:bg-foreground'>
@@ -51,7 +38,9 @@ export function ItemFormDataTable({
               Cantidad
             </TableHead>
 
-            <TableHead className='text-center py-2 h-min text-white' />
+            {data.length > 0 && (
+              <TableHead className='text-center py-2 h-min text-white' />
+            )}
           </TableRow>
         </TableHeader>
 
@@ -92,24 +81,29 @@ export function ItemFormDataTable({
                   </div>
                 </TableCell>
 
-                <TableCell className='px-0 text-center py-1.5 flex items-center justify-center w-full mr-2'>
-                  {item.toDelete ? (
-                    <ReloadIcon
-                      className='h-4 w-4 cursor-pointer text-blue-600'
-                      onClick={() => onDelete(item.isSaved, item.product.id)}
-                    />
-                  ) : (
-                    <Trash
-                      className='h-4 w-4 cursor-pointer text-red-600'
-                      onClick={() => onDelete(item.isSaved, item.product.id)}
-                    />
-                  )}
+                <TableCell>
+                  <div>
+                    {item.toDelete ? (
+                      <ReloadIcon
+                        className='h-4 w-4 cursor-pointer text-blue-600'
+                        onClick={() => onDelete(item.isSaved, item.product.id)}
+                      />
+                    ) : (
+                      <Trash
+                        className='h-4 w-4 cursor-pointer text-red-600'
+                        onClick={() => onDelete(item.isSaved, item.product.id)}
+                      />
+                    )}
+                  </div>
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={3} className='h-24 text-center'>
+              <TableCell
+                colSpan={data.length > 0 ? 3 : 2}
+                className='h-24 text-center'
+              >
                 No hay items disponibles
               </TableCell>
             </TableRow>

@@ -1,15 +1,9 @@
 'use server'
 
-import { IRowItem } from '@/core/items/components/form-data-table'
 import prisma from '@/lib/prisma'
+import { IUpsertProductBulkProps } from '../types'
 
-export interface CreateProductBulkProps {
-  start: Date
-  end: Date
-  items: IRowItem[]
-}
-
-export const createRecordWithItems = async (data: CreateProductBulkProps) => {
+export const createRecordWithItems = async (data: IUpsertProductBulkProps) => {
   try {
     const recordBulk = await prisma.record.create({
       data: {

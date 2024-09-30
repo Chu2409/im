@@ -11,7 +11,7 @@ import {
 import { Label } from '@/ui/label'
 import { Product } from '@prisma/client'
 
-export const ProductsSelector = ({
+export const ItemSelector = ({
   products,
   onAdd,
 }: {
@@ -20,7 +20,7 @@ export const ProductsSelector = ({
 }) => {
   return (
     <div className='space-y-2'>
-      <Label className=''>Inventario disponible</Label>
+      <Label>Inventario disponible</Label>
 
       <Command
         className='rounded-lg border shadow-md'
@@ -35,7 +35,7 @@ export const ProductsSelector = ({
         <CommandList>
           <CommandEmpty>Producto no encontrado</CommandEmpty>
 
-          <CommandGroup className='overflow-y-auto max-h-[500px]'>
+          <CommandGroup className='overflow-y-auto max-h-40'>
             {products.map((product) => (
               <CommandItem
                 key={product.name}

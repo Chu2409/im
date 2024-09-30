@@ -17,16 +17,14 @@ import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { IRecordWithItems } from '../types'
 import { Input } from '@/ui/input'
-import {
-  IRowItem,
-  ItemFormDataTable,
-} from '@/core/items/components/form-data-table'
+import { ItemFormDataTable } from '@/core/items/components/form-data-table'
 import { Product } from '@prisma/client'
-import { ProductsSelector } from '@/core/items/components/product-selector'
+import { ItemSelector } from '@/core/items/components/item-selector'
 import { createRecordWithItems } from '../actions/create-record-with-items'
 import { updateRecordWithItems } from '../actions/update-record-with-items'
 import { useRecord } from '../hooks/use-record'
 import { getRecordWithItems } from '../actions/get-record-with-items'
+import { IEditableRowItem } from '@/core/items/types'
 
 const formSchema = z.object({
   start: z.string(),
@@ -71,7 +69,7 @@ export const RecordForm = ({
 
   const setRecord = useRecord((state) => state.setRecord)
 
-  const [itemsTable, setItemsTable] = useState<IRowItem[]>(
+  const [itemsTable, setItemsTable] = useState<IEditableRowItem[]>(
     () =>
       initialData?.items.map((item) => ({
         product: { id: item.productId, name: item.product.name },
@@ -144,7 +142,7 @@ export const RecordForm = ({
         id='form'
       >
         <div className='grid sm:grid-cols-2 gap-4'>
-          <div className='grid gap-3'>
+          <div className='grid gap-3 max-sm:mb-8'>
             <FormField
               control={form.control}
               name='start'
@@ -183,7 +181,7 @@ export const RecordForm = ({
               )}
             />
 
-            <ProductsSelector
+            <ItemSelector
               products={filteredProducts}
               onAdd={(id) => {
                 const product = products.find((product) => product.id === id)

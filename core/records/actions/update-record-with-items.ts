@@ -1,13 +1,7 @@
 'use server'
 
-import { IRowItem } from '@/core/items/components/form-data-table'
 import prisma from '@/lib/prisma'
-
-export interface CreateProductBulkProps {
-  start: Date
-  end: Date
-  items: IRowItem[]
-}
+import { IUpsertProductBulkProps } from '../types'
 
 interface BulkItem {
   productId: number
@@ -16,7 +10,7 @@ interface BulkItem {
 
 export const updateRecordWithItems = async (
   recordId: number,
-  data: CreateProductBulkProps,
+  data: IUpsertProductBulkProps,
 ) => {
   try {
     const toAdd: BulkItem[] = []
