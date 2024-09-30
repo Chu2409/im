@@ -21,6 +21,8 @@ model Provider {
   name    String @map("name")
   contact String @map("contact")
 
+  productsProviders ProductProvider[]
+
   @@map("providers")
 }
 
@@ -30,9 +32,21 @@ model Product {
   description String @map("description")
   category    String @map("category")
 
-  items Item[]
+  items             Item[]
+  productsProviders ProductProvider[]
 
   @@map("products")
+}
+
+model ProductProvider {
+  id Int @id @default(autoincrement()) @map("id")
+
+  providerId Int?      @map("provider_id")
+  provider   Provider? @relation(fields: [providerId], references: [id])
+  productId  Int       @map("product_id")
+  product    Product   @relation(fields: [productId], references: [id])
+
+  @@map("products_providers")
 }
 
 model Record {
