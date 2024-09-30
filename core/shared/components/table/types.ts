@@ -1,6 +1,6 @@
 export interface IOption {
   label: string
-  value: string
+  value: number
 }
 
 export interface IFilter {
