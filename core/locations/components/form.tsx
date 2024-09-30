@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/select'
-import { laboratories } from '../data'
+import { LABORATORIES } from '../data/labobratories'
 import { createLocation } from '../actions/create-location'
 import { updateLocation } from '../actions/update-location'
 import { useRouter } from 'next/navigation'
@@ -166,13 +166,13 @@ export const LocationForm = ({
                     </SelectTrigger>
 
                     <SelectContent>
-                      {laboratories.map((lab) => (
+                      {Object.entries(LABORATORIES).map(([, value]) => (
                         <SelectItem
-                          key={lab.id}
-                          value={lab.laboratory}
+                          key={value.id}
+                          value={value.name}
                           className='cursor-pointer'
                         >
-                          {lab.laboratory}
+                          {value.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

@@ -6,6 +6,8 @@ import { Location } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 import { deleteLocation } from '../actions/delete-location'
 import { useLocationrModal } from '../hooks/use-location-modal'
+import { Badge } from '@/ui/badge'
+import { getLaboratoryByName } from '../data/labobratories'
 
 export const locationColumns: ColumnDef<Location>[] = [
   {
@@ -24,6 +26,22 @@ export const locationColumns: ColumnDef<Location>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Laboratorio' />
     ),
+    cell: ({ row }) => {
+      const laboratory = getLaboratoryByName(row.original.laboratory)
+
+      return (
+        <Badge
+          variant='outline'
+          className='text-white'
+          style={{
+            backgroundColor: laboratory?.color,
+            border: laboratory?.color,
+          }}
+        >
+          {laboratory?.name}
+        </Badge>
+      )
+    },
   },
   {
     id: 'actions',

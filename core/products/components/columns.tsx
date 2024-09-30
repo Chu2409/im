@@ -6,6 +6,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { IProductWithProviders } from '../types'
 import { useProductModal } from '../hooks/use-product-modal'
 import { Badge } from '@/ui/badge'
+import { getCategoryByName } from '../data/categories'
 
 export const productsColumns: ColumnDef<IProductWithProviders>[] = [
   {
@@ -25,6 +26,22 @@ export const productsColumns: ColumnDef<IProductWithProviders>[] = [
         toggleVisibility
       />
     ),
+    cell: ({ row }) => {
+      const category = getCategoryByName(row.original.category)
+
+      return (
+        <Badge
+          variant='outline'
+          className='text-white'
+          style={{
+            backgroundColor: category?.color,
+            border: category?.color,
+          }}
+        >
+          {category?.name}
+        </Badge>
+      )
+    },
   },
   {
     accessorKey: 'providers',
