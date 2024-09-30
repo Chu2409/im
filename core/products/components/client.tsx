@@ -1,0 +1,35 @@
+'use client'
+
+import { Header } from '@/core/shared/components/head/header'
+import { DataTable } from '@/core/shared/components/table/data-table'
+import { useProductModal } from '../hooks/use-product-modal'
+import { IProductWithProviders } from '../types'
+import { productsColumns } from './columns'
+import { ProductModal } from './modal'
+
+export const ProductsClient = ({
+  products,
+}: {
+  products: IProductWithProviders[]
+}) => {
+  const onOpen = useProductModal((state) => state.onOpen)
+
+  return (
+    <>
+      <Header
+        title='Productos'
+        description='Administra los productos de tu laboratorio'
+        buttonLabel='Nuevo producto'
+        onButtonClick={() => onOpen()}
+      />
+
+      <ProductModal />
+
+      <DataTable
+        data={products}
+        columns={productsColumns}
+        inputFilterKey='name'
+      />
+    </>
+  )
+}
