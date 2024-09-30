@@ -3,3 +3,9 @@ export interface IRoute {
   label: string
   icon: React.ReactElement
 }
+
+export interface IConstant {
+  id: number
+  name: string
+  color: string
+}
