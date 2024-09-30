@@ -9,3 +9,8 @@ export interface IConstant {
   name: string
   color: string
 }
+
+export interface IOption {
+  label: string
+  value: number
+}

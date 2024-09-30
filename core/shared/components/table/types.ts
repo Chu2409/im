@@ -1,7 +1,4 @@
-export interface IOption {
-  label: string
-  value: number
-}
+import { IOption } from '../../types'
 
 export interface IFilter {
   key: string
