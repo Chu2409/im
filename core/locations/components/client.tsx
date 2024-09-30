@@ -4,28 +4,21 @@ import { Header } from '@/core/shared/components/head/header'
 import { DataTable } from '@/core/shared/components/table/data-table'
 import { Location } from '@prisma/client'
 import { locationColumns } from './columns'
-import { IOption } from '@/core/shared/components/table/types'
 import { useLocationrModal } from '../hooks/use-location-modal'
 import { LocationModal } from './modal'
+import { LABORATORIES } from '../data/labobratories'
 
-const generateUniqueLaboratoryOptions = (locations: Location[]): IOption[] => {
-  const uniqueLaboratories = Array.from(
-    new Set(locations.map((location) => location.laboratory)),
-  )
-  return uniqueLaboratories.map((laboratory) => ({
-    label: laboratory,
-    value: laboratory,
-  }))
-}
+const filters = [
+  {
+    key: 'laboratory',
+    values: Object.values(LABORATORIES).map((laboratory) => ({
+      value: laboratory.id,
+      label: laboratory.name,
+    })),
+  },
+]
 
 export const LocationsClient = ({ locations }: { locations: Location[] }) => {
-  const filters = [
-    {
-      key: 'laboratory',
-      values: generateUniqueLaboratoryOptions(locations),
-    },
-  ]
-
   const onOpen = useLocationrModal((state) => state.onOpen)
 
   return (

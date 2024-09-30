@@ -20,8 +20,10 @@ export const locationColumns: ColumnDef<Location>[] = [
   },
   {
     accessorKey: 'laboratory',
-    filterFn: (row, id, filterValue) =>
-      filterValue.includes(row.original.laboratory),
+    filterFn: (row, id, filterValue) => {
+      const laboratory = getLaboratoryByName(row.original.laboratory)
+      return filterValue.includes(laboratory?.id)
+    },
     meta: 'Laboratorio',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Laboratorio' />
