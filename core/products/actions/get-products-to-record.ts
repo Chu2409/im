@@ -1,13 +1,14 @@
 'use server'
 
 import prisma from '@/lib/prisma'
+import { CATEGORIES } from '../data/categories'
 
 export const getProductsToRecord = async () => {
   try {
     const products = await prisma.product.findMany({
       where: {
         category: {
-          in: ['Reactivos', 'Insumos'],
+          in: [CATEGORIES.AGENTS.name, CATEGORIES.INPUTS.name],
         },
       },
     })
