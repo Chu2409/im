@@ -4,7 +4,7 @@ import { DataTableColumnHeader } from '@/core/shared/components/table/data-table
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { Location } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
-import { deleteLocation } from '../actions/delete-location'
+import { toggleLocationStauts } from '../actions/toggle-location-status'
 import { useLocationrModal } from '../hooks/use-location-modal'
 import { Badge } from '@/ui/badge'
 import { getLaboratoryByName } from '../data/labobratories'
@@ -66,7 +66,7 @@ export const locationColumns: ColumnDef<Location>[] = [
         <DataTableRowActions
           id={row.original.id}
           status={row.original.active}
-          toggleStatus={deleteLocation}
+          toggleStatus={toggleLocationStauts}
           toggleStatusMessage='La ubicación o locación ha sido eliminada correctamente'
           onEdit={() => onOpen(row.original)}
         />

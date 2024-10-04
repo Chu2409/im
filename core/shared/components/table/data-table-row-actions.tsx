@@ -23,7 +23,7 @@ import { AlertModal } from '../modal/alert-modal'
 interface DataTableRowActionsProps {
   id: number
   status: boolean
-  toggleStatus?: (id: number) => Promise<boolean>
+  toggleStatus?: (id: number, status: boolean) => Promise<boolean>
   toggleStatusMessage?: string
   errorMessage?: string
   onEdit: () => void
@@ -31,7 +31,7 @@ interface DataTableRowActionsProps {
 
 export function DataTableRowActions({
   id,
-  status = true,
+  status,
   toggleStatus,
   toggleStatusMessage,
   errorMessage,
@@ -46,7 +46,7 @@ export function DataTableRowActions({
   const onDeleteClick = async () => {
     setIsLoading(true)
 
-    const deleted = await toggleStatus!(id)
+    const deleted = await toggleStatus!(id, !status)
 
     if (deleted) {
       toast({
