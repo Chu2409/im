@@ -46,7 +46,6 @@ export function DataTableToolbar<TData>({
             return (
               <DataTableFacetedFilter
                 key={filter.key}
-                enableSearch={filter.values.length > 20}
                 column={column}
                 title={
                   (column?.columnDef.meta as string) ||

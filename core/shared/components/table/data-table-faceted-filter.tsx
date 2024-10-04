@@ -21,14 +21,12 @@ interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>
   title?: string
   options: IOption[]
-  enableSearch?: boolean
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
-  enableSearch = false,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set(column?.getFilterValue() as number[])
@@ -81,7 +79,7 @@ export function DataTableFacetedFilter<TData, TValue>({
 
       <PopoverContent className='w-[200px] p-0' align='start'>
         <Command>
-          {enableSearch && <CommandInput placeholder={title} />}
+          {options.length > 10 && <CommandInput placeholder={title} />}
 
           <CommandList>
             <CommandEmpty>No hay opciones disponibles</CommandEmpty>
