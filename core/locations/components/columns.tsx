@@ -16,10 +16,14 @@ export const locationColumns: ColumnDef<Location>[] = [
     header: 'Nombre',
   },
   {
-    accessorKey: 'active',
-    meta: 'Activo',
+    accessorKey: 'status',
+    meta: 'Esatdo',
     header: '',
     cell: ({ row }) => !row.original.active && <InactiveIndicator />,
+    filterFn: (row, id, filterValue) => {
+      const value = row.original.active ? 1 : 0
+      return filterValue.includes(value)
+    },
   },
   {
     accessorKey: 'code',
