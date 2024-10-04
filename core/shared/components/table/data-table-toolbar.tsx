@@ -9,6 +9,7 @@ import { Input } from '@/ui/input'
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
 import { IFilter } from './types'
 import { DataTableViewOptions } from './data-table-view-options'
+import { DataTableStatusFilter } from './data-table-status-filter'
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -24,6 +25,8 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0
 
   const inputColumn = inputFilterKey ? table.getColumn(inputFilterKey) : null
+
+  const activeColumn = table.getColumn('status')
 
   return (
     <div className='flex items-center justify-between gap-2 flex-wrap'>
@@ -55,6 +58,8 @@ export function DataTableToolbar<TData>({
               />
             )
           })}
+
+          {activeColumn && <DataTableStatusFilter column={activeColumn} />}
 
           {isFiltered && (
             <Button
