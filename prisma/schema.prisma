@@ -18,9 +18,10 @@ model Location {
 }
 
 model Provider {
-  id      Int    @id @default(autoincrement()) @map("id")
-  name    String @map("name")
-  contact String @map("contact")
+  id      Int     @id @default(autoincrement()) @map("id")
+  name    String  @map("name")
+  contact String  @map("contact")
+  active  Boolean @default(true) @map("active")
 
   productsProviders ProductProvider[]
 
