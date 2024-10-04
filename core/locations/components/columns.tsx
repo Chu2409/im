@@ -8,11 +8,19 @@ import { deleteLocation } from '../actions/delete-location'
 import { useLocationrModal } from '../hooks/use-location-modal'
 import { Badge } from '@/ui/badge'
 import { getLaboratoryByName } from '../data/labobratories'
+import { InactiveIndicator } from '@/core/shared/components/inactive-indicator'
 
 export const locationColumns: ColumnDef<Location>[] = [
   {
     accessorKey: 'name',
     header: 'Nombre',
+    cell: ({ row }) => (
+      <div className='flex items-center gap-1 justify-between '>
+        {row.original.name}
+
+        {!row.original.active && <InactiveIndicator />}
+      </div>
+    ),
   },
   {
     accessorKey: 'code',
