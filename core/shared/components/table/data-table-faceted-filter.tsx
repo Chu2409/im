@@ -28,7 +28,6 @@ export function DataTableFacetedFilter<TData, TValue>({
   title,
   options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
-  const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set(column?.getFilterValue() as number[])
 
   return (
@@ -77,7 +76,7 @@ export function DataTableFacetedFilter<TData, TValue>({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className='w-[200px] p-0' align='start'>
+      <PopoverContent className='w-[180px] p-0' align='start'>
         <Command>
           {options.length > 10 && <CommandInput placeholder={title} />}
 
@@ -114,10 +113,6 @@ export function DataTableFacetedFilter<TData, TValue>({
                     </div>
 
                     <span>{option.label}</span>
-
-                    <span className='ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs'>
-                      {facets?.get(option.label) || 0}
-                    </span>
                   </CommandItem>
                 )
               })}
