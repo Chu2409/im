@@ -24,8 +24,6 @@ interface DataTableRowActionsProps {
   id: number
   status: boolean
   toggleStatus?: (id: number, status: boolean) => Promise<boolean>
-  toggleStatusMessage?: string
-  errorMessage?: string
   onEdit: () => void
 }
 
@@ -33,8 +31,6 @@ export function DataTableRowActions({
   id,
   status,
   toggleStatus,
-  toggleStatusMessage,
-  errorMessage,
   onEdit,
 }: DataTableRowActionsProps) {
   const router = useRouter()
@@ -42,6 +38,8 @@ export function DataTableRowActions({
 
   const [isLoading, setIsLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+
+  const title = status ? 'Desactivado correctamente' : 'Activado correctamente'
 
   const onDeleteClick = async () => {
     setIsLoading(true)
@@ -51,8 +49,7 @@ export function DataTableRowActions({
     if (deleted) {
       toast({
         variant: 'success',
-        title: 'Eliminado correctamente',
-        description: toggleStatusMessage || 'El elemento ha sido eliminado',
+        title,
       })
 
       router.refresh()
@@ -60,8 +57,6 @@ export function DataTableRowActions({
       toast({
         variant: 'destructive',
         title: 'Algo salió mal',
-        description:
-          errorMessage || 'El elemento no pudo ser eliminado correctamente',
       })
     }
 
