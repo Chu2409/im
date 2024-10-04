@@ -4,7 +4,7 @@ import { ProvidersClient } from '@/core/providers/components/client'
 export const revalidate = 0
 
 const ProvidersPage = async () => {
-  const providers = await getProviders()
+  const providers = await getProviders(true)
 
   return <ProvidersClient providers={providers} />
 }
