@@ -3,10 +3,9 @@
 import prisma from '@/lib/prisma'
 import { Provider } from '@prisma/client'
 
-export const updateProvider = async (
-  id: number,
-  data: Omit<Provider, 'id'>,
-) => {
+interface IUpdateProvider extends Partial<Omit<Provider, 'id' | 'active'>> {}
+
+export const updateProvider = async (id: number, data: IUpdateProvider) => {
   try {
     const location = await prisma.provider.update({
       where: {

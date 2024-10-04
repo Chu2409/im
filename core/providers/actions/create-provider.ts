@@ -3,7 +3,9 @@
 import prisma from '@/lib/prisma'
 import { Provider } from '@prisma/client'
 
-export const createProvider = async (data: Omit<Provider, 'id'>) => {
+interface ICreateProvider extends Omit<Provider, 'id' | 'active'> {}
+
+export const createProvider = async (data: ICreateProvider) => {
   try {
     const provider = await prisma.provider.create({
       data,
