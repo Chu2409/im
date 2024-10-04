@@ -60,7 +60,7 @@ export function DataTableRowActions({
       toast({
         variant: 'destructive',
         title: 'Algo salió mal',
-        description,
+        description: 'Intente de nuevo',
       })
     }
 
