@@ -27,6 +27,7 @@ import { IProductWithProviders } from '../types'
 import { CATEGORIES } from '../data/categories'
 import { MultiSelector } from '@/core/shared/components/multi-selector'
 import { Provider } from '@prisma/client'
+import { createProductWithProviders } from '../actions/create-product-with-providers'
 
 const formSchema = z.object({
   name: z
@@ -88,8 +89,8 @@ export const ProductForm = ({
 
     let result
 
-    // if (initialData) result = updateLocation(initialData.id, values)
-    // else result = createLocation(values)
+    if (initialData) result = undefined
+    else result = createProductWithProviders(values)
 
     if (result != null) {
       toast({
@@ -203,7 +204,7 @@ export const ProductForm = ({
                 <FormLabel>Proveedores</FormLabel>
                 <FormControl>
                   <MultiSelector
-                    title='Proveedores'
+                    title='Seleccione proveedores'
                     values={field.value}
                     options={providers.map((provider) => ({
                       value: provider.id,
@@ -217,7 +218,6 @@ export const ProductForm = ({
                         ...field.value.filter((current) => current !== value),
                       ])
                     }
-                    withSearch
                   />
                 </FormControl>
 
