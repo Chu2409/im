@@ -22,7 +22,6 @@ interface MultiSelectorProps {
   onChange: (value: number) => void
   onRemove: (value: number) => void
   disabled?: boolean
-  withSearch?: boolean
 }
 
 export const MultiSelector: React.FC<MultiSelectorProps> = ({
@@ -32,27 +31,25 @@ export const MultiSelector: React.FC<MultiSelectorProps> = ({
   onChange,
   onRemove,
   disabled,
-  withSearch,
 }) => {
-  console.log(values)
-
   return (
     <Popover>
       <PopoverTrigger asChild disabled={disabled}>
         <Button
           variant='outline'
-          size='sm'
-          className='h-8 bg-white border border-black border-opacity-20 w-full flex items-center justify-start'
+          className='h-9 bg-white border border-black border-opacity-20 w-full flex items-center justify-start gap-2 text-stone-500 font-normal'
         >
-          <PlusCircledIcon className='mr-2 h-4 w-4' />
+          <PlusCircledIcon className='h-4 w-4' />
+
           {title}
 
           {values?.length > 0 && (
             <div className='ml-auto flex items-center'>
               <Separator orientation='vertical' className='mx-2 h-4' />
+
               <Badge
                 variant='secondary'
-                className='rounded-sm px-1 font-normal'
+                className='rounded-sm px-1 font-normal text-stone-500'
               >
                 {values.length}
               </Badge>
@@ -61,16 +58,16 @@ export const MultiSelector: React.FC<MultiSelectorProps> = ({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className='p-0 bg-white w-[200px] -mt-3' align='start'>
+      <PopoverContent className='p-0 bg-white w-[200px]' align='start'>
         <Command>
-          {withSearch && <CommandInput placeholder='Buscar' />}
+          {options.length > 10 && <CommandInput placeholder='Buscar' />}
+
           <CommandList>
             <CommandEmpty>No hay opciones disponibles</CommandEmpty>
 
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = values.includes(option.value)
-                // const isSelected = true
                 return (
                   <CommandItem
                     key={`${option.value}`}
