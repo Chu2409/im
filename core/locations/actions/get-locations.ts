@@ -2,15 +2,25 @@
 
 import prisma from '@/lib/prisma'
 
-export const getLocations = async () => {
+export const getLocations = async (includeInactive?: boolean) => {
   try {
-    const locations = await prisma.location.findMany({
-      orderBy: {
-        laboratory: 'asc',
-      },
-    })
+    if (includeInactive) {
+      return await prisma.location.findMany({
+        orderBy: {
+          active: 'desc',
+        },
+      })
+    } else {
+      return await prisma.location.findMany({
+        where: {
+          active: true,
+        },
+        orderBy: {
+          id: 'desc',
+        },
+      })
+    }
 
-    return locations
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.log('[GET_LOCATIONS]', error.message)
