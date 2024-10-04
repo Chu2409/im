@@ -39,7 +39,9 @@ export function DataTableRowActions({
   const [isLoading, setIsLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
 
-  const title = status ? 'Desactivado correctamente' : 'Activado correctamente'
+  const description = status
+    ? 'Desactivado correctamente'
+    : 'Activado correctamente'
 
   const onDeleteClick = async () => {
     setIsLoading(true)
@@ -49,7 +51,8 @@ export function DataTableRowActions({
     if (deleted) {
       toast({
         variant: 'success',
-        title,
+        title: 'Proceso exitoso',
+        description,
       })
 
       router.refresh()
@@ -57,6 +60,7 @@ export function DataTableRowActions({
       toast({
         variant: 'destructive',
         title: 'Algo salió mal',
+        description,
       })
     }
 
