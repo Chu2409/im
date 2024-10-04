@@ -8,10 +8,67 @@ datasource db {
 }
 
 model Location {
-  id         Int    @id @default(autoincrement()) @map("id")
-  name       String @map("name")
-  code       String @unique @map("code")
-  laboratory String @map("laboratory")
+  id         Int     @id @default(autoincrement()) @map("id")
+  name       String  @map("name")
+  code       String  @unique @map("code")
+  laboratory String  @map("laboratory")
+  active     Boolean @default(true) @map("active")
 
   @@map("locations")
+}
+
+model Provider {
+  id      Int     @id @default(autoincrement()) @map("id")
+  name    String  @map("name")
+  contact String  @map("contact")
+  active  Boolean @default(true) @map("active")
+
+  productsProviders ProductProvider[]
+
+  @@map("providers")
+}
+
+model Product {
+  id          Int    @id @default(autoincrement()) @map("id")
+  name        String @map("name")
+  description String @map("description")
+  category    String @map("category")
+
+  items             Item[]
+  productsProviders ProductProvider[]
+
+  @@map("products")
+}
+
+model ProductProvider {
+  id Int @id @default(autoincrement()) @map("id")
+
+  providerId Int?      @map("provider_id")
+  provider   Provider? @relation(fields: [providerId], references: [id])
+  productId  Int       @map("product_id")
+  product    Product   @relation(fields: [productId], references: [id])
+
+  @@map("products_providers")
+}
+
+model Record {
+  id    Int      @id @default(autoincrement()) @map("id")
+  start DateTime @map("start")
+  end   DateTime @map("end")
+
+  items Item[]
+
+  @@map("records")
+}
+
+model Item {
+  id       Int   @id @default(autoincrement()) @map("id")
+  quantity Float @map("quantity")
+
+  productId Int     @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+  recordId  Int     @map("record_id")
+  record    Record  @relation(fields: [recordId], references: [id])
+
+  @@map("items")
 }

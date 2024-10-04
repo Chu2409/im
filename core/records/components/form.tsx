@@ -1,0 +1,272 @@
+'use client'
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/ui/form'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button } from '@/ui/button'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useToast } from '@/hooks/use-toast'
+import { IRecordWithItems } from '../types'
+import { Input } from '@/ui/input'
+import { ItemFormDataTable } from '@/core/items/components/form-data-table'
+import { Product } from '@prisma/client'
+import { ItemSelector } from '@/core/items/components/item-selector'
+import { createRecordWithItems } from '../actions/create-record-with-items'
+import { updateRecordWithItems } from '../actions/update-record-with-items'
+import { useRecord } from '../hooks/use-record'
+import { getRecordWithItems } from '../actions/get-record-with-items'
+import { IEditableRowItem } from '@/core/items/types'
+
+const formSchema = z.object({
+  start: z.string(),
+  end: z.string(),
+})
+
+type formType = z.infer<typeof formSchema>
+
+export const RecordForm = ({
+  initialData,
+  products,
+  onModalClose,
+}: {
+  initialData?: IRecordWithItems
+  products: Product[]
+  onModalClose: () => void
+}) => {
+  const toastTitle = initialData ? 'Registro actualizado' : 'Registro creado'
+  const toastDescription = initialData
+    ? 'El registro ha sido actualizado correctamente'
+    : 'El registro ha sido creado correctamente'
+  const errorMessage = initialData
+    ? 'Hubo un error al actualizar el registro'
+    : 'Hubo un error al crear el registro'
+  const action = initialData ? 'Actualizar registro' : 'Crear registro'
+
+  const form = useForm<formType>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      start:
+        initialData?.start.toLocaleDateString('en-CA') ||
+        new Date().toLocaleDateString('en-CA'),
+      end:
+        initialData?.end.toLocaleDateString('en-CA') ||
+        new Date().toLocaleDateString('en-CA'),
+    },
+  })
+
+  const router = useRouter()
+  const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const setRecord = useRecord((state) => state.setRecord)
+
+  const [itemsTable, setItemsTable] = useState<IEditableRowItem[]>(
+    () =>
+      initialData?.items.map((item) => ({
+        product: { id: item.productId, name: item.product.name },
+        quantity: { value: item.quantity },
+        isSaved: true,
+        toDelete: false,
+        toEdit: false,
+      })) || [],
+  )
+
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(() => {
+    const items = initialData?.items
+    if (items && items.length > 0) {
+      return products.filter(
+        (product) => !items.find((item) => item.product.id === product.id),
+      )
+    } else {
+      return products
+    }
+  })
+
+  const onSubmit = async (values: formType) => {
+    setIsLoading(true)
+
+    let result
+
+    if (initialData)
+      result = await updateRecordWithItems(initialData.id, {
+        start: new Date(values.start),
+        end: new Date(values.end),
+        items: itemsTable,
+      })
+    else
+      result = await createRecordWithItems({
+        start: new Date(values.start),
+        end: new Date(values.end),
+        items: itemsTable,
+      })
+
+    if (result != null) {
+      toast({
+        variant: 'success',
+        title: toastTitle,
+        description: toastDescription,
+      })
+
+      const record = await getRecordWithItems(result)
+      setRecord(record || undefined)
+      router.refresh()
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Algo salió mal',
+        description: errorMessage,
+      })
+
+      setRecord(undefined)
+    }
+
+    setIsLoading(false)
+    form.reset()
+    onModalClose()
+  }
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='flex flex-col gap-6'
+        id='form'
+      >
+        <div className='grid sm:grid-cols-2 gap-4'>
+          <div className='grid gap-3 max-sm:mb-8'>
+            <FormField
+              control={form.control}
+              name='start'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fecha de inicio</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      className='cursor-pointer'
+                      type='date'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='end'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fecha de fin</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      className='cursor-pointer'
+                      type='date'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <ItemSelector
+              products={filteredProducts}
+              onAdd={(id) => {
+                const product = products.find((product) => product.id === id)
+
+                if (product) {
+                  const updatedItemsTable = itemsTable.concat({
+                    product: {
+                      id: product.id,
+                      name: product.name,
+                    },
+                    quantity: { value: 1 },
+                    isSaved: false,
+                    toDelete: false,
+                    toEdit: false,
+                  })
+                  setItemsTable(updatedItemsTable)
+
+                  const updatedFilteredProducst = products.filter(
+                    (product) =>
+                      !updatedItemsTable.find(
+                        (item) => item.product.id === product.id,
+                      ),
+                  )
+                  setFilteredProducts(updatedFilteredProducst)
+                }
+              }}
+            />
+          </div>
+
+          <ItemFormDataTable
+            data={itemsTable}
+            onDelete={(isSaved, id) => {
+              if (isSaved) {
+                const updatedItemsTable = itemsTable.map((itemTable) => {
+                  if (itemTable.product.id === id)
+                    return {
+                      ...itemTable,
+                      toDelete: itemTable.toDelete ? !itemTable.toDelete : true,
+                    }
+
+                  return itemTable
+                })
+                setItemsTable(updatedItemsTable)
+              } else {
+                const updatedItemsTable = itemsTable.filter(
+                  (item) => item.product.id !== id,
+                )
+                setItemsTable(updatedItemsTable)
+
+                const updatedFilteredProducst = products.filter(
+                  (product) =>
+                    !updatedItemsTable.find(
+                      (item) => item.product.id === product.id,
+                    ),
+                )
+                setFilteredProducts(updatedFilteredProducst)
+              }
+            }}
+            onQuantityBlur={(isSaved, id, quantity) => {
+              const updatedItemsTable = itemsTable.map((itemTable) => {
+                if (itemTable.product.id === id)
+                  return {
+                    ...itemTable,
+                    quantity: { value: quantity, isEdited: !!isSaved },
+                    toEdit: !!isSaved,
+                  }
+
+                return itemTable
+              })
+              setItemsTable(updatedItemsTable)
+            }}
+          />
+        </div>
+
+        <div className='ml-auto'>
+          <Button
+            type='submit'
+            disabled={isLoading}
+            form='form'
+            className='px-6'
+          >
+            {action}
+          </Button>
+        </div>
+      </form>
+    </Form>
+  )
+}

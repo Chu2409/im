@@ -1,13 +1,43 @@
-import { DataTable } from '@/core/shared/components/data-table'
+'use client'
+
+import { Header } from '@/core/shared/components/head/header'
+import { DataTable } from '@/core/shared/components/table/data-table'
+import { Location } from '@prisma/client'
 import { locationColumns } from './columns'
-import { getLocations } from '../actions/get-locations'
+import { useLocationrModal } from '../hooks/use-location-modal'
+import { LocationModal } from './modal'
+import { LABORATORIES } from '../data/labobratories'
 
-export const revalidate = 0
+const filters = [
+  {
+    key: 'laboratory',
+    values: Object.values(LABORATORIES).map((laboratory) => ({
+      value: laboratory.id,
+      label: laboratory.name,
+    })),
+  },
+]
 
-const LocationClient = async () => {
-  const locations = await getLocations()
+export const LocationsClient = ({ locations }: { locations: Location[] }) => {
+  const onOpen = useLocationrModal((state) => state.onOpen)
 
-  return <DataTable columns={locationColumns} data={locations} />
+  return (
+    <>
+      <Header
+        title='Locaciones'
+        description='Administra las locaciones o ubicaciones disponibles en los laboratorios.'
+        buttonLabel='Nueva locación'
+        onButtonClick={() => onOpen()}
+      />
+
+      <LocationModal />
+
+      <DataTable
+        data={locations}
+        columns={locationColumns}
+        inputFilterKey='name'
+        filters={filters}
+      />
+    </>
+  )
 }
-
-export default LocationClient

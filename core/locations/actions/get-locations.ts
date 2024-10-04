@@ -1,17 +1,26 @@
 'use server'
 
 import prisma from '@/lib/prisma'
-import { Location } from '@prisma/client'
 
-export const getLocations = async (): Promise<Location[]> => {
+export const getLocations = async (includeInactive?: boolean) => {
   try {
-    const locations = prisma.location.findMany({
-      orderBy: {
-        laboratory: 'asc',
-      },
-    })
+    if (includeInactive) {
+      return await prisma.location.findMany({
+        orderBy: {
+          active: 'desc',
+        },
+      })
+    } else {
+      return await prisma.location.findMany({
+        where: {
+          active: true,
+        },
+        orderBy: {
+          id: 'desc',
+        },
+      })
+    }
 
-    return locations
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.log('[GET_LOCATIONS]', error.message)
