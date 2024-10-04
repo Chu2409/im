@@ -1,3 +1,5 @@
+'use client'
+
 import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons'
 import { Column } from '@tanstack/react-table'
 
@@ -8,6 +10,7 @@ import { Command, CommandGroup, CommandItem, CommandList } from '@/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover'
 import { Separator } from '@/ui/separator'
 import { status } from '../../data/status-options'
+import { useEffect } from 'react'
 
 interface DataTableStatusFilterProps<TData, TValue> {
   column: Column<TData, TValue>
@@ -17,6 +20,10 @@ export function DataTableStatusFilter<TData, TValue>({
   column,
 }: DataTableStatusFilterProps<TData, TValue>) {
   const selectedValues = new Set(column?.getFilterValue() as number[])
+
+  useEffect(() => {
+    column.setFilterValue([1])
+  }, [column])
 
   return (
     <Popover>
