@@ -51,8 +51,8 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
       return (
         <DataTableRowActions
           id={row.original.id}
-          onDelete={onDelete}
-          deleteMessage='El registro ha sido eliminado correctamente'
+          toggleStatus={onDelete}
+          toggleStatusMessage='El registro ha sido eliminado correctamente'
           errorMessage='Elimine los items del registro primero'
           onEdit={handleClick}
         />

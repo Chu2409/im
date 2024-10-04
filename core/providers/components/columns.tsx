@@ -28,8 +28,8 @@ export const providersColumns: ColumnDef<Provider>[] = [
       return (
         <DataTableRowActions
           id={row.original.id}
-          onDelete={deleteProvider}
-          deleteMessage='El proveedor ha sido eliminado correctamente'
+          toggleStatus={deleteProvider}
+          toggleStatusMessage='El proveedor ha sido eliminado correctamente'
           onEdit={() => onOpen(row.original)}
         />
       )

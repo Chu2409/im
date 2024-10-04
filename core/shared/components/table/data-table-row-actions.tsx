@@ -1,9 +1,10 @@
 'use client'
 
 import {
+  CircleBackslashIcon,
   DotsHorizontalIcon,
   Pencil1Icon,
-  TrashIcon,
+  ReloadIcon,
 } from '@radix-ui/react-icons'
 
 import { Button } from '@/ui/button'
@@ -21,16 +22,18 @@ import { AlertModal } from '../modal/alert-modal'
 
 interface DataTableRowActionsProps {
   id: number
-  onDelete?: (id: number) => Promise<boolean>
-  deleteMessage?: string
+  status: boolean
+  toggleStatus?: (id: number) => Promise<boolean>
+  toggleStatusMessage?: string
   errorMessage?: string
   onEdit: () => void
 }
 
 export function DataTableRowActions({
   id,
-  onDelete,
-  deleteMessage,
+  status = true,
+  toggleStatus,
+  toggleStatusMessage,
   errorMessage,
   onEdit,
 }: DataTableRowActionsProps) {
@@ -43,13 +46,13 @@ export function DataTableRowActions({
   const onDeleteClick = async () => {
     setIsLoading(true)
 
-    const deleted = await onDelete!(id)
+    const deleted = await toggleStatus!(id)
 
     if (deleted) {
       toast({
         variant: 'success',
         title: 'Eliminado correctamente',
-        description: deleteMessage || 'El elemento ha sido eliminado',
+        description: toggleStatusMessage || 'El elemento ha sido eliminado',
       })
 
       router.refresh()
@@ -94,14 +97,23 @@ export function DataTableRowActions({
             Editar <Pencil1Icon />
           </DropdownMenuItem>
 
-          {onDelete && (
+          {toggleStatus && (
             <>
               <DropdownMenuSeparator />
+
               <DropdownMenuItem
                 className='flex items-center justify-between cursor-pointer'
                 onClick={() => setIsOpen(true)}
               >
-                Eliminar <TrashIcon />
+                {status ? (
+                  <>
+                    Desactivar <CircleBackslashIcon />
+                  </>
+                ) : (
+                  <>
+                    Activar <ReloadIcon />
+                  </>
+                )}
               </DropdownMenuItem>
             </>
           )}

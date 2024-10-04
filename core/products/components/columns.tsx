@@ -73,8 +73,8 @@ export const productsColumns: ColumnDef<IProductWithProviders>[] = [
       return (
         <DataTableRowActions
           id={row.original.id}
-          onDelete={() => Promise.resolve(true)}
-          deleteMessage='El proveedor ha sido eliminado correctamente'
+          toggleStatus={() => Promise.resolve(true)}
+          toggleStatusMessage='El proveedor ha sido eliminado correctamente'
           onEdit={() => onOpen(row.original)}
         />
       )

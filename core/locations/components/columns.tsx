@@ -65,8 +65,9 @@ export const locationColumns: ColumnDef<Location>[] = [
       return (
         <DataTableRowActions
           id={row.original.id}
-          onDelete={deleteLocation}
-          deleteMessage='La ubicación o locación ha sido eliminada correctamente'
+          status={row.original.active}
+          toggleStatus={deleteLocation}
+          toggleStatusMessage='La ubicación o locación ha sido eliminada correctamente'
           onEdit={() => onOpen(row.original)}
         />
       )
