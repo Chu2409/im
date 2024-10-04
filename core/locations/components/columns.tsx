@@ -17,7 +17,7 @@ export const locationColumns: ColumnDef<Location>[] = [
   },
   {
     accessorKey: 'status',
-    meta: 'Esatdo',
+    meta: 'Estado',
     header: '',
     cell: ({ row }) => !row.original.active && <InactiveIndicator />,
     filterFn: (row, id, filterValue) => {
@@ -67,7 +67,6 @@ export const locationColumns: ColumnDef<Location>[] = [
           id={row.original.id}
           status={row.original.active}
           toggleStatus={toggleLocationStauts}
-          toggleStatusMessage='La ubicación o locación ha sido eliminada correctamente'
           onEdit={() => onOpen(row.original)}
         />
       )
