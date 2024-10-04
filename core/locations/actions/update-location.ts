@@ -3,10 +3,9 @@
 import prisma from '@/lib/prisma'
 import { Location } from '@prisma/client'
 
-export const updateLocation = async (
-  id: number,
-  data: Omit<Location, 'id'>,
-) => {
+interface IUpdateLocation extends Partial<Omit<Location, 'id' | 'active'>> {}
+
+export const updateLocation = async (id: number, data: IUpdateLocation) => {
   try {
     const location = await prisma.location.update({
       where: {

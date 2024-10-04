@@ -3,7 +3,9 @@
 import prisma from '@/lib/prisma'
 import { Location } from '@prisma/client'
 
-export const createLocation = async (data: Omit<Location, 'id'>) => {
+interface ICreateLocation extends Omit<Location, 'id' | 'active'> {}
+
+export const createLocation = async (data: ICreateLocation) => {
   try {
     const location = await prisma.location.create({
       data,
