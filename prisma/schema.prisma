@@ -8,10 +8,11 @@ datasource db {
 }
 
 model Location {
-  id         Int    @id @default(autoincrement()) @map("id")
-  name       String @map("name")
-  code       String @unique @map("code")
-  laboratory String @map("laboratory")
+  id         Int     @id @default(autoincrement()) @map("id")
+  name       String  @map("name")
+  code       String  @unique @map("code")
+  laboratory String  @map("laboratory")
+  active     Boolean @default(true) @map("active")
 
   @@map("locations")
 }
