@@ -14,13 +14,12 @@ export const locationColumns: ColumnDef<Location>[] = [
   {
     accessorKey: 'name',
     header: 'Nombre',
-    cell: ({ row }) => (
-      <div className='flex items-center gap-1 justify-between '>
-        {row.original.name}
-
-        {!row.original.active && <InactiveIndicator />}
-      </div>
-    ),
+  },
+  {
+    accessorKey: 'active',
+    meta: 'Activo',
+    header: '',
+    cell: ({ row }) => !row.original.active && <InactiveIndicator />,
   },
   {
     accessorKey: 'code',
