@@ -32,6 +32,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   inputFilterKey?: string
   filters?: IFilter[]
+  statusColumn: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -39,6 +40,7 @@ export function DataTable<TData, TValue>({
   data,
   inputFilterKey,
   filters,
+  statusColumn,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -70,6 +72,7 @@ export function DataTable<TData, TValue>({
         table={table}
         inputFilterKey={inputFilterKey}
         filters={filters}
+        statusColumn={statusColumn}
       />
 
       <div className='rounded-md border'>

@@ -40,6 +40,7 @@ export const ProductsClient = ({
       <ProductModal providers={providers} />
 
       <DataTable
+        statusColumn
         data={products}
         columns={productsColumns}
         inputFilterKey='name'

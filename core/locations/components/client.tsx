@@ -37,6 +37,7 @@ export const LocationsClient = ({ locations }: { locations: Location[] }) => {
         columns={locationColumns}
         inputFilterKey='name'
         filters={filters}
+        statusColumn
       />
     </>
   )

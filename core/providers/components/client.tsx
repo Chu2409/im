@@ -22,6 +22,7 @@ export const ProvidersClient = ({ providers }: { providers: Provider[] }) => {
       <ProviderModal />
 
       <DataTable
+        statusColumn
         data={providers}
         columns={providersColumns}
         inputFilterKey='name'

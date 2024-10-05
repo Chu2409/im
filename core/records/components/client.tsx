@@ -43,7 +43,11 @@ export const RecordsClient = ({
             Revise los registros de su laboratorio dando click
           </p>
 
-          <DataTable data={records} columns={recordsColumns} />
+          <DataTable
+            data={records}
+            columns={recordsColumns}
+            statusColumn={false}
+          />
         </div>
 
         <div className='order-1 lg:order-2'>
