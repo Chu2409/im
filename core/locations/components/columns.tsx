@@ -4,8 +4,8 @@ import { DataTableColumnHeader } from '@/core/shared/components/table/data-table
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { Location } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
-import { toggleLocationStauts } from '../actions/toggle-location-status'
-import { useLocationrModal } from '../hooks/use-location-modal'
+import { toggleLocationStatus } from '../actions/toggle-location-status'
+import { useLocationModal } from '../hooks/use-location-modal'
 import { Badge } from '@/ui/badge'
 import { getLaboratoryByName } from '../data/labobratories'
 import { InactiveIndicator } from '@/core/shared/components/inactive-indicator'
@@ -60,13 +60,13 @@ export const locationColumns: ColumnDef<Location>[] = [
     id: 'actions',
     cell: ({ row }) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const onOpen = useLocationrModal((state) => state.onOpen)
+      const onOpen = useLocationModal((state) => state.onOpen)
 
       return (
         <DataTableRowActions
           id={row.original.id}
           status={row.original.active}
-          toggleStatus={toggleLocationStauts}
+          toggleStatus={toggleLocationStatus}
           onEdit={() => onOpen(row.original)}
         />
       )

@@ -4,7 +4,7 @@ import { Header } from '@/core/shared/components/head/header'
 import { DataTable } from '@/core/shared/components/table/data-table'
 import { Location } from '@prisma/client'
 import { locationColumns } from './columns'
-import { useLocationrModal } from '../hooks/use-location-modal'
+import { useLocationModal } from '../hooks/use-location-modal'
 import { LocationModal } from './modal'
 import { LABORATORIES } from '../data/labobratories'
 
@@ -19,7 +19,7 @@ const filters = [
 ]
 
 export const LocationsClient = ({ locations }: { locations: Location[] }) => {
-  const onOpen = useLocationrModal((state) => state.onOpen)
+  const onOpen = useLocationModal((state) => state.onOpen)
 
   return (
     <>

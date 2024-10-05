@@ -2,7 +2,7 @@
 
 import prisma from '@/lib/prisma'
 
-export const toggleLocationStauts = async (id: number, status: boolean) => {
+export const toggleLocationStatus = async (id: number, status: boolean) => {
   try {
     const location = await prisma.location.update({
       where: {
