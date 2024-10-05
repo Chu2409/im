@@ -23,12 +23,10 @@ import {
 } from '@/ui/select'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
-import { IProductWithProviders } from '../types'
 import { CATEGORIES } from '../data/categories'
-import { MultiSelector } from '@/core/shared/components/multi-selector'
-import { Provider } from '@prisma/client'
-import { createProductWithProviders } from '../actions/create-product-with-providers'
-import { updateProductWithProviders } from '../actions/update-product-with-providers'
+import { Product } from '@prisma/client'
+import { createProduct } from '../actions/create-product'
+import { updateProduct } from '../actions/update-product'
 
 const formSchema = z.object({
   name: z
@@ -42,7 +40,6 @@ const formSchema = z.object({
   category: z
     .string({ message: 'Seleccione una categoría' })
     .min(1, 'Seleccione una categoría'),
-  providers: z.number().array(),
 })
 
 type formType = z.infer<typeof formSchema>
@@ -50,11 +47,9 @@ type formType = z.infer<typeof formSchema>
 export const ProductForm = ({
   initialData,
   onModalClose,
-  providers,
 }: {
-  initialData?: IProductWithProviders
+  initialData?: Product
   onModalClose: () => void
-  providers: Provider[]
 }) => {
   const toastTitle = initialData ? 'Producto actualizado' : 'Producto creado'
   const toastDescription = initialData
@@ -73,11 +68,6 @@ export const ProductForm = ({
       name: initialData?.name || '',
       description: initialData?.description || '',
       category: initialData?.category || '',
-      providers: initialData
-        ? initialData.productsProviders.map(
-            (provider) => provider.providerId || undefined,
-          )
-        : [],
     },
   })
 
@@ -91,22 +81,9 @@ export const ProductForm = ({
     let result
 
     if (initialData) {
-      result = updateProductWithProviders(initialData.id, {
-        category: values.category,
-        description: values.description,
-        name: values.name,
-        providersToCreate: values.providers.filter(
-          (providerId) =>
-            !initialData.productsProviders.some(
-              (productProvider) => productProvider.providerId === providerId,
-            ),
-        ),
-        providersToDelete: initialData.productsProviders
-          .map((productProvider) => productProvider.providerId!)
-          .filter((providerId) => !values.providers.includes(providerId)),
-      })
+      result = updateProduct(initialData.id, values)
     } else {
-      result = createProductWithProviders(values)
+      result = createProduct(values)
     }
 
     if (result != null) {
@@ -206,36 +183,6 @@ export const ProductForm = ({
                       ))}
                     </SelectContent>
                   </Select>
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='providers'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Proveedores</FormLabel>
-                <FormControl>
-                  <MultiSelector
-                    title='Seleccione proveedores'
-                    values={field.value}
-                    options={providers.map((provider) => ({
-                      value: provider.id,
-                      label: provider.name,
-                    }))}
-                    onChange={(value) =>
-                      field.onChange([...field.value, value])
-                    }
-                    onRemove={(value) =>
-                      field.onChange([
-                        ...field.value.filter((current) => current !== value),
-                      ])
-                    }
-                  />
                 </FormControl>
 
                 <FormMessage />

@@ -1,10 +1,10 @@
+import { Product } from '@prisma/client'
 import { create } from 'zustand'
-import { IProductWithProviders } from '../types'
 
 interface ProductModalState {
   isOpen: boolean
-  onOpen: (provider?: IProductWithProviders) => void
-  product?: IProductWithProviders
+  onOpen: (provider?: Product) => void
+  product?: Product
   onClose: () => void
 }
 

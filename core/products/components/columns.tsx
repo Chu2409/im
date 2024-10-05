@@ -3,14 +3,14 @@
 import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { ColumnDef } from '@tanstack/react-table'
-import { IProductWithProviders } from '../types'
 import { useProductModal } from '../hooks/use-product-modal'
 import { Badge } from '@/ui/badge'
 import { getCategoryByName } from '../data/categories'
 import { InactiveIndicator } from '@/core/shared/components/inactive-indicator'
 import { toggleProductStatus } from '../actions/toggle-product-status'
+import { Product } from '@prisma/client'
 
-export const productsColumns: ColumnDef<IProductWithProviders>[] = [
+export const productsColumns: ColumnDef<Product>[] = [
   {
     accessorKey: 'name',
     meta: 'Nombre',
@@ -58,23 +58,6 @@ export const productsColumns: ColumnDef<IProductWithProviders>[] = [
         </Badge>
       )
     },
-  },
-  {
-    accessorKey: 'providers',
-    header: 'Proveedores',
-    cell: ({ row }) => (
-      <div className='flex items-center h-full w-full gap-2 flex-wrap'>
-        {row.original.productsProviders.map((productProvider) => (
-          <Badge
-            key={`${productProvider.id}-${productProvider.productId}-${productProvider.providerId}`}
-            className={`rounded-full ${!productProvider.provider?.active && 'opacity-50'}`}
-            variant='outline'
-          >
-            {productProvider.provider?.name}
-          </Badge>
-        ))}
-      </div>
-    ),
   },
   {
     id: 'actions',
