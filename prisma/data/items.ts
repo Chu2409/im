@@ -1,68 +1,68 @@
 interface IItem {
   quantity: number
-  productId: number
+  lotLocationId: number
   recordId: number
 }
 
 export const items: IItem[] = [
   {
     quantity: 15,
-    productId: 2,
+    lotLocationId: 1,
     recordId: 1,
   },
   {
     quantity: 23,
-    productId: 5,
+    lotLocationId: 2,
     recordId: 1,
   },
   {
     quantity: 22,
-    productId: 10,
+    lotLocationId: 4,
     recordId: 1,
   },
   {
     quantity: 5,
-    productId: 12,
+    lotLocationId: 6,
     recordId: 1,
   },
   {
     quantity: 19,
-    productId: 2,
+    lotLocationId: 2,
     recordId: 2,
   },
   {
     quantity: 11,
-    productId: 5,
+    lotLocationId: 1,
     recordId: 2,
   },
   {
     quantity: 5,
-    productId: 10,
+    lotLocationId: 5,
     recordId: 2,
   },
   {
     quantity: 17,
-    productId: 12,
+    lotLocationId: 4,
     recordId: 2,
   },
   {
     quantity: 15,
-    productId: 2,
+    lotLocationId: 1,
     recordId: 3,
   },
   {
     quantity: 23,
-    productId: 5,
+    lotLocationId: 5,
     recordId: 3,
   },
   {
     quantity: 22,
-    productId: 10,
+    lotLocationId: 2,
     recordId: 3,
   },
   {
     quantity: 5,
-    productId: 12,
+    lotLocationId: 4,
     recordId: 3,
   },
 ]
