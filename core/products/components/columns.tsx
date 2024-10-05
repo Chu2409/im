@@ -7,6 +7,7 @@ import { IProductWithProviders } from '../types'
 import { useProductModal } from '../hooks/use-product-modal'
 import { Badge } from '@/ui/badge'
 import { getCategoryByName } from '../data/categories'
+import { InactiveIndicator } from '@/core/shared/components/inactive-indicator'
 
 export const productsColumns: ColumnDef<IProductWithProviders>[] = [
   {
@@ -15,6 +16,16 @@ export const productsColumns: ColumnDef<IProductWithProviders>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Nombre' toggleVisibility />
     ),
+  },
+  {
+    accessorKey: 'status',
+    meta: 'Estado',
+    header: '',
+    cell: ({ row }) => !row.original.active && <InactiveIndicator />,
+    filterFn: (row, id, filterValue) => {
+      const value = row.original.active ? 1 : 0
+      return filterValue.includes(value)
+    },
   },
   {
     accessorKey: 'category',
@@ -73,8 +84,8 @@ export const productsColumns: ColumnDef<IProductWithProviders>[] = [
       return (
         <DataTableRowActions
           id={row.original.id}
+          status={row.original.active}
           toggleStatus={() => Promise.resolve(true)}
-          toggleStatusMessage='El proveedor ha sido eliminado correctamente'
           onEdit={() => onOpen(row.original)}
         />
       )
