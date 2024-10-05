@@ -10,6 +10,7 @@ export const getProductsToRecord = async () => {
         category: {
           in: [CATEGORIES.AGENTS.name, CATEGORIES.INPUTS.name],
         },
+        active: true,
       },
     })
 

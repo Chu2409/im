@@ -8,6 +8,7 @@ import { useProductModal } from '../hooks/use-product-modal'
 import { Badge } from '@/ui/badge'
 import { getCategoryByName } from '../data/categories'
 import { InactiveIndicator } from '@/core/shared/components/inactive-indicator'
+import { toggleProductStatus } from '../actions/toggle-product-status'
 
 export const productsColumns: ColumnDef<IProductWithProviders>[] = [
   {
@@ -85,7 +86,7 @@ export const productsColumns: ColumnDef<IProductWithProviders>[] = [
         <DataTableRowActions
           id={row.original.id}
           status={row.original.active}
-          toggleStatus={() => Promise.resolve(true)}
+          toggleStatus={toggleProductStatus}
           onEdit={() => onOpen(row.original)}
         />
       )
