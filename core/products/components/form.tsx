@@ -28,6 +28,7 @@ import { CATEGORIES } from '../data/categories'
 import { MultiSelector } from '@/core/shared/components/multi-selector'
 import { Provider } from '@prisma/client'
 import { createProductWithProviders } from '../actions/create-product-with-providers'
+import { updateProductWithProviders } from '../actions/update-product-with-providers'
 
 const formSchema = z.object({
   name: z
@@ -89,8 +90,24 @@ export const ProductForm = ({
 
     let result
 
-    if (initialData) result = undefined
-    else result = createProductWithProviders(values)
+    if (initialData) {
+      result = updateProductWithProviders(initialData.id, {
+        category: values.category,
+        description: values.description,
+        name: values.name,
+        providersToCreate: values.providers.filter(
+          (providerId) =>
+            !initialData.productsProviders.some(
+              (productProvider) => productProvider.providerId === providerId,
+            ),
+        ),
+        providersToDelete: initialData.productsProviders
+          .map((productProvider) => productProvider.providerId!)
+          .filter((providerId) => !values.providers.includes(providerId)),
+      })
+    } else {
+      result = createProductWithProviders(values)
+    }
 
     if (result != null) {
       toast({
