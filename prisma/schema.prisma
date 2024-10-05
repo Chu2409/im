@@ -29,10 +29,11 @@ model Provider {
 }
 
 model Product {
-  id          Int    @id @default(autoincrement()) @map("id")
-  name        String @map("name")
-  description String @map("description")
-  category    String @map("category")
+  id          Int     @id @default(autoincrement()) @map("id")
+  name        String  @map("name")
+  description String  @map("description")
+  category    String  @map("category")
+  active      Boolean @default(true) @map("active")
 
   items             Item[]
   productsProviders ProductProvider[]
