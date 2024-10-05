@@ -23,8 +23,6 @@ model Provider {
   contact String  @map("contact")
   active  Boolean @default(true) @map("active")
 
-  productsProviders ProductProvider[]
-
   @@map("providers")
 }
 
@@ -35,21 +33,9 @@ model Product {
   category    String  @map("category")
   active      Boolean @default(true) @map("active")
 
-  items             Item[]
-  productsProviders ProductProvider[]
+  items Item[]
 
   @@map("products")
-}
-
-model ProductProvider {
-  id Int @id @default(autoincrement()) @map("id")
-
-  providerId Int?      @map("provider_id")
-  provider   Provider? @relation(fields: [providerId], references: [id])
-  productId  Int       @map("product_id")
-  product    Product   @relation(fields: [productId], references: [id])
-
-  @@map("products_providers")
 }
 
 model Record {
