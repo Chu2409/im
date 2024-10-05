@@ -67,7 +67,7 @@ export const productsColumns: ColumnDef<IProductWithProviders>[] = [
         {row.original.productsProviders.map((productProvider) => (
           <Badge
             key={`${productProvider.id}-${productProvider.productId}-${productProvider.providerId}`}
-            className='rounded-full'
+            className={`rounded-full ${!productProvider.provider?.active && 'opacity-50'}`}
             variant='outline'
           >
             {productProvider.provider?.name}
