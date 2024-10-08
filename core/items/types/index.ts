@@ -1,13 +1,17 @@
-import { Item, Product } from '@prisma/client'
+import { IFullLotLocation } from '@/core/lots/types'
+import { Item } from '@prisma/client'
 
-export interface IItemWithProduct extends Item {
-  product: Product
+export interface IItemWithLotLocation extends Item {
+  lotLocation: IFullLotLocation
 }
 
 export interface IEditableRowItem {
-  product: {
+  lotLocation: {
     id: number
-    name: string
+    productName: string
+    lotId: number
+    laboratory: string
+    maxQuantity: number
   }
   quantity: {
     value: number

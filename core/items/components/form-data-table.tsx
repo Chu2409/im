@@ -35,6 +35,14 @@ export function ItemFormDataTable({
             </TableHead>
 
             <TableHead className='text-center py-2 h-min text-white'>
+              Lote
+            </TableHead>
+
+            <TableHead className='text-center py-2 h-min text-white'>
+              Ubicación
+            </TableHead>
+
+            <TableHead className='text-center py-2 h-min text-white'>
               Cantidad
             </TableHead>
 
@@ -48,14 +56,22 @@ export function ItemFormDataTable({
           {data.length > 0 ? (
             data.map((item) => (
               <TableRow
-                key={item.product.id}
+                key={item.lotLocation.id}
                 className={cn(
                   !item.isSaved && 'bg-green-100 hover:bg-green-200',
                   item.toDelete && 'bg-red-100 hover:bg-red-200',
                 )}
               >
                 <TableCell className='px-0 text-center py-1.5'>
-                  {item.product.name}
+                  {item.lotLocation.productName}
+                </TableCell>
+
+                <TableCell className='px-0 text-center py-1.5'>
+                  {item.lotLocation.lotId}
+                </TableCell>
+
+                <TableCell className='px-0 text-center py-1.5'>
+                  {item.lotLocation.laboratory}
                 </TableCell>
 
                 <TableCell
@@ -72,10 +88,10 @@ export function ItemFormDataTable({
                       onChange={(e) => {
                         const value = Number(e.target.value)
                         if (value < 0) return
-                        onQuantityBlur(item.isSaved, item.product.id, value)
+                        onQuantityBlur(item.isSaved, item.lotLocation.id, value)
                       }}
                       min={1}
-                      max={400}
+                      max={item.lotLocation.maxQuantity}
                       className='max-w-12 text-center p-0 mx-0 h-min bg-transparent border-none disabled:opacity-100'
                     />
                   </div>
@@ -86,12 +102,16 @@ export function ItemFormDataTable({
                     {item.toDelete ? (
                       <ReloadIcon
                         className='h-4 w-4 cursor-pointer text-blue-600'
-                        onClick={() => onDelete(item.isSaved, item.product.id)}
+                        onClick={() =>
+                          onDelete(item.isSaved, item.lotLocation.id)
+                        }
                       />
                     ) : (
                       <Trash
                         className='h-4 w-4 cursor-pointer text-red-600'
-                        onClick={() => onDelete(item.isSaved, item.product.id)}
+                        onClick={() =>
+                          onDelete(item.isSaved, item.lotLocation.id)
+                        }
                       />
                     )}
                   </div>
@@ -100,10 +120,7 @@ export function ItemFormDataTable({
             ))
           ) : (
             <TableRow>
-              <TableCell
-                colSpan={data.length > 0 ? 3 : 2}
-                className='h-24 text-center'
-              >
+              <TableCell colSpan={4} className='h-24 text-center'>
                 No hay items disponibles
               </TableCell>
             </TableRow>
