@@ -1,8 +1,8 @@
-import { IEditableRowItem, IItemWithProduct } from '@/core/items/types'
+import { IEditableRowItem, IItemWithLotLocation } from '@/core/items/types'
 import { Record } from '@prisma/client'
 
 export interface IRecordWithItems extends Record {
-  items: IItemWithProduct[]
+  items: IItemWithLotLocation[]
 }
 
 export interface IUpsertProductBulkProps extends Omit<Record, 'id'> {
