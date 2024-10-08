@@ -16,6 +16,7 @@ interface DataTableToolbarProps<TData> {
   inputFilterKey?: string
   filters?: IFilter[]
   statusColumn: boolean
+  viewOptions: boolean
 }
 
 export function DataTableToolbar<TData>({
@@ -23,6 +24,7 @@ export function DataTableToolbar<TData>({
   inputFilterKey,
   filters,
   statusColumn,
+  viewOptions,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
@@ -76,7 +78,7 @@ export function DataTableToolbar<TData>({
         </div>
       )}
 
-      {table.getAllColumns().length > 2 && (
+      {viewOptions && table.getAllColumns().length > 2 && (
         <DataTableViewOptions table={table} />
       )}
     </div>

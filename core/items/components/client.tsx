@@ -25,6 +25,7 @@ export const ItemsClient = ({ record }: { record?: IRecordWithItems }) => {
             data={record.items}
             columns={itemsColumns}
             statusColumn={false}
+            viewOptions={false}
           />
         </>
       )}

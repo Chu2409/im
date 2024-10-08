@@ -33,6 +33,7 @@ interface DataTableProps<TData, TValue> {
   inputFilterKey?: string
   filters?: IFilter[]
   statusColumn: boolean
+  viewOptions?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -41,6 +42,7 @@ export function DataTable<TData, TValue>({
   inputFilterKey,
   filters,
   statusColumn,
+  viewOptions = true,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -69,6 +71,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className='space-y-4'>
       <DataTableToolbar
+        viewOptions={viewOptions}
         table={table}
         inputFilterKey={inputFilterKey}
         filters={filters}
