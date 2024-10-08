@@ -9,7 +9,16 @@ export const getRecordsWithItems = async (): Promise<IRecordWithItems[]> => {
       include: {
         items: {
           include: {
-            product: true,
+            lotLocation: {
+              include: {
+                lot: {
+                  include: {
+                    product: true,
+                  },
+                },
+                location: true,
+              },
+            },
           },
         },
       },
@@ -18,7 +27,7 @@ export const getRecordsWithItems = async (): Promise<IRecordWithItems[]> => {
     return records
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log('[GET_RECORDS]', error.message)
+    console.log('[GET_RECORDS_WITH_ITEMS]', error.message)
     return []
   }
 }

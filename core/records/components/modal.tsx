@@ -2,9 +2,13 @@ import { Modal } from '@/core/shared/components/modal/modal'
 import { useRecordModal } from '../hooks/use-record-modal'
 import { useRecord } from '../hooks/use-record'
 import { RecordForm } from './form'
-import { Product } from '@prisma/client'
+import { IFullLotLocation } from '@/core/lots/types'
 
-export const RecordModal = ({ products }: { products: Product[] }) => {
+export const RecordModal = ({
+  lotProducts,
+}: {
+  lotProducts: IFullLotLocation[]
+}) => {
   const initialData = useRecord((state) => state.record)
   const isOpen = useRecordModal((state) => state.isOpen)
   const onClose = useRecordModal((state) => state.onClose)
@@ -21,7 +25,7 @@ export const RecordModal = ({ products }: { products: Product[] }) => {
     >
       <RecordForm
         initialData={initialData}
-        products={products}
+        lotProducts={lotProducts}
         onModalClose={onClose}
       />
     </Modal>
