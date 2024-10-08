@@ -11,7 +11,7 @@ export const createRecordWithItems = async (data: IUpsertProductBulkProps) => {
         end: data.end,
         items: {
           create: data.items.map((item) => ({
-            productId: item.product.id,
+            lotLocationId: item.lotLocation.id,
             quantity: item.quantity.value,
           })),
         },

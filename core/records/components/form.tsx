@@ -18,13 +18,13 @@ import { useToast } from '@/hooks/use-toast'
 import { IRecordWithItems } from '../types'
 import { Input } from '@/ui/input'
 import { ItemFormDataTable } from '@/core/items/components/form-data-table'
-import { Product } from '@prisma/client'
 import { ItemSelector } from '@/core/items/components/item-selector'
 import { createRecordWithItems } from '../actions/create-record-with-items'
 import { updateRecordWithItems } from '../actions/update-record-with-items'
 import { useRecord } from '../hooks/use-record'
 import { getRecordWithItems } from '../actions/get-record-with-items'
 import { IEditableRowItem } from '@/core/items/types'
+import { IFullLotLocation } from '@/core/lots/types'
 
 const formSchema = z.object({
   start: z.string(),
@@ -35,11 +35,11 @@ type formType = z.infer<typeof formSchema>
 
 export const RecordForm = ({
   initialData,
-  products,
+  lotProducts,
   onModalClose,
 }: {
   initialData?: IRecordWithItems
-  products: Product[]
+  lotProducts: IFullLotLocation[]
   onModalClose: () => void
 }) => {
   const toastTitle = initialData ? 'Registro actualizado' : 'Registro creado'
@@ -72,7 +72,14 @@ export const RecordForm = ({
   const [itemsTable, setItemsTable] = useState<IEditableRowItem[]>(
     () =>
       initialData?.items.map((item) => ({
-        product: { id: item.productId, name: item.product.name },
+        lotLocation: {
+          id: item.lotLocationId,
+          productId: item.lotLocation.lot.product.id,
+          productName: item.lotLocation.lot.product.name,
+          lotId: item.lotLocation.lotId,
+          laboratory: item.lotLocation.location.laboratory,
+          maxQuantity: item.lotLocation.quantity,
+        },
         quantity: { value: item.quantity },
         isSaved: true,
         toDelete: false,
@@ -80,16 +87,20 @@ export const RecordForm = ({
       })) || [],
   )
 
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(() => {
-    const items = initialData?.items
-    if (items && items.length > 0) {
-      return products.filter(
-        (product) => !items.find((item) => item.product.id === product.id),
-      )
-    } else {
-      return products
-    }
-  })
+  const [filteredProducts, setFilteredProducts] = useState<IFullLotLocation[]>(
+    () => {
+      const items = initialData?.items
+
+      if (items && items.length > 0) {
+        return lotProducts.filter(
+          (lotProduct) =>
+            !items.find((item) => item.lotLocationId === lotProduct.id),
+        )
+      } else {
+        return lotProducts
+      }
+    },
+  )
 
   const onSubmit = async (values: formType) => {
     setIsLoading(true)
@@ -182,15 +193,20 @@ export const RecordForm = ({
             />
 
             <ItemSelector
-              products={filteredProducts}
+              lotLocations={filteredProducts}
               onAdd={(id) => {
-                const product = products.find((product) => product.id === id)
+                const lotLocation = lotProducts.find(
+                  (lotLocation) => lotLocation.id === id,
+                )
 
-                if (product) {
+                if (lotLocation) {
                   const updatedItemsTable = itemsTable.concat({
-                    product: {
-                      id: product.id,
-                      name: product.name,
+                    lotLocation: {
+                      id: lotLocation.id,
+                      productName: lotLocation.lot.product.name,
+                      lotId: lotLocation.lotId,
+                      laboratory: lotLocation.location.laboratory,
+                      maxQuantity: lotLocation.quantity,
                     },
                     quantity: { value: 1 },
                     isSaved: false,
@@ -199,10 +215,10 @@ export const RecordForm = ({
                   })
                   setItemsTable(updatedItemsTable)
 
-                  const updatedFilteredProducst = products.filter(
+                  const updatedFilteredProducst = lotProducts.filter(
                     (product) =>
                       !updatedItemsTable.find(
-                        (item) => item.product.id === product.id,
+                        (item) => item.lotLocation.id === product.id,
                       ),
                   )
                   setFilteredProducts(updatedFilteredProducst)
@@ -216,7 +232,7 @@ export const RecordForm = ({
             onDelete={(isSaved, id) => {
               if (isSaved) {
                 const updatedItemsTable = itemsTable.map((itemTable) => {
-                  if (itemTable.product.id === id)
+                  if (itemTable.lotLocation.id === id)
                     return {
                       ...itemTable,
                       toDelete: itemTable.toDelete ? !itemTable.toDelete : true,
@@ -227,14 +243,14 @@ export const RecordForm = ({
                 setItemsTable(updatedItemsTable)
               } else {
                 const updatedItemsTable = itemsTable.filter(
-                  (item) => item.product.id !== id,
+                  (item) => item.lotLocation.id !== id,
                 )
                 setItemsTable(updatedItemsTable)
 
-                const updatedFilteredProducst = products.filter(
+                const updatedFilteredProducst = lotProducts.filter(
                   (product) =>
                     !updatedItemsTable.find(
-                      (item) => item.product.id === product.id,
+                      (item) => item.lotLocation.id === product.id,
                     ),
                 )
                 setFilteredProducts(updatedFilteredProducst)
@@ -242,7 +258,7 @@ export const RecordForm = ({
             }}
             onQuantityBlur={(isSaved, id, quantity) => {
               const updatedItemsTable = itemsTable.map((itemTable) => {
-                if (itemTable.product.id === id)
+                if (itemTable.lotLocation.id === id)
                   return {
                     ...itemTable,
                     quantity: { value: quantity, isEdited: !!isSaved },
