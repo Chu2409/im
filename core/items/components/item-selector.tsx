@@ -39,15 +39,17 @@ export const ItemSelector = ({
           <CommandEmpty>Producto no encontrado</CommandEmpty>
 
           <CommandGroup className='overflow-y-auto max-h-40'>
-            <div className='w-full font-light text-sm text-muted-foreground px-2 grid-cols-5 grid gap-2 text-center'>
-              <span className='col-span-2'>Producto</span>
+            {lotLocations.length > 0 && (
+              <div className='w-full font-light text-sm text-muted-foreground px-2 grid-cols-5 grid gap-2 text-center'>
+                <span className='col-span-2'>Nombre</span>
 
-              <span>Lote</span>
+                <span>Lote</span>
 
-              <span>Ubicación</span>
+                <span>Ubicación</span>
 
-              <span>Stock</span>
-            </div>
+                <span>Stock</span>
+              </div>
+            )}
 
             {lotLocations.map((lotLocation) => (
               <CommandItem

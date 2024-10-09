@@ -23,7 +23,7 @@ export const updateRecordWithItems = async (
           lotLocationId: item.lotLocation.id,
           quantity: item.quantity.value,
         })
-      } else if (item.toEdit) {
+      } else if (item.toEdit && !item.toDelete) {
         toEdit.push({
           lotLocationId: item.lotLocation.id,
           quantity: item.quantity.value,

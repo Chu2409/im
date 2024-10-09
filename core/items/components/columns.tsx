@@ -13,13 +13,6 @@ export const itemsColumns: ColumnDef<IItemWithLotLocation>[] = [
     ),
   },
   {
-    accessorKey: 'quantity',
-    meta: 'Cantidad',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Cantidad' />
-    ),
-  },
-  {
     accessorKey: 'lot',
     header: 'Lote',
     cell: ({ row }) => (
@@ -34,6 +27,13 @@ export const itemsColumns: ColumnDef<IItemWithLotLocation>[] = [
         {row.original.lotLocation.location.code} -{' '}
         {row.original.lotLocation.location.laboratory}
       </div>
+    ),
+  },
+  {
+    accessorKey: 'quantity',
+    meta: 'Cantidad',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Cantidad' />
     ),
   },
 ]
