@@ -18,6 +18,18 @@ export const createRecordWithItems = async (data: IUpsertProductBulkProps) => {
       },
     })
 
+    data.items.forEach(
+      async (item) =>
+        await prisma.lotLocation.update({
+          where: {
+            id: item.lotLocation.id,
+          },
+          data: {
+            quantity: { decrement: item.quantity.value },
+          },
+        }),
+    )
+
     return recordBulk.id
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
