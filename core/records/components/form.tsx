@@ -83,7 +83,10 @@ export const RecordForm = ({
         quantity: { value: item.quantity },
         isSaved: true,
         toDelete: false,
-        toEdit: false,
+        toEdit: {
+          value: false,
+          oldQuantity: item.quantity,
+        },
       })) || [],
   )
 
@@ -211,7 +214,7 @@ export const RecordForm = ({
                     quantity: { value: 1 },
                     isSaved: false,
                     toDelete: false,
-                    toEdit: false,
+                    toEdit: { value: false, oldQuantity: 0 },
                   })
                   setItemsTable(updatedItemsTable)
 
@@ -235,6 +238,11 @@ export const RecordForm = ({
                   if (itemTable.lotLocation.id === id)
                     return {
                       ...itemTable,
+                      // quantity: {
+                      //   value: initialData!.items.find(
+                      //     (item) => item.lotLocationId === id,
+                      //   )!.quantity!,
+                      // },
                       toDelete: itemTable.toDelete ? !itemTable.toDelete : true,
                     }
 
@@ -262,7 +270,10 @@ export const RecordForm = ({
                   return {
                     ...itemTable,
                     quantity: { value: quantity, isEdited: !!isSaved },
-                    toEdit: !!isSaved,
+                    toEdit: {
+                      value: !!isSaved,
+                      oldQuantity: itemTable.toEdit.oldQuantity,
+                    },
                   }
 
                 return itemTable
