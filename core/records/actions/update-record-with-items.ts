@@ -8,13 +8,17 @@ interface BulkItem {
   quantity: number
 }
 
+interface ToEditItem extends BulkItem {
+  oldQuantity: number
+}
+
 export const updateRecordWithItems = async (
   recordId: number,
   data: IUpsertProductBulkProps,
 ) => {
   try {
     const toAdd: BulkItem[] = []
-    const toEdit: BulkItem[] = []
+    const toEdit: ToEditItem[] = []
     const toDelete: BulkItem[] = []
 
     data.items.forEach((item) => {
@@ -23,21 +27,28 @@ export const updateRecordWithItems = async (
           lotLocationId: item.lotLocation.id,
           quantity: item.quantity.value,
         })
-      } else if (item.toEdit && !item.toDelete) {
+      } else if (item.toEdit.value && !item.toDelete) {
         toEdit.push({
           lotLocationId: item.lotLocation.id,
           quantity: item.quantity.value,
+          oldQuantity: item.toEdit.oldQuantity!,
         })
       } else if (item.toDelete) {
         toDelete.push({
           lotLocationId: item.lotLocation.id,
-          quantity: item.quantity.value,
+          quantity: item.toEdit.oldQuantity,
         })
       }
     })
 
+    console.log(toAdd)
+
+    console.log(toEdit)
+
+    console.log(toDelete)
+
     return await prisma.$transaction(async (prisma) => {
-      if (toAdd.length > 0)
+      if (toAdd.length > 0) {
         await prisma.item.createMany({
           data: toAdd.map((item) => ({
             lotLocationId: item.lotLocationId,
@@ -46,8 +57,22 @@ export const updateRecordWithItems = async (
           })),
         })
 
-      if (toEdit.length > 0)
-        toEdit.forEach(async (item) => {
+        for (const item of toAdd) {
+          await prisma.lotLocation.update({
+            where: {
+              id: item.lotLocationId,
+            },
+            data: {
+              quantity: {
+                decrement: item.quantity,
+              },
+            },
+          })
+        }
+      }
+
+      if (toEdit.length > 0) {
+        for (const item of toEdit) {
           await prisma.item.updateMany({
             where: {
               recordId,
@@ -57,17 +82,56 @@ export const updateRecordWithItems = async (
               quantity: item.quantity,
             },
           })
-        })
 
-      if (toDelete.length > 0)
-        toDelete.forEach(async (item) => {
+          if (item.oldQuantity > item.quantity) {
+            const diff = item.oldQuantity - item.quantity
+
+            await prisma.lotLocation.update({
+              where: {
+                id: item.lotLocationId,
+              },
+              data: {
+                quantity: {
+                  increment: diff,
+                },
+              },
+            })
+          } else {
+            const diff = item.quantity - item.oldQuantity
+
+            await prisma.lotLocation.update({
+              where: {
+                id: item.lotLocationId,
+              },
+              data: {
+                quantity: {
+                  decrement: diff,
+                },
+              },
+            })
+          }
+        }
+      }
+
+      if (toDelete.length > 0) {
+        for (const item of toDelete) {
           await prisma.item.deleteMany({
             where: {
               lotLocationId: item.lotLocationId,
               recordId,
             },
           })
-        })
+
+          await prisma.lotLocation.update({
+            where: {
+              id: item.lotLocationId,
+            },
+            data: {
+              quantity: { increment: item.quantity },
+            },
+          })
+        }
+      }
 
       await prisma.record.update({
         where: { id: recordId },
