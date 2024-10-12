@@ -91,7 +91,9 @@ export function ItemFormDataTable({
                         onQuantityBlur(item.isSaved, item.lotLocation.id, value)
                       }}
                       min={1}
-                      max={item.lotLocation.maxQuantity}
+                      max={
+                        item.toEdit.oldQuantity + item.lotLocation.maxQuantity
+                      }
                       className='max-w-12 text-center p-0 mx-0 h-min bg-transparent border-none disabled:opacity-100'
                     />
                   </div>
