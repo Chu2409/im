@@ -22,6 +22,9 @@ export const getRecordsWithItems = async (): Promise<IRecordWithItems[]> => {
           },
         },
       },
+      orderBy: {
+        start: 'desc',
+      },
     })
 
     return records
