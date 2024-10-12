@@ -16,6 +16,7 @@ export const getLotProductsToRecord = async (): Promise<IFullLotLocation[]> => {
             active: true,
           },
         },
+        quantity: { gt: 0 },
       },
       include: {
         lot: {
