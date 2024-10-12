@@ -19,5 +19,8 @@ export interface IEditableRowItem {
   }
   isSaved: boolean
   toDelete: boolean
-  toEdit: boolean
+  toEdit: {
+    value: boolean
+    oldQuantity: number
+  }
 }
