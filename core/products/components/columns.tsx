@@ -15,7 +15,7 @@ export const productsColumns: ColumnDef<Product>[] = [
     accessorKey: 'name',
     meta: 'Nombre',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Nombre' toggleVisibility />
+      <DataTableColumnHeader column={column} title='Nombre' />
     ),
   },
   {

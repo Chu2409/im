@@ -29,6 +29,9 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
         </div>
       )
     },
+    sortingFn: (rowA, rowB) =>
+      new Date(rowA.original.start).getTime() -
+      new Date(rowB.original.start).getTime(),
   },
   {
     id: 'actions',
