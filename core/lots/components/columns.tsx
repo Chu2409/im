@@ -6,6 +6,7 @@ import { getCategoryByName } from '@/core/products/data/categories'
 import { Badge } from '@/ui/badge'
 import { formatDate } from '@/lib/utils'
 import { getLaboratoryByName } from '@/core/locations/data/labobratories'
+import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
 
 export const lotColumns: ColumnDef<IFullLot>[] = [
   {
@@ -60,7 +61,17 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
   },
   {
     accessorKey: 'expiration',
-    header: 'Vencimiento',
+    meta: 'Vencimiento',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title='Vencimiento'
+        toggleVisibility
+      />
+    ),
+    sortingFn: (rowA, rowB) =>
+      new Date(rowA.original.expirationDate).getTime() -
+      new Date(rowB.original.expirationDate).getTime(),
     cell: ({ row }) => (
       <span className='capitalize'>
         {formatDate(row.original.expirationDate)}
