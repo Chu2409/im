@@ -41,12 +41,6 @@ export const updateRecordWithItems = async (
       }
     })
 
-    console.log(toAdd)
-
-    console.log(toEdit)
-
-    console.log(toDelete)
-
     return await prisma.$transaction(async (prisma) => {
       if (toAdd.length > 0) {
         await prisma.item.createMany({
