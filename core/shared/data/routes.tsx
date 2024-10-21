@@ -3,12 +3,7 @@ import { IRoute } from '../types'
 
 export const routes: IRoute[] = [
   {
-    href: '/products',
-    label: 'Productos',
-    icon: <Tags />,
-  },
-  {
-    href: '/inventory',
+    href: '/',
     label: 'Inventario',
     icon: <Boxes />,
   },
@@ -16,6 +11,11 @@ export const routes: IRoute[] = [
     href: '/records',
     label: 'Registros',
     icon: <FileText />,
+  },
+  {
+    href: '/products',
+    label: 'Productos',
+    icon: <Tags />,
   },
   {
     href: '/providers',
