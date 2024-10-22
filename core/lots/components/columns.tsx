@@ -7,6 +7,9 @@ import { Badge } from '@/ui/badge'
 import { formatDate } from '@/lib/utils'
 import { getLaboratoryByName } from '@/core/locations/data/labobratories'
 import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
+import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions-delete'
+import { useLotModal } from '../hooks/use-lot-modal'
+import { deleteLot } from '../actions/delete-lot'
 
 export const lotColumns: ColumnDef<IFullLot>[] = [
   {
@@ -120,5 +123,26 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
         })}
       </div>
     ),
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const onOpen = useLotModal((state) => state.onOpen)
+
+      const onDelete = async (id: number) => {
+        return await deleteLot(id)
+      }
+
+      return (
+        <DataTableRowActions
+          id={row.original.id}
+          onDelete={onDelete}
+          deleteMessage='El lote ha sido eliminado correctamente'
+          errorMessage='El lote ya contiene registros asociados'
+          onEdit={() => onOpen(row.original)}
+        />
+      )
+    },
   },
 ]
