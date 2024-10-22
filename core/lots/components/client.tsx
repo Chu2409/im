@@ -6,6 +6,8 @@ import { useLotModal } from '../hooks/use-lot-modal'
 import { IFullLot } from '../types'
 import { lotColumns } from './columns'
 import { CATEGORIES } from '@/core/products/data/categories'
+import { LotModal } from './modal'
+import { Location } from '@prisma/client'
 
 const filters = [
   {
@@ -17,7 +19,13 @@ const filters = [
   },
 ]
 
-export const LotsClient = ({ lots }: { lots: IFullLot[] }) => {
+export const LotsClient = ({
+  lots,
+  locations,
+}: {
+  lots: IFullLot[]
+  locations: Location[]
+}) => {
   const onOpen = useLotModal((state) => state.onOpen)
 
   return (
@@ -29,7 +37,7 @@ export const LotsClient = ({ lots }: { lots: IFullLot[] }) => {
         onButtonClick={() => onOpen()}
       />
 
-      {/* <RecordModal lotProducts={lotProducts} /> */}
+      <LotModal locations={locations} />
 
       <DataTable
         inputFilterKey='product'
