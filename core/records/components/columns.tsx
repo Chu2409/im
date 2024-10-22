@@ -7,7 +7,7 @@ import { useRecord } from '../hooks/use-record'
 import { IRecordWithItems } from '../types'
 import { useRecordModal } from '../hooks/use-record-modal'
 import { deleteRecord } from '../actions/delete-record'
-import { DataTableRowActions } from './data-table-row-actions'
+import { DataTableRowActions } from '../../shared/components/table/data-table-row-actions-delete'
 
 export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
   {
