@@ -16,7 +16,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { IRecordWithItems } from '../types'
-import { Input } from '@/ui/input'
 import { ItemFormDataTable } from '@/core/items/components/form-data-table'
 import { ItemSelector } from '@/core/items/components/item-selector'
 import { createRecordWithItems } from '../actions/create-record-with-items'
@@ -25,10 +24,11 @@ import { useRecord } from '../hooks/use-record'
 import { getRecordWithItems } from '../actions/get-record-with-items'
 import { IEditableRowItem } from '@/core/items/types'
 import { IFullLotLocation } from '@/core/lots/types'
+import { DatePicker } from '@/core/shared/components/date-picker'
 
 const formSchema = z.object({
-  start: z.string(),
-  end: z.string(),
+  start: z.date({ message: 'Seleccione una fecha de inicio' }),
+  end: z.date({ message: 'Seleccione una fecha de fin' }),
 })
 
 type formType = z.infer<typeof formSchema>
@@ -54,12 +54,8 @@ export const RecordForm = ({
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      start:
-        initialData?.start.toLocaleDateString('en-CA') ||
-        new Date().toLocaleDateString('en-CA'),
-      end:
-        initialData?.end.toLocaleDateString('en-CA') ||
-        new Date().toLocaleDateString('en-CA'),
+      start: initialData?.start,
+      end: initialData?.end,
     },
   })
 
@@ -112,14 +108,12 @@ export const RecordForm = ({
 
     if (initialData)
       result = await updateRecordWithItems(initialData.id, {
-        start: new Date(values.start),
-        end: new Date(values.end),
+        ...values,
         items: itemsTable,
       })
     else
       result = await createRecordWithItems({
-        start: new Date(values.start),
-        end: new Date(values.end),
+        ...values,
         items: itemsTable,
       })
 
@@ -164,11 +158,12 @@ export const RecordForm = ({
                 <FormItem>
                   <FormLabel>Fecha de inicio</FormLabel>
                   <FormControl>
-                    <Input
+                    <DatePicker
                       disabled={isLoading}
-                      className='cursor-pointer'
-                      type='date'
-                      {...field}
+                      value={field.value}
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onChange={field.onChange}
+                      className='w-full'
                     />
                   </FormControl>
                   <FormMessage />
@@ -183,11 +178,12 @@ export const RecordForm = ({
                 <FormItem>
                   <FormLabel>Fecha de fin</FormLabel>
                   <FormControl>
-                    <Input
+                    <DatePicker
                       disabled={isLoading}
-                      className='cursor-pointer'
-                      type='date'
-                      {...field}
+                      value={field.value}
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onChange={field.onChange}
+                      className='w-full'
                     />
                   </FormControl>
                   <FormMessage />
