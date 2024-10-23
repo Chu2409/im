@@ -18,7 +18,7 @@ import { IOption } from '../../types'
 interface MultiComboboxProps {
   title: string
   values: number[]
-  options: IOption[]
+  options: IOption<number>[]
   onChange: (value: number) => void
   onRemove: (value: number) => void
   disabled?: boolean

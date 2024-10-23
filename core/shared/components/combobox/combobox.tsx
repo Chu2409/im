@@ -16,21 +16,23 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover'
 import { IOption } from '../../types'
 import { useState } from 'react'
 
-interface ComboboxProps {
-  options: IOption[]
-  value?: number
+interface ComboboxProps<T> {
+  options: IOption<T>[]
+  value?: T
   selectMessage: string
-  onChange: (value?: number) => void
+  onChange: (value?: T) => void
   disabled?: boolean
+  className?: string
 }
 
-export const Combobox: React.FC<ComboboxProps> = ({
+export function Combobox<T>({
   options,
   value,
   selectMessage,
   onChange,
   disabled,
-}) => {
+  className,
+}: ComboboxProps<T>) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -40,7 +42,11 @@ export const Combobox: React.FC<ComboboxProps> = ({
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className='w-[200px] justify-between'
+          className={cn(
+            'w-full justify-between text-left font-normal capitalize',
+            !value && 'text-muted-foreground',
+            className,
+          )}
         >
           {value
             ? options.find((option) => option.value === value)?.label
@@ -49,7 +55,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className='w-[200px] p-0'>
+      <PopoverContent className='w-[230px] p-0' align='start'>
         <Command>
           {options.length > 10 && <CommandInput placeholder='Buscar...' />}
 
@@ -59,7 +65,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
-                  key={option.value}
+                  key={`${option.value}`}
                   onSelect={() => {
                     onChange(option.value === value ? undefined : option.value)
                     setOpen(false)
