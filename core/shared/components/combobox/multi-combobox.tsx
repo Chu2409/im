@@ -13,9 +13,9 @@ import { Separator } from '@/ui/separator'
 import { cn } from '@/lib/utils'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
-import { IOption } from '../types'
+import { IOption } from '../../types'
 
-interface MultiSelectorProps {
+interface MultiComboboxProps {
   title: string
   values: number[]
   options: IOption[]
@@ -24,7 +24,7 @@ interface MultiSelectorProps {
   disabled?: boolean
 }
 
-export const MultiSelector: React.FC<MultiSelectorProps> = ({
+export const MultiCombobox: React.FC<MultiComboboxProps> = ({
   title,
   values,
   options,
@@ -60,7 +60,7 @@ export const MultiSelector: React.FC<MultiSelectorProps> = ({
 
       <PopoverContent className='p-0 bg-white w-[200px]' align='start'>
         <Command>
-          {options.length > 10 && <CommandInput placeholder='Buscar' />}
+          {options.length > 10 && <CommandInput placeholder='Buscar...' />}
 
           <CommandList>
             <CommandEmpty>No hay opciones disponibles</CommandEmpty>
