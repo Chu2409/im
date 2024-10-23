@@ -15,18 +15,12 @@ import { Input } from '@/ui/input'
 import { Button } from '@/ui/button'
 import { Location } from '@prisma/client'
 import { useState } from 'react'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/ui/select'
 import { LABORATORIES } from '../data/labobratories'
 import { createLocation } from '../actions/create-location'
 import { updateLocation } from '../actions/update-location'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
+import { Combobox } from '@/core/shared/components/combobox/combobox'
 
 const formSchema = z.object({
   name: z
@@ -155,28 +149,18 @@ export const LocationForm = ({
               <FormItem>
                 <FormLabel>Laboratorio</FormLabel>
                 <FormControl>
-                  <Select
-                    disabled={isLoading}
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onValueChange={field.onChange}
+                  <Combobox<string>
+                    options={Object.entries(LABORATORIES).map(([, value]) => ({
+                      value: value.name,
+                      label: value.name,
+                    }))}
                     value={field.value}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder='Selecciona un laboratorio' />
-                    </SelectTrigger>
-
-                    <SelectContent>
-                      {Object.entries(LABORATORIES).map(([, value]) => (
-                        <SelectItem
-                          key={value.id}
-                          value={value.name}
-                          className='cursor-pointer'
-                        >
-                          {value.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                    selectMessage='Selecciona un laboratorio'
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onChange={field.onChange}
+                    disabled={isLoading}
+                    className='w-full'
+                  />
                 </FormControl>
 
                 <FormMessage />
