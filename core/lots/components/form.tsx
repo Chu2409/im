@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 'use client'
 
 import {
@@ -15,16 +17,22 @@ import { Button } from '@/ui/button'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
-import { IFullLotLocation, IFullLot } from '../types'
+import { IFullLot } from '../types'
 import { Input } from '@/ui/input'
-import { ItemFormDataTable } from '@/core/items/components/form-data-table'
-import { ItemSelector } from '@/core/items/components/item-selector'
-import { IEditableRowItem } from '@/core/items/types'
 import { Location } from '@prisma/client'
 
 const formSchema = z.object({
-  start: z.string(),
-  end: z.string(),
+  quantityPurchased: z
+    .number({ message: 'Ingrese la cantidad' })
+    .min(1, 'Mínimo 1'),
+  expirationDate: z.string(),
+  price: z.number({ message: 'Ingrese el precio' }).min(1, 'Mínimo 1'),
+  orderDate: z.string(),
+  receptionDate: z.string().nullable(),
+  productId: z.coerce
+    .number({ message: 'Seleccione un producto' })
+    .min(1, 'Seleccione un producto'),
+  providerId: z.coerce.number().nullable(),
 })
 
 type formType = z.infer<typeof formSchema>
@@ -38,66 +46,36 @@ export const LotForm = ({
   locations: Location[]
   onModalClose: () => void
 }) => {
-  const toastTitle = initialData ? 'Registro actualizado' : 'Registro creado'
-  const toastDescription = initialData
-    ? 'El registro ha sido actualizado correctamente'
-    : 'El registro ha sido creado correctamente'
-  const errorMessage = initialData
-    ? 'Hubo un error al actualizar el registro'
-    : 'Hubo un error al crear el registro'
-  const action = initialData ? 'Actualizar registro' : 'Crear registro'
+  // const toastTitle = initialData ? 'Lote actualizado' : 'Lote creado'
+  // const toastDescription = initialData
+  //   ? 'El lote ha sido actualizado correctamente'
+  //   : 'El lote ha sido creado correctamente'
+  // const errorMessage = initialData
+  //   ? 'Hubo un error al actualizar el lote'
+  //   : 'Hubo un error al crear el lote'
+  const action = initialData ? 'Actualizar lote' : 'Crear lote'
 
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      start:
-        initialData?.start.toLocaleDateString('en-CA') ||
+      quantityPurchased: initialData?.quantityPurchased || undefined,
+      expirationDate:
+        initialData?.expirationDate.toLocaleDateString('en-CA') ||
         new Date().toLocaleDateString('en-CA'),
-      end:
-        initialData?.end.toLocaleDateString('en-CA') ||
+      price: initialData?.price || undefined,
+      orderDate:
+        initialData?.expirationDate.toLocaleDateString('en-CA') ||
         new Date().toLocaleDateString('en-CA'),
+      receptionDate:
+        initialData?.receptionDate?.toLocaleDateString('en-CA') || '',
+      productId: initialData?.productId || undefined,
+      providerId: initialData?.providerId || undefined,
     },
   })
 
   const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
-
-  const [itemsTable, setItemsTable] = useState<IEditableRowItem[]>(
-    () =>
-      initialData?.items.map((item) => ({
-        lotLocation: {
-          id: item.lotLocationId,
-          productId: item.lotLocation.lot.product.id,
-          productName: item.lotLocation.lot.product.name,
-          lotId: item.lotLocation.lotId,
-          laboratory: item.lotLocation.location.laboratory,
-          maxQuantity: item.lotLocation.quantity,
-        },
-        quantity: { value: item.quantity },
-        isSaved: true,
-        toDelete: false,
-        toEdit: {
-          value: false,
-          oldQuantity: item.quantity,
-        },
-      })) || [],
-  )
-
-  const [filteredProducts, setFilteredProducts] = useState<IFullLotLocation[]>(
-    () => {
-      const items = initialData?.items
-
-      if (items && items.length > 0) {
-        return locations.filter(
-          (lotProduct) =>
-            !items.find((item) => item.lotLocationId === lotProduct.id),
-        )
-      } else {
-        return locations
-      }
-    },
-  )
 
   const onSubmit = async (values: formType) => {
     setIsLoading(true)
@@ -149,106 +127,111 @@ export const LotForm = ({
         className='flex flex-col gap-6'
         id='form'
       >
-        <div className='grid sm:grid-cols-2 gap-4'>
-          <div className='grid gap-3 max-sm:mb-8'>
-            <FormField
-              control={form.control}
-              name='start'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Fecha de inicio</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={isLoading}
-                      className='cursor-pointer'
-                      type='date'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <div className='grid gap-3 sm:grid-cols-2 w-full'>
+          <FormField
+            control={form.control}
+            name='quantityPurchased'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Cantidad Adquirida</FormLabel>
 
-            <FormField
-              control={form.control}
-              name='end'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Fecha de fin</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={isLoading}
-                      className='cursor-pointer'
-                      type='date'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormControl>
+                  <Input
+                    placeholder='224'
+                    disabled={isLoading}
+                    type='number'
+                    {...field}
+                  />
+                </FormControl>
 
-            <ItemSelector lotLocations={filteredProducts} onAdd={(id) => {}} />
-          </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-          {/* <ItemFormDataTable
-            data={itemsTable}
-            onDelete={(isSaved, id) => {
-              if (isSaved) {
-                const updatedItemsTable = itemsTable.map((itemTable) => {
-                  if (itemTable.lotLocation.id === id)
-                    return {
-                      ...itemTable,
-                      // quantity: {
-                      //   value: initialData!.items.find(
-                      //     (item) => item.lotLocationId === id,
-                      //   )!.quantity!,
-                      // },
-                      toDelete: itemTable.toDelete ? !itemTable.toDelete : true,
-                    }
+          <FormField
+            control={form.control}
+            name='expirationDate'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Fecha de expiración</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isLoading}
+                    className='cursor-pointer'
+                    type='date'
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-                  return itemTable
-                })
-                setItemsTable(updatedItemsTable)
-              } else {
-                const updatedItemsTable = itemsTable.filter(
-                  (item) => item.lotLocation.id !== id,
-                )
-                setItemsTable(updatedItemsTable)
+          <FormField
+            control={form.control}
+            name='price'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Precio</FormLabel>
 
-                const updatedFilteredProducst = locations.filter(
-                  (product) =>
-                    !updatedItemsTable.find(
-                      (item) => item.lotLocation.id === product.id,
-                    ),
-                )
-                setFilteredProducts(updatedFilteredProducst)
-              }
-            }}
-            onQuantityBlur={(isSaved, id, quantity) => {
-              const updatedItemsTable = itemsTable.map((itemTable) => {
-                if (itemTable.lotLocation.id === id)
-                  return {
-                    ...itemTable,
-                    quantity: { value: quantity, isEdited: !!isSaved },
-                    toEdit: {
-                      value: !!isSaved,
-                      oldQuantity: itemTable.toEdit.oldQuantity,
-                    },
-                  }
+                <FormControl>
+                  <Input
+                    placeholder='3550'
+                    disabled={isLoading}
+                    type='number'
+                    {...field}
+                  />
+                </FormControl>
 
-                return itemTable
-              })
-              setItemsTable(updatedItemsTable)
-            }}
-          /> */}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='orderDate'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Fecha de órden</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isLoading}
+                    className='cursor-pointer'
+                    type='date'
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='receptionDate'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Fecha de recepción</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isLoading}
+                    className='cursor-pointer'
+                    type='date'
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
         <div className='ml-auto'>
           <Button
-            type='submit'
             disabled={isLoading}
+            type='submit'
             form='form'
             className='px-6'
           >
