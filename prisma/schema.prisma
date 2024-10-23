@@ -43,13 +43,13 @@ model Location {
 }
 
 model Lot {
-  id                Int      @id @default(autoincrement()) @map("id")
-  quantityPurchased Float    @map("quantity_purchased")
-  quantityPerUse    Float    @map("quantity_per_use")
-  expirationDate    DateTime @map("expiration_date")
-  price             Float    @map("price")
-  ordenDate         DateTime @map("orden_date")
-  receptionDate     DateTime @map("reception_date")
+  id                Int       @id @default(autoincrement()) @map("id")
+  quantityPurchased Float     @map("quantity_purchased")
+  quantityPerUse    Float     @map("quantity_per_use")
+  expirationDate    DateTime  @map("expiration_date")
+  price             Float     @map("price")
+  orderDate         DateTime  @map("order_date")
+  receptionDate     DateTime? @map("reception_date")
 
   productId  Int       @map("product_id")
   product    Product   @relation(fields: [productId], references: [id])
