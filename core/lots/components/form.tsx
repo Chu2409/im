@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { IFullLot } from '../types'
 import { Input } from '@/ui/input'
-import { Location, Product } from '@prisma/client'
+import { Location, Product, Provider } from '@prisma/client'
 import { DatePicker } from '@/core/shared/components/date-picker'
 import { Combobox } from '@/core/shared/components/combobox/combobox'
 
@@ -34,7 +34,7 @@ const formSchema = z.object({
   productId: z.coerce
     .number({ message: 'Seleccione un producto' })
     .min(1, 'Seleccione un producto'),
-  providerId: z.coerce.number().nullable(),
+  providerId: z.coerce.number().nullish(),
 })
 
 type formType = z.infer<typeof formSchema>
@@ -42,12 +42,14 @@ type formType = z.infer<typeof formSchema>
 export const LotForm = ({
   initialData,
   locations,
+  providers,
   products,
   onModalClose,
 }: {
   initialData?: IFullLot
   locations: Location[]
   products: Product[]
+  providers: Provider[]
   onModalClose: () => void
 }) => {
   // const toastTitle = initialData ? 'Lote actualizado' : 'Lote creado'
@@ -67,8 +69,8 @@ export const LotForm = ({
       price: initialData?.price || undefined,
       orderDate: initialData?.expirationDate,
       receptionDate: initialData?.receptionDate,
-      productId: initialData?.productId || undefined,
-      providerId: initialData?.providerId || undefined,
+      productId: initialData?.productId,
+      providerId: initialData?.providerId,
     },
   })
 
@@ -132,7 +134,7 @@ export const LotForm = ({
             name='productId'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Cantidad Adquirida</FormLabel>
+                <FormLabel>Producto</FormLabel>
 
                 <FormControl>
                   <Combobox<number>
@@ -176,25 +178,6 @@ export const LotForm = ({
 
           <FormField
             control={form.control}
-            name='expirationDate'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Fecha de expiración</FormLabel>
-                <FormControl>
-                  <DatePicker
-                    disabled={isLoading}
-                    value={field.value}
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
             name='price'
             render={({ field }) => (
               <FormItem>
@@ -209,6 +192,51 @@ export const LotForm = ({
                   />
                 </FormControl>
 
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='providerId'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Proveedor</FormLabel>
+
+                <FormControl>
+                  <Combobox<number>
+                    options={providers.map((provider) => ({
+                      value: provider.id,
+                      label: provider.name,
+                    }))}
+                    value={field.value || undefined}
+                    selectMessage='Seleccione un proveedor'
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onChange={field.onChange}
+                    disabled={isLoading}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='expirationDate'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Fecha de expiración</FormLabel>
+                <FormControl>
+                  <DatePicker
+                    disabled={isLoading}
+                    value={field.value}
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onChange={field.onChange}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
