@@ -55,7 +55,10 @@ export function Combobox<T>({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className='w-[230px] p-0' align='start'>
+      <PopoverContent
+        className='w-[250px] max-sm:w-[300px] xl:w-[340px] p-0'
+        align='start'
+      >
         <Command>
           {options.length > 10 && <CommandInput placeholder='Buscar...' />}
 
