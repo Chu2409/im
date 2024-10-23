@@ -163,7 +163,6 @@ export const RecordForm = ({
                       value={field.value}
                       // eslint-disable-next-line react/jsx-handler-names
                       onChange={field.onChange}
-                      className='w-full'
                     />
                   </FormControl>
                   <FormMessage />
@@ -183,7 +182,6 @@ export const RecordForm = ({
                       value={field.value}
                       // eslint-disable-next-line react/jsx-handler-names
                       onChange={field.onChange}
-                      className='w-full'
                     />
                   </FormControl>
                   <FormMessage />

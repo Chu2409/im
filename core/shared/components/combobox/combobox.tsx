@@ -71,13 +71,14 @@ export function Combobox<T>({
                     setOpen(false)
                   }}
                 >
+                  {option.label}
+
                   <Check
                     className={cn(
-                      'mr-2 h-4 w-4',
+                      'ml-auto h-4 w-4',
                       value === option.value ? 'opacity-100' : 'opacity-0',
                     )}
                   />
-                  {option.label}
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -19,16 +19,18 @@ import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { IFullLot } from '../types'
 import { Input } from '@/ui/input'
-import { Location } from '@prisma/client'
+import { Location, Product } from '@prisma/client'
+import { DatePicker } from '@/core/shared/components/date-picker'
+import { Combobox } from '@/core/shared/components/combobox/combobox'
 
 const formSchema = z.object({
   quantityPurchased: z
     .number({ message: 'Ingrese la cantidad' })
     .min(1, 'Mínimo 1'),
-  expirationDate: z.string(),
+  expirationDate: z.date({ message: 'Seleccione una fecha de expiración' }),
   price: z.number({ message: 'Ingrese el precio' }).min(1, 'Mínimo 1'),
-  orderDate: z.string(),
-  receptionDate: z.string().nullable(),
+  orderDate: z.date({ message: 'Seleccione una fecha de órden' }),
+  receptionDate: z.date().nullish(),
   productId: z.coerce
     .number({ message: 'Seleccione un producto' })
     .min(1, 'Seleccione un producto'),
@@ -40,10 +42,12 @@ type formType = z.infer<typeof formSchema>
 export const LotForm = ({
   initialData,
   locations,
+  products,
   onModalClose,
 }: {
   initialData?: IFullLot
   locations: Location[]
+  products: Product[]
   onModalClose: () => void
 }) => {
   // const toastTitle = initialData ? 'Lote actualizado' : 'Lote creado'
@@ -59,15 +63,10 @@ export const LotForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       quantityPurchased: initialData?.quantityPurchased || undefined,
-      expirationDate:
-        initialData?.expirationDate.toLocaleDateString('en-CA') ||
-        new Date().toLocaleDateString('en-CA'),
+      expirationDate: initialData?.expirationDate,
       price: initialData?.price || undefined,
-      orderDate:
-        initialData?.expirationDate.toLocaleDateString('en-CA') ||
-        new Date().toLocaleDateString('en-CA'),
-      receptionDate:
-        initialData?.receptionDate?.toLocaleDateString('en-CA') || '',
+      orderDate: initialData?.expirationDate,
+      receptionDate: initialData?.receptionDate,
       productId: initialData?.productId || undefined,
       providerId: initialData?.providerId || undefined,
     },
@@ -130,6 +129,32 @@ export const LotForm = ({
         <div className='grid gap-3 sm:grid-cols-2 w-full'>
           <FormField
             control={form.control}
+            name='productId'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Cantidad Adquirida</FormLabel>
+
+                <FormControl>
+                  <Combobox<number>
+                    options={products.map((product) => ({
+                      value: product.id,
+                      label: product.name,
+                    }))}
+                    value={field.value}
+                    selectMessage='Selecciona un producto'
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onChange={field.onChange}
+                    disabled={isLoading}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name='quantityPurchased'
             render={({ field }) => (
               <FormItem>
@@ -156,11 +181,11 @@ export const LotForm = ({
               <FormItem>
                 <FormLabel>Fecha de expiración</FormLabel>
                 <FormControl>
-                  <Input
+                  <DatePicker
                     disabled={isLoading}
-                    className='cursor-pointer'
-                    type='date'
-                    {...field}
+                    value={field.value}
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />
@@ -196,11 +221,11 @@ export const LotForm = ({
               <FormItem>
                 <FormLabel>Fecha de órden</FormLabel>
                 <FormControl>
-                  <Input
+                  <DatePicker
                     disabled={isLoading}
-                    className='cursor-pointer'
-                    type='date'
-                    {...field}
+                    value={field.value}
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />
@@ -215,11 +240,11 @@ export const LotForm = ({
               <FormItem>
                 <FormLabel>Fecha de recepción</FormLabel>
                 <FormControl>
-                  <Input
+                  <DatePicker
                     disabled={isLoading}
-                    className='cursor-pointer'
-                    type='date'
-                    {...field}
+                    value={field.value || undefined}
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />
