@@ -7,19 +7,19 @@ import { Button } from '@/ui/button'
 import { Calendar } from '@/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover'
 
-type DatePickerProps = {
+interface DatePickerProps {
   value: Date
   onChange: (date?: Date) => void
   disabled?: boolean
   className?: string
 }
 
-export function DatePicker({
+export const DatePicker: React.FC<DatePickerProps> = ({
   value,
   onChange,
   disabled,
   className,
-}: DatePickerProps) {
+}) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
