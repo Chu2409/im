@@ -159,7 +159,6 @@ export const LocationForm = ({
                     // eslint-disable-next-line react/jsx-handler-names
                     onChange={field.onChange}
                     disabled={isLoading}
-                    className='w-full'
                   />
                 </FormControl>
 

@@ -14,19 +14,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/ui/input'
 import { Button } from '@/ui/button'
 import { useState } from 'react'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/ui/select'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { CATEGORIES } from '../data/categories'
 import { Product } from '@prisma/client'
 import { createProduct } from '../actions/create-product'
 import { updateProduct } from '../actions/update-product'
+import { Combobox } from '@/core/shared/components/combobox/combobox'
 
 const formSchema = z.object({
   name: z
@@ -161,28 +155,17 @@ export const ProductForm = ({
               <FormItem>
                 <FormLabel>Categoría</FormLabel>
                 <FormControl>
-                  <Select
-                    disabled={isLoading}
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onValueChange={field.onChange}
+                  <Combobox<string>
+                    options={Object.entries(CATEGORIES).map(([, value]) => ({
+                      value: value.name,
+                      label: value.name,
+                    }))}
                     value={field.value}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder='Seleccione una categoría' />
-                    </SelectTrigger>
-
-                    <SelectContent>
-                      {Object.entries(CATEGORIES).map(([, value]) => (
-                        <SelectItem
-                          key={value.id}
-                          value={value.name}
-                          className='cursor-pointer'
-                        >
-                          {value.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                    selectMessage='Selecciona una categoría'
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onChange={field.onChange}
+                    disabled={isLoading}
+                  />
                 </FormControl>
 
                 <FormMessage />
