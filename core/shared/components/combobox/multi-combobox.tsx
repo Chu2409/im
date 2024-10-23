@@ -59,8 +59,14 @@ export const MultiCombobox: React.FC<MultiComboboxProps> = ({
       </PopoverTrigger>
 
       <PopoverContent className='p-0 bg-white w-[200px]' align='start'>
-        <Command>
-          {options.length > 10 && <CommandInput placeholder='Buscar...' />}
+        <Command
+          filter={(value, search) =>
+            value.toLowerCase().trim().includes(search.toLowerCase().trim())
+              ? 1
+              : 0
+          }
+        >
+          {options.length > 2 && <CommandInput placeholder='Buscar...' />}
 
           <CommandList>
             <CommandEmpty>No hay opciones disponibles</CommandEmpty>
