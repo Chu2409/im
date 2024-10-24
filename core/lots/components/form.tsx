@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 'use client'
@@ -17,16 +18,21 @@ import { Button } from '@/ui/button'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
-import { IFullLot } from '../types'
+import { IEditableRowLotLocation, IFullLot } from '../types'
 import { Input } from '@/ui/input'
 import { Location, Product, Provider } from '@prisma/client'
 import { DatePicker } from '@/core/shared/components/date-picker'
 import { Combobox } from '@/core/shared/components/combobox/combobox'
+import { MultiCombobox } from '@/core/shared/components/combobox/multi-combobox'
+import { LotLocationFormDataTable } from './form-data-table'
 
 const formSchema = z.object({
   quantityPurchased: z
     .number({ message: 'Ingrese la cantidad' })
     .min(1, 'Mínimo 1'),
+  quantityPerUse: z
+    .number({ message: 'Ingrese la cantidad' })
+    .min(0.01, 'Mínimo 0.01'),
   expirationDate: z.date({ message: 'Seleccione una fecha de expiración' }),
   price: z.number({ message: 'Ingrese el precio' }).min(1, 'Mínimo 1'),
   orderDate: z.date({ message: 'Seleccione una fecha de órden' }),
@@ -64,9 +70,13 @@ export const LotForm = ({
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      quantityPurchased: initialData?.quantityPurchased || undefined,
+      // @ts-ignore
+      quantityPurchased: initialData?.quantityPurchased || '',
+      // @ts-ignore
+      quantityPerUse: initialData?.quantityPerUse || '',
       expirationDate: initialData?.expirationDate,
-      price: initialData?.price || undefined,
+      // @ts-ignore
+      price: initialData?.price || '',
       orderDate: initialData?.expirationDate,
       receptionDate: initialData?.receptionDate,
       productId: initialData?.productId,
@@ -77,6 +87,24 @@ export const LotForm = ({
   const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
+
+  const [lotLocationsTable, setLotLocationsTable] = useState<
+    IEditableRowLotLocation[]
+  >(
+    () =>
+      initialData?.lotLocations.map((lotLocation) => ({
+        location: {
+          id: lotLocation.locationId,
+          name: `${lotLocation.location.name} - ${lotLocation.location.code}  (${lotLocation.location.laboratory})`,
+        },
+        quantity: {
+          value: lotLocation.quantity,
+        },
+        isSaved: true,
+        toDelete: false,
+        toEdit: false,
+      })) || [],
+  )
 
   const onSubmit = async (values: formType) => {
     setIsLoading(true)
@@ -165,6 +193,27 @@ export const LotForm = ({
                 <FormControl>
                   <Input
                     placeholder='224'
+                    disabled={isLoading}
+                    type='number'
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='quantityPerUse'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Cantidad Por Uso</FormLabel>
+
+                <FormControl>
+                  <Input
+                    placeholder='2'
                     disabled={isLoading}
                     type='number'
                     {...field}
@@ -279,7 +328,88 @@ export const LotForm = ({
               </FormItem>
             )}
           />
+
+          <FormItem>
+            <FormLabel>Locaciones</FormLabel>
+
+            <FormControl>
+              <MultiCombobox
+                disabled={isLoading}
+                title='Seleccione las locaciones...'
+                values={lotLocationsTable.map(
+                  (lotLocation) => lotLocation.location.id,
+                )}
+                options={locations.map((location) => ({
+                  value: location.id,
+                  label: `${location.name} - ${location.code} (${location.laboratory})`,
+                }))}
+                onAdd={(locationId) => {
+                  const location = locations.find(
+                    (location) => location.id === locationId,
+                  )!
+
+                  const newLotLocationsTable = lotLocationsTable.concat({
+                    location: {
+                      id: location.id,
+                      name: `${location.name} - ${location.code}  (${location.laboratory})`,
+                    },
+                    quantity: {
+                      value: 1,
+                    },
+                    isSaved: false,
+                    toDelete: false,
+                    toEdit: false,
+                  })
+
+                  setLotLocationsTable(newLotLocationsTable)
+                }}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
         </div>
+
+        <LotLocationFormDataTable
+          data={lotLocationsTable}
+          onDelete={(isSaved, id) => {
+            if (isSaved) {
+              const updatedLotLocationsTable = lotLocationsTable.map(
+                (lotLocation) => {
+                  if (lotLocation.location.id === id)
+                    return {
+                      ...lotLocation,
+                      toDelete: lotLocation.toDelete
+                        ? !lotLocation.toDelete
+                        : true,
+                    }
+
+                  return lotLocation
+                },
+              )
+              setLotLocationsTable(updatedLotLocationsTable)
+            } else {
+              const updatedLotLocationsTable = lotLocationsTable.filter(
+                (lotLocation) => lotLocation.location.id !== id,
+              )
+              setLotLocationsTable(updatedLotLocationsTable)
+            }
+          }}
+          onQuantityBlur={(isSaved: boolean, id: number, quantity: number) => {
+            const updatedLotLocationsTable = lotLocationsTable.map(
+              (lotLocation) => {
+                if (lotLocation.location.id === id)
+                  return {
+                    ...lotLocation,
+                    quantity: { value: quantity, isEdited: !!isSaved },
+                    toEdit: !!isSaved,
+                  }
+
+                return lotLocation
+              },
+            )
+            setLotLocationsTable(updatedLotLocationsTable)
+          }}
+        />
 
         <div className='ml-auto'>
           <Button
