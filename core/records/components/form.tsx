@@ -149,8 +149,8 @@ export const RecordForm = ({
         className='flex flex-col gap-6'
         id='form'
       >
-        <div className='grid sm:grid-cols-2 gap-4'>
-          <div className='grid gap-3 max-sm:mb-8'>
+        <div className='grid lg:grid-cols-2 gap-4'>
+          <div className='grid gap-3 max-lg:mb-8'>
             <FormField
               control={form.control}
               name='start'
@@ -232,11 +232,6 @@ export const RecordForm = ({
                   if (itemTable.lotLocation.id === id)
                     return {
                       ...itemTable,
-                      // quantity: {
-                      //   value: initialData!.items.find(
-                      //     (item) => item.lotLocationId === id,
-                      //   )!.quantity!,
-                      // },
                       toDelete: itemTable.toDelete ? !itemTable.toDelete : true,
                     }
 
