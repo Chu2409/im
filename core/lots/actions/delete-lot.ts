@@ -4,6 +4,12 @@ import prisma from '@/lib/prisma'
 
 export const deleteLot = async (id: number) => {
   try {
+    await prisma.lotLocation.deleteMany({
+      where: {
+        lotId: id,
+      },
+    })
+
     const record = await prisma.lot.delete({
       where: {
         id,
