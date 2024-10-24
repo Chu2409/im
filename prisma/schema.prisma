@@ -99,9 +99,10 @@ model Item {
 }
 
 model Alert {
-  id       Int    @id @default(autoincrement()) @map("id")
-  type     String @map("type")
-  severity String @map("severity")
+  id       Int     @id @default(autoincrement()) @map("id")
+  type     String  @map("type")
+  severity String  @map("severity")
+  resolved Boolean @default(false) @map("resolved")
 
   lotLocationId Int         @map("lot_location_id")
   lotLocation   LotLocation @relation(fields: [lotLocationId], references: [id])
