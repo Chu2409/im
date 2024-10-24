@@ -35,7 +35,7 @@ const formSchema = z.object({
     .min(0.01, 'Mínimo 0.01'),
   expirationDate: z.date({ message: 'Seleccione una fecha de expiración' }),
   price: z.number({ message: 'Ingrese el precio' }).min(1, 'Mínimo 1'),
-  orderDate: z.date({ message: 'Seleccione una fecha de órden' }),
+  orderDate: z.date({ message: 'Seleccione una fecha de orden' }),
   receptionDate: z.date().nullish(),
   productId: z.coerce
     .number({ message: 'Seleccione un producto' })
@@ -294,7 +294,7 @@ export const LotForm = ({
             name='orderDate'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Fecha de órden</FormLabel>
+                <FormLabel>Fecha de orden</FormLabel>
                 <FormControl>
                   <DatePicker
                     disabled={isLoading}

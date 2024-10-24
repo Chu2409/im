@@ -64,7 +64,20 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
   },
   {
     accessorKey: 'usesPerUnit',
-    header: 'Usos por unidad',
+    header: 'U/U',
+  },
+  {
+    accessorKey: 'orderDate',
+    meta: 'Orden',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Orden' toggleVisibility />
+    ),
+    sortingFn: (rowA, rowB) =>
+      new Date(rowA.original.orderDate).getTime() -
+      new Date(rowB.original.orderDate).getTime(),
+    cell: ({ row }) => (
+      <span className='capitalize'>{formatDate(row.original.orderDate)}</span>
+    ),
   },
   {
     accessorKey: 'expiration',
