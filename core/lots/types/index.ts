@@ -31,3 +31,7 @@ export interface IEditableRowLotLocation {
   toDelete: boolean
   toEdit: boolean
 }
+
+export interface IUpsertLotLocationBulkProps extends Omit<Lot, 'id'> {
+  lotLocations: IEditableRowLotLocation[]
+}
