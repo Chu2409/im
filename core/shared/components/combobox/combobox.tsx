@@ -59,7 +59,13 @@ export function Combobox<T>({
         className='w-[250px] max-sm:w-[300px] xl:w-[340px] p-0'
         align='start'
       >
-        <Command>
+        <Command
+          filter={(value, search) =>
+            value.toLowerCase().trim().includes(search.toLowerCase().trim())
+              ? 1
+              : 0
+          }
+        >
           {options.length > 10 && <CommandInput placeholder='Buscar...' />}
 
           <CommandList>

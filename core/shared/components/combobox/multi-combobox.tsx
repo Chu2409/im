@@ -19,8 +19,7 @@ interface MultiComboboxProps {
   title: string
   values: number[]
   options: IOption<number>[]
-  onChange: (value: number) => void
-  onRemove: (value: number) => void
+  onAdd: (value: number) => void
   disabled?: boolean
 }
 
@@ -28,8 +27,7 @@ export const MultiCombobox: React.FC<MultiComboboxProps> = ({
   title,
   values,
   options,
-  onChange,
-  onRemove,
+  onAdd,
   disabled,
 }) => {
   return (
@@ -58,7 +56,10 @@ export const MultiCombobox: React.FC<MultiComboboxProps> = ({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className='p-0 bg-white w-[200px]' align='start'>
+      <PopoverContent
+        className='w-[250px] max-sm:w-[300px] xl:w-[340px] p-0'
+        align='start'
+      >
         <Command
           filter={(value, search) =>
             value.toLowerCase().trim().includes(search.toLowerCase().trim())
@@ -77,11 +78,9 @@ export const MultiCombobox: React.FC<MultiComboboxProps> = ({
                 return (
                   <CommandItem
                     key={`${option.value}`}
-                    onSelect={() => {
-                      if (isSelected) onRemove(option.value)
-                      else onChange(option.value)
-                    }}
-                    className='cursor-pointer capitalize'
+                    onSelect={() => onAdd(option.value)}
+                    disabled={isSelected}
+                    className='cursor-pointer capitalize w-full'
                   >
                     <div
                       className={cn(
