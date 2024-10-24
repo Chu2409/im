@@ -100,7 +100,7 @@ export const LotForm = ({
           name: `${lotLocation.location.name} - ${lotLocation.location.code}  (${lotLocation.location.laboratory})`,
         },
         quantity: {
-          value: lotLocation.quantity,
+          value: lotLocation.stock,
         },
         isSaved: true,
         toDelete: false,
