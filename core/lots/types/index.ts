@@ -17,3 +17,17 @@ export interface IFullLot extends Lot {
   provider: Provider | null
   lotLocations: ILotLocationWithLocation[]
 }
+
+export interface IEditableRowLotLocation {
+  location: {
+    id: number
+    name: string
+  }
+  quantity: {
+    value: number
+    isEdited?: boolean
+  }
+  isSaved: boolean
+  toDelete: boolean
+  toEdit: boolean
+}
