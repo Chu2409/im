@@ -37,11 +37,23 @@ export const updateLotWithLocations = async (
     })
 
     return await prisma.$transaction(async (prisma) => {
+      const lot = await prisma.lot.update({
+        where: { id: lotId },
+        data: {
+          quantityPurchased: data.quantityPurchased,
+          usesPerUnit: data.usesPerUnit,
+          expirationDate: data.expirationDate,
+          price: data.price,
+          orderDate: data.orderDate,
+          receptionDate: data.receptionDate,
+        },
+      })
+
       if (toAdd.length > 0) {
         await prisma.lotLocation.createMany({
           data: toAdd.map((lotLocation) => ({
             locationId: lotLocation.locationId,
-            stock: lotLocation.stock,
+            stock: lotLocation.stock * lot.usesPerUnit,
             lotId,
           })),
         })
@@ -55,7 +67,7 @@ export const updateLotWithLocations = async (
               locationId: lotLocation.locationId,
             },
             data: {
-              stock: lotLocation.stock,
+              stock: lotLocation.stock * lot.usesPerUnit,
             },
           })
         }
@@ -71,18 +83,6 @@ export const updateLotWithLocations = async (
           })
         }
       }
-
-      await prisma.lot.update({
-        where: { id: lotId },
-        data: {
-          quantityPurchased: data.quantityPurchased,
-          usesPerUnit: data.usesPerUnit,
-          expirationDate: data.expirationDate,
-          price: data.price,
-          orderDate: data.orderDate,
-          receptionDate: data.receptionDate,
-        },
-      })
 
       return lotId
     })

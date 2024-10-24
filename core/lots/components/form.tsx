@@ -216,7 +216,7 @@ export const LotForm = ({
                 <FormControl>
                   <Input
                     placeholder='2'
-                    disabled={isLoading}
+                    disabled={isLoading || initialData != null}
                     type='number'
                     {...field}
                   />
