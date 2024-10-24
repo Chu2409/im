@@ -42,7 +42,7 @@ export const ItemSelector = ({
 
           <CommandGroup className='overflow-y-auto max-h-52 p-0 m-0'>
             {lotLocations.length > 0 && (
-              <div className='w-full font-light text-sm text-muted-foreground px-2 grid-cols-5 grid gap-2 text-center'>
+              <div className='w-full text-sm font-medium px-2 grid-cols-5 grid gap-2 text-center'>
                 <span className='col-span-2'>Nombre</span>
 
                 <span>Lote</span>
@@ -73,7 +73,7 @@ export const ItemSelector = ({
 
                 <span>{lotLocation.location.laboratory}</span>
 
-                <span>{lotLocation.stock}</span>
+                <span>{lotLocation.stock * lotLocation.lot.usesPerUnit}</span>
               </CommandItem>
             ))}
           </CommandGroup>

@@ -100,7 +100,7 @@ export function ItemFormDataTable({
                 </TableCell>
 
                 <TableCell>
-                  <div>
+                  <div className='flex items-center justify-center'>
                     {item.toDelete ? (
                       <ReloadIcon
                         className='h-4 w-4 cursor-pointer text-blue-600'
