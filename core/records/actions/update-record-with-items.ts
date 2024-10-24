@@ -5,7 +5,7 @@ import { IUpsertProductBulkProps } from '../types'
 
 interface BulkItem {
   lotLocationId: number
-  quantity: number
+  stock: number
 }
 
 interface ToEditItem extends BulkItem {
@@ -25,18 +25,18 @@ export const updateRecordWithItems = async (
       if (!item.isSaved) {
         toAdd.push({
           lotLocationId: item.lotLocation.id,
-          quantity: item.quantity.value,
+          stock: item.quantity.value,
         })
       } else if (item.toEdit.value && !item.toDelete) {
         toEdit.push({
           lotLocationId: item.lotLocation.id,
-          quantity: item.quantity.value,
+          stock: item.quantity.value,
           oldQuantity: item.toEdit.oldQuantity!,
         })
       } else if (item.toDelete) {
         toDelete.push({
           lotLocationId: item.lotLocation.id,
-          quantity: item.toEdit.oldQuantity,
+          stock: item.toEdit.oldQuantity,
         })
       }
     })
@@ -46,7 +46,7 @@ export const updateRecordWithItems = async (
         await prisma.item.createMany({
           data: toAdd.map((item) => ({
             lotLocationId: item.lotLocationId,
-            quantity: item.quantity,
+            quantity: item.stock,
             recordId,
           })),
         })
@@ -57,8 +57,8 @@ export const updateRecordWithItems = async (
               id: item.lotLocationId,
             },
             data: {
-              quantity: {
-                decrement: item.quantity,
+              stock: {
+                decrement: item.stock,
               },
             },
           })
@@ -73,32 +73,32 @@ export const updateRecordWithItems = async (
               lotLocationId: item.lotLocationId,
             },
             data: {
-              quantity: item.quantity,
+              quantity: item.stock,
             },
           })
 
-          if (item.oldQuantity > item.quantity) {
-            const diff = item.oldQuantity - item.quantity
+          if (item.oldQuantity > item.stock) {
+            const diff = item.oldQuantity - item.stock
 
             await prisma.lotLocation.update({
               where: {
                 id: item.lotLocationId,
               },
               data: {
-                quantity: {
+                stock: {
                   increment: diff,
                 },
               },
             })
           } else {
-            const diff = item.quantity - item.oldQuantity
+            const diff = item.stock - item.oldQuantity
 
             await prisma.lotLocation.update({
               where: {
                 id: item.lotLocationId,
               },
               data: {
-                quantity: {
+                stock: {
                   decrement: diff,
                 },
               },
@@ -121,7 +121,7 @@ export const updateRecordWithItems = async (
               id: item.lotLocationId,
             },
             data: {
-              quantity: { increment: item.quantity },
+              stock: { increment: item.stock },
             },
           })
         }

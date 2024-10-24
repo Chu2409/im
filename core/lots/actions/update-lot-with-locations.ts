@@ -5,7 +5,7 @@ import { IUpsertLotLocationBulkProps } from '../types'
 
 interface BulkItem {
   locationId: number
-  quantity: number
+  stock: number
 }
 
 export const updateLotWithLocations = async (
@@ -21,27 +21,39 @@ export const updateLotWithLocations = async (
       if (!lotLocation.isSaved) {
         toAdd.push({
           locationId: lotLocation.location.id,
-          quantity: lotLocation.quantity.value,
+          stock: lotLocation.quantity.value,
         })
       } else if (lotLocation.toEdit && !lotLocation.toDelete) {
         toEdit.push({
           locationId: lotLocation.location.id,
-          quantity: lotLocation.quantity.value,
+          stock: lotLocation.quantity.value,
         })
       } else if (lotLocation.toDelete) {
         toDelete.push({
           locationId: lotLocation.location.id,
-          quantity: lotLocation.quantity.value,
+          stock: lotLocation.quantity.value,
         })
       }
     })
 
     return await prisma.$transaction(async (prisma) => {
+      const lot = await prisma.lot.update({
+        where: { id: lotId },
+        data: {
+          quantityPurchased: data.quantityPurchased,
+          usesPerUnit: data.usesPerUnit,
+          expirationDate: data.expirationDate,
+          price: data.price,
+          orderDate: data.orderDate,
+          receptionDate: data.receptionDate,
+        },
+      })
+
       if (toAdd.length > 0) {
         await prisma.lotLocation.createMany({
           data: toAdd.map((lotLocation) => ({
             locationId: lotLocation.locationId,
-            quantity: lotLocation.quantity,
+            stock: lotLocation.stock * lot.usesPerUnit,
             lotId,
           })),
         })
@@ -55,7 +67,7 @@ export const updateLotWithLocations = async (
               locationId: lotLocation.locationId,
             },
             data: {
-              quantity: lotLocation.quantity,
+              stock: lotLocation.stock * lot.usesPerUnit,
             },
           })
         }
@@ -71,18 +83,6 @@ export const updateLotWithLocations = async (
           })
         }
       }
-
-      await prisma.lot.update({
-        where: { id: lotId },
-        data: {
-          quantityPurchased: data.quantityPurchased,
-          usesPerUnit: data.usesPerUnit,
-          expirationDate: data.expirationDate,
-          price: data.price,
-          orderDate: data.orderDate,
-          receptionDate: data.receptionDate,
-        },
-      })
 
       return lotId
     })

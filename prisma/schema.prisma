@@ -46,7 +46,7 @@ model Lot {
   id                Int       @id @default(autoincrement()) @map("id")
   quantityPurchased Float     @map("quantity_purchased")
   usesPerUnit       Float     @map("quantity_per_use")
-  expirationDate    DateTime  @map("expiration_date")
+  expirationDate    DateTime? @map("expiration_date")
   price             Float     @map("price")
   orderDate         DateTime  @map("order_date")
   receptionDate     DateTime? @map("reception_date")
@@ -62,8 +62,8 @@ model Lot {
 }
 
 model LotLocation {
-  id       Int   @id @default(autoincrement()) @map("id")
-  quantity Float @map("quantity")
+  id    Int   @id @default(autoincrement()) @map("id")
+  stock Float @map("quantity")
 
   lotId      Int      @map("lot_id")
   lot        Lot      @relation(fields: [lotId], references: [id])

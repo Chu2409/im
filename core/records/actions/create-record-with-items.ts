@@ -25,7 +25,7 @@ export const createRecordWithItems = async (data: IUpsertProductBulkProps) => {
             id: item.lotLocation.id,
           },
           data: {
-            quantity: { decrement: item.quantity.value },
+            stock: { decrement: item.quantity.value },
           },
         }),
     )

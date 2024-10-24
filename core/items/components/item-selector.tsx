@@ -14,16 +14,18 @@ import { Label } from '@/ui/label'
 export const ItemSelector = ({
   lotLocations,
   onAdd,
+  values,
 }: {
   lotLocations: IFullLotLocation[]
   onAdd: (id: number) => void
+  values: string[]
 }) => {
   return (
-    <div className='space-y-2'>
+    <>
       <Label>Inventario disponible</Label>
 
       <Command
-        className='rounded-lg border shadow-md'
+        className='border shadow-md -pb-2'
         filter={(value, search) => {
           const name = value.split('@')[1]
 
@@ -38,12 +40,12 @@ export const ItemSelector = ({
         <CommandList>
           <CommandEmpty>Producto no encontrado</CommandEmpty>
 
-          <CommandGroup className='overflow-y-auto max-h-40'>
+          <CommandGroup className='overflow-y-auto max-h-52 p-0 m-0'>
             {lotLocations.length > 0 && (
-              <div className='w-full font-light text-sm text-muted-foreground px-2 grid-cols-5 grid gap-2 text-center'>
-                <span className='col-span-2'>Nombre</span>
-
+              <div className='w-full text-sm font-medium px-2 grid-cols-5 grid gap-2 text-center'>
                 <span>Lote</span>
+
+                <span className='col-span-2'>Nombre</span>
 
                 <span>Ubicación</span>
 
@@ -59,21 +61,24 @@ export const ItemSelector = ({
                   onAdd(lotLocation.id)
                 }}
                 className='cursor-pointer gap-2 grid grid-cols-5 text-center'
+                disabled={values.includes(
+                  `${lotLocation.id}@${lotLocation.lot.product.name}`,
+                )}
               >
+                <span>{lotLocation.lotId}</span>
+
                 <span className='col-span-2'>
                   {lotLocation.lot.product.name}
                 </span>
 
-                <span>{lotLocation.lotId}</span>
-
                 <span>{lotLocation.location.laboratory}</span>
 
-                <span>{lotLocation.quantity}</span>
+                <span>{lotLocation.stock}</span>
               </CommandItem>
             ))}
           </CommandGroup>
         </CommandList>
       </Command>
-    </div>
+    </>
   )
 }

@@ -31,11 +31,11 @@ export function ItemFormDataTable({
         <TableHeader className='bg-foreground/90'>
           <TableRow className='hover:bg-foreground'>
             <TableHead className='text-center py-2 h-min text-white'>
-              Nombre
+              Lote
             </TableHead>
 
             <TableHead className='text-center py-2 h-min text-white'>
-              Lote
+              Nombre
             </TableHead>
 
             <TableHead className='text-center py-2 h-min text-white'>
@@ -63,11 +63,11 @@ export function ItemFormDataTable({
                 )}
               >
                 <TableCell className='px-0 text-center py-1.5'>
-                  {item.lotLocation.productName}
+                  {item.lotLocation.lotId}
                 </TableCell>
 
                 <TableCell className='px-0 text-center py-1.5'>
-                  {item.lotLocation.lotId}
+                  {item.lotLocation.productName}
                 </TableCell>
 
                 <TableCell className='px-0 text-center py-1.5'>
@@ -100,7 +100,7 @@ export function ItemFormDataTable({
                 </TableCell>
 
                 <TableCell>
-                  <div>
+                  <div className='flex items-center justify-center'>
                     {item.toDelete ? (
                       <ReloadIcon
                         className='h-4 w-4 cursor-pointer text-blue-600'

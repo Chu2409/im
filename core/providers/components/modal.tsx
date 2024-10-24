@@ -15,7 +15,6 @@ export const ProviderModal = () => {
       }
       isOpen={isOpen}
       onClose={onClose}
-      className='max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-3xl'
     >
       <ProviderForm initialData={initialData} onModalClose={onClose} />
     </Modal>

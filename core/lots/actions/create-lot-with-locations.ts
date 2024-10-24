@@ -9,18 +9,11 @@ export const createLotWithLocations = async (
   try {
     const lotBulk = await prisma.lot.create({
       data: {
-        quantityPurchased: data.quantityPurchased,
-        usesPerUnit: data.usesPerUnit,
-        expirationDate: data.expirationDate,
-        price: data.price,
-        orderDate: data.orderDate,
-        receptionDate: data.receptionDate,
-        productId: data.productId,
-        providerId: data.providerId,
+        ...data,
         lotLocations: {
           create: data.lotLocations.map((lotLocation) => ({
             locationId: lotLocation.location.id,
-            quantity: lotLocation.quantity.value,
+            stock: lotLocation.quantity.value * data.usesPerUnit,
           })),
         },
       },

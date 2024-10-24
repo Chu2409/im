@@ -1,7 +1,7 @@
 interface ILot {
   quantityPurchased: number
   usesPerUnit: number
-  expirationDate: Date
+  expirationDate: Date | null
   price: number
   orderDate: Date
   receptionDate: Date | null
