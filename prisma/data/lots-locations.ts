@@ -1,37 +1,37 @@
 interface ILotLocation {
-  quantity: number
+  stock: number
   lotId: number
   locationId: number
 }
 
 export const lotsLocations: ILotLocation[] = [
   {
-    quantity: 10,
+    stock: 10,
     lotId: 1,
     locationId: 1,
   },
   {
-    quantity: 24,
+    stock: 24,
     lotId: 1,
     locationId: 4,
   },
   {
-    quantity: 60,
+    stock: 60,
     lotId: 2,
     locationId: 1,
   },
   {
-    quantity: 68,
+    stock: 68,
     lotId: 2,
     locationId: 4,
   },
   {
-    quantity: 200,
+    stock: 200,
     lotId: 3,
     locationId: 1,
   },
   {
-    quantity: 133,
+    stock: 133,
     lotId: 3,
     locationId: 4,
   },
