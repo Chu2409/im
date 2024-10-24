@@ -45,7 +45,7 @@ model Location {
 model Lot {
   id                Int       @id @default(autoincrement()) @map("id")
   quantityPurchased Float     @map("quantity_purchased")
-  quantityPerUse    Float     @map("quantity_per_use")
+  usesPerUnit       Float     @map("quantity_per_use")
   expirationDate    DateTime  @map("expiration_date")
   price             Float     @map("price")
   orderDate         DateTime  @map("order_date")
