@@ -1,12 +1,12 @@
-import { getLocations } from '@/core/locations/actions/get-locations'
-import { LocationsClient } from '@/core/locations/components/client'
+import { getAlerts } from '@/core/alerts/actions/get-alerts'
+import { AlertsClient } from '@/core/alerts/components/client'
 
 export const revalidate = 0
 
 const AlertsPage = async () => {
-  const locations = await getLocations(true)
+  const alerts = await getAlerts()
 
-  return <LocationsClient locations={locations} />
+  return <AlertsClient alerts={alerts} />
 }
 
 export default AlertsPage
