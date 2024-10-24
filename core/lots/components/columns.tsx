@@ -63,6 +63,10 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
     cell: ({ row }) => row.original.quantityPurchased,
   },
   {
+    accessorKey: 'usesPerUnit',
+    header: 'Usos por unidad',
+  },
+  {
     accessorKey: 'expiration',
     meta: 'Vencimiento',
     header: ({ column }) => (
