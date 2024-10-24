@@ -1,5 +1,6 @@
 'use client'
 
+import { IFullLotLocation } from '@/core/lots/types'
 import {
   Command,
   CommandEmpty,
@@ -9,13 +10,12 @@ import {
   CommandList,
 } from '@/ui/command'
 import { Label } from '@/ui/label'
-import { Product } from '@prisma/client'
 
 export const ItemSelector = ({
-  products,
+  lotLocations,
   onAdd,
 }: {
-  products: Product[]
+  lotLocations: IFullLotLocation[]
   onAdd: (id: number) => void
 }) => {
   return (
@@ -25,7 +25,10 @@ export const ItemSelector = ({
       <Command
         className='rounded-lg border shadow-md'
         filter={(value, search) => {
-          if (value.toLowerCase().includes(search.toLowerCase())) return 1
+          const name = value.split('@')[1]
+
+          if (name.toLowerCase().trim().includes(search.toLowerCase().trim()))
+            return 1
 
           return 0
         }}
@@ -36,16 +39,36 @@ export const ItemSelector = ({
           <CommandEmpty>Producto no encontrado</CommandEmpty>
 
           <CommandGroup className='overflow-y-auto max-h-40'>
-            {products.map((product) => (
+            {lotLocations.length > 0 && (
+              <div className='w-full font-light text-sm text-muted-foreground px-2 grid-cols-5 grid gap-2 text-center'>
+                <span className='col-span-2'>Nombre</span>
+
+                <span>Lote</span>
+
+                <span>Ubicación</span>
+
+                <span>Stock</span>
+              </div>
+            )}
+
+            {lotLocations.map((lotLocation) => (
               <CommandItem
-                key={product.name}
-                value={product.name}
+                key={lotLocation.id}
+                value={`${lotLocation.id}@${lotLocation.lot.product.name}`}
                 onSelect={() => {
-                  onAdd(product.id)
+                  onAdd(lotLocation.id)
                 }}
-                className='cursor-pointer'
+                className='cursor-pointer gap-2 grid grid-cols-5 text-center'
               >
-                {product.name}
+                <span className='col-span-2'>
+                  {lotLocation.lot.product.name}
+                </span>
+
+                <span>{lotLocation.lotId}</span>
+
+                <span>{lotLocation.location.laboratory}</span>
+
+                <span>{lotLocation.quantity}</span>
               </CommandItem>
             ))}
           </CommandGroup>

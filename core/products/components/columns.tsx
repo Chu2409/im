@@ -3,18 +3,30 @@
 import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { ColumnDef } from '@tanstack/react-table'
-import { IProductWithProviders } from '../types'
 import { useProductModal } from '../hooks/use-product-modal'
 import { Badge } from '@/ui/badge'
 import { getCategoryByName } from '../data/categories'
+import { InactiveIndicator } from '@/core/shared/components/inactive-indicator'
+import { toggleProductStatus } from '../actions/toggle-product-status'
+import { Product } from '@prisma/client'
 
-export const productsColumns: ColumnDef<IProductWithProviders>[] = [
+export const productsColumns: ColumnDef<Product>[] = [
   {
     accessorKey: 'name',
     meta: 'Nombre',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Nombre' toggleVisibility />
+      <DataTableColumnHeader column={column} title='Nombre' />
     ),
+  },
+  {
+    accessorKey: 'status',
+    meta: 'Estado',
+    header: '',
+    cell: ({ row }) => !row.original.active && <InactiveIndicator />,
+    filterFn: (row, id, filterValue) => {
+      const value = row.original.active ? 1 : 0
+      return filterValue.includes(value)
+    },
   },
   {
     accessorKey: 'category',
@@ -48,23 +60,6 @@ export const productsColumns: ColumnDef<IProductWithProviders>[] = [
     },
   },
   {
-    accessorKey: 'providers',
-    header: 'Proveedores',
-    cell: ({ row }) => (
-      <div className='flex items-center h-full w-full gap-2 flex-wrap'>
-        {row.original.productsProviders.map((productProvider) => (
-          <Badge
-            key={`${productProvider.id}-${productProvider.productId}-${productProvider.providerId}`}
-            className='rounded-full'
-            variant='outline'
-          >
-            {productProvider.provider?.name}
-          </Badge>
-        ))}
-      </div>
-    ),
-  },
-  {
     id: 'actions',
     cell: ({ row }) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -73,8 +68,8 @@ export const productsColumns: ColumnDef<IProductWithProviders>[] = [
       return (
         <DataTableRowActions
           id={row.original.id}
-          toggleStatus={() => Promise.resolve(true)}
-          toggleStatusMessage='El proveedor ha sido eliminado correctamente'
+          status={row.original.active}
+          toggleStatus={toggleProductStatus}
           onEdit={() => onOpen(row.original)}
         />
       )

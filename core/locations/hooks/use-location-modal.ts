@@ -8,8 +8,8 @@ interface LocationModalState {
   onClose: () => void
 }
 
-export const useLocationrModal = create<LocationModalState>((set) => ({
+export const useLocationModal = create<LocationModalState>((set) => ({
   isOpen: false,
-  onOpen: (provider) => set({ location: provider, isOpen: true }),
+  onOpen: (location) => set({ location, isOpen: true }),
   onClose: () => set({ isOpen: false }),
 }))

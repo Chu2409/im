@@ -14,20 +14,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/ui/input'
 import { Button } from '@/ui/button'
 import { useState } from 'react'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/ui/select'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
-import { IProductWithProviders } from '../types'
 import { CATEGORIES } from '../data/categories'
-import { MultiSelector } from '@/core/shared/components/multi-selector'
-import { Provider } from '@prisma/client'
-import { createProductWithProviders } from '../actions/create-product-with-providers'
+import { Product } from '@prisma/client'
+import { createProduct } from '../actions/create-product'
+import { updateProduct } from '../actions/update-product'
+import { Combobox } from '@/core/shared/components/combobox/combobox'
 
 const formSchema = z.object({
   name: z
@@ -41,7 +34,6 @@ const formSchema = z.object({
   category: z
     .string({ message: 'Seleccione una categoría' })
     .min(1, 'Seleccione una categoría'),
-  providers: z.number().array(),
 })
 
 type formType = z.infer<typeof formSchema>
@@ -49,11 +41,9 @@ type formType = z.infer<typeof formSchema>
 export const ProductForm = ({
   initialData,
   onModalClose,
-  providers,
 }: {
-  initialData?: IProductWithProviders
+  initialData?: Product
   onModalClose: () => void
-  providers: Provider[]
 }) => {
   const toastTitle = initialData ? 'Producto actualizado' : 'Producto creado'
   const toastDescription = initialData
@@ -72,11 +62,6 @@ export const ProductForm = ({
       name: initialData?.name || '',
       description: initialData?.description || '',
       category: initialData?.category || '',
-      providers: initialData
-        ? initialData.productsProviders.map(
-            (provider) => provider.providerId || undefined,
-          )
-        : [],
     },
   })
 
@@ -89,8 +74,11 @@ export const ProductForm = ({
 
     let result
 
-    if (initialData) result = undefined
-    else result = createProductWithProviders(values)
+    if (initialData) {
+      result = updateProduct(initialData.id, values)
+    } else {
+      result = createProduct(values)
+    }
 
     if (result != null) {
       toast({
@@ -167,57 +155,16 @@ export const ProductForm = ({
               <FormItem>
                 <FormLabel>Categoría</FormLabel>
                 <FormControl>
-                  <Select
-                    disabled={isLoading}
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder='Seleccione una categoría' />
-                    </SelectTrigger>
-
-                    <SelectContent>
-                      {Object.entries(CATEGORIES).map(([, value]) => (
-                        <SelectItem
-                          key={value.id}
-                          value={value.name}
-                          className='cursor-pointer'
-                        >
-                          {value.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='providers'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Proveedores</FormLabel>
-                <FormControl>
-                  <MultiSelector
-                    title='Seleccione proveedores'
-                    values={field.value}
-                    options={providers.map((provider) => ({
-                      value: provider.id,
-                      label: provider.name,
+                  <Combobox<string>
+                    options={Object.entries(CATEGORIES).map(([, value]) => ({
+                      value: value.name,
+                      label: value.name,
                     }))}
-                    onChange={(value) =>
-                      field.onChange([...field.value, value])
-                    }
-                    onRemove={(value) =>
-                      field.onChange([
-                        ...field.value.filter((current) => current !== value),
-                      ])
-                    }
+                    value={field.value}
+                    selectMessage='Selecciona una categoría'
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onChange={field.onChange}
+                    disabled={isLoading}
                   />
                 </FormControl>
 

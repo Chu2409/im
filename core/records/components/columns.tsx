@@ -6,8 +6,8 @@ import { ColumnDef } from '@tanstack/react-table'
 import { useRecord } from '../hooks/use-record'
 import { IRecordWithItems } from '../types'
 import { useRecordModal } from '../hooks/use-record-modal'
-import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { deleteRecord } from '../actions/delete-record'
+import { DataTableRowActions } from '../../shared/components/table/data-table-row-actions-delete'
 
 export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
   {
@@ -29,6 +29,9 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
         </div>
       )
     },
+    sortingFn: (rowA, rowB) =>
+      new Date(rowA.original.start).getTime() -
+      new Date(rowB.original.start).getTime(),
   },
   {
     id: 'actions',
@@ -51,8 +54,8 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
       return (
         <DataTableRowActions
           id={row.original.id}
-          toggleStatus={onDelete}
-          toggleStatusMessage='El registro ha sido eliminado correctamente'
+          onDelete={onDelete}
+          deleteMessage='El registro ha sido eliminado correctamente'
           errorMessage='Elimine los items del registro primero'
           onEdit={handleClick}
         />

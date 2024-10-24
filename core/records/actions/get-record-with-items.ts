@@ -12,7 +12,16 @@ export const getRecordWithItems = async (
       include: {
         items: {
           include: {
-            product: true,
+            lotLocation: {
+              include: {
+                lot: {
+                  include: {
+                    product: true,
+                  },
+                },
+                location: true,
+              },
+            },
           },
         },
       },

@@ -11,12 +11,24 @@ export const createRecordWithItems = async (data: IUpsertProductBulkProps) => {
         end: data.end,
         items: {
           create: data.items.map((item) => ({
-            productId: item.product.id,
+            lotLocationId: item.lotLocation.id,
             quantity: item.quantity.value,
           })),
         },
       },
     })
+
+    data.items.forEach(
+      async (item) =>
+        await prisma.lotLocation.update({
+          where: {
+            id: item.lotLocation.id,
+          },
+          data: {
+            quantity: { decrement: item.quantity.value },
+          },
+        }),
+    )
 
     return recordBulk.id
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

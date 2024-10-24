@@ -21,7 +21,12 @@ export const ItemsClient = ({ record }: { record?: IRecordWithItems }) => {
             </span>
           </p>
 
-          <DataTable data={record.items} columns={itemsColumns} />
+          <DataTable
+            data={record.items}
+            columns={itemsColumns}
+            statusColumn={false}
+            viewOptions={false}
+          />
         </>
       )}
     </>

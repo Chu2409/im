@@ -7,6 +7,29 @@ datasource db {
   url      = env("DB_URL")
 }
 
+model Provider {
+  id      Int     @id @default(autoincrement()) @map("id")
+  name    String  @map("name")
+  contact String  @map("contact")
+  active  Boolean @default(true) @map("active")
+
+  lots Lot[]
+
+  @@map("providers")
+}
+
+model Product {
+  id          Int     @id @default(autoincrement()) @map("id")
+  name        String  @map("name")
+  description String  @map("description")
+  category    String  @map("category")
+  active      Boolean @default(true) @map("active")
+
+  lots Lot[]
+
+  @@map("products")
+}
+
 model Location {
   id         Int     @id @default(autoincrement()) @map("id")
   name       String  @map("name")
@@ -14,41 +37,43 @@ model Location {
   laboratory String  @map("laboratory")
   active     Boolean @default(true) @map("active")
 
+  lotLocations LotLocation[]
+
   @@map("locations")
 }
 
-model Provider {
-  id      Int     @id @default(autoincrement()) @map("id")
-  name    String  @map("name")
-  contact String  @map("contact")
-  active  Boolean @default(true) @map("active")
+model Lot {
+  id                Int       @id @default(autoincrement()) @map("id")
+  quantityPurchased Float     @map("quantity_purchased")
+  usesPerUnit       Float     @map("quantity_per_use")
+  expirationDate    DateTime  @map("expiration_date")
+  price             Float     @map("price")
+  orderDate         DateTime  @map("order_date")
+  receptionDate     DateTime? @map("reception_date")
 
-  productsProviders ProductProvider[]
-
-  @@map("providers")
-}
-
-model Product {
-  id          Int    @id @default(autoincrement()) @map("id")
-  name        String @map("name")
-  description String @map("description")
-  category    String @map("category")
-
-  items             Item[]
-  productsProviders ProductProvider[]
-
-  @@map("products")
-}
-
-model ProductProvider {
-  id Int @id @default(autoincrement()) @map("id")
-
-  providerId Int?      @map("provider_id")
-  provider   Provider? @relation(fields: [providerId], references: [id])
   productId  Int       @map("product_id")
   product    Product   @relation(fields: [productId], references: [id])
+  providerId Int?      @map("provider_id")
+  provider   Provider? @relation(fields: [providerId], references: [id])
 
-  @@map("products_providers")
+  lotLocations LotLocation[]
+
+  @@map("lots")
+}
+
+model LotLocation {
+  id       Int   @id @default(autoincrement()) @map("id")
+  quantity Float @map("quantity")
+
+  lotId      Int      @map("lot_id")
+  lot        Lot      @relation(fields: [lotId], references: [id])
+  locationId Int      @map("location_id")
+  location   Location @relation(fields: [locationId], references: [id])
+
+  items  Item[]
+  alerts Alert[]
+
+  @@map("lots_locations")
 }
 
 model Record {
@@ -65,10 +90,22 @@ model Item {
   id       Int   @id @default(autoincrement()) @map("id")
   quantity Float @map("quantity")
 
-  productId Int     @map("product_id")
-  product   Product @relation(fields: [productId], references: [id])
-  recordId  Int     @map("record_id")
-  record    Record  @relation(fields: [recordId], references: [id])
+  lotLocationId Int         @map("lot_location_id")
+  lotLocation   LotLocation @relation(fields: [lotLocationId], references: [id])
+  recordId      Int         @map("record_id")
+  record        Record      @relation(fields: [recordId], references: [id])
 
   @@map("items")
+}
+
+model Alert {
+  id       Int     @id @default(autoincrement()) @map("id")
+  type     String  @map("type")
+  severity String  @map("severity")
+  resolved Boolean @default(false) @map("resolved")
+
+  lotLocationId Int         @map("lot_location_id")
+  lotLocation   LotLocation @relation(fields: [lotLocationId], references: [id])
+
+  @@map("alerts")
 }

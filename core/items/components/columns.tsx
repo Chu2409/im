@@ -1,20 +1,65 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { IItemWithProduct } from '../types'
+import { IItemWithLotLocation } from '../types'
 import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
+import { getLaboratoryByName } from '@/core/locations/data/labobratories'
+import { Badge } from '@/ui/badge'
 
-export const itemsColumns: ColumnDef<IItemWithProduct>[] = [
+export const itemsColumns: ColumnDef<IItemWithLotLocation>[] = [
   {
     accessorKey: 'name',
     header: 'Nombre',
-    cell: ({ row }) => <div className=''>{row.original.product.name}</div>,
+    cell: ({ row }) => (
+      <div className=''>{row.original.lotLocation.lot.product.name}</div>
+    ),
+  },
+  {
+    accessorKey: 'lot',
+    header: 'Lote',
+    cell: ({ row }) => (
+      <div className=''>{row.original.lotLocation.lot.id}</div>
+    ),
+  },
+  {
+    accessorKey: 'location',
+    header: 'Ubicación',
+    cell: ({ row }) => {
+      const laboratory = getLaboratoryByName(
+        row.original.lotLocation.location.laboratory,
+      )
+
+      return (
+        <div className='flex items-center gap-2'>
+          <span>{row.original.lotLocation.location.code}</span>
+
+          <Badge
+            variant='outline'
+            className='text-white px-1.5'
+            style={{
+              backgroundColor: laboratory?.color,
+              border: laboratory?.color,
+              fontSize: '0.7rem',
+            }}
+          >
+            {laboratory?.name}
+          </Badge>
+        </div>
+      )
+    },
   },
   {
     accessorKey: 'quantity',
     meta: 'Cantidad',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Cantidad' />
+    ),
+  },
+  {
+    accessorKey: 'usesPerUnit',
+    header: 'Usos por unidad',
+    cell: ({ row }) => (
+      <div className=''>{row.original.lotLocation.lot.usesPerUnit}</div>
     ),
   },
 ]

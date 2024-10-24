@@ -10,7 +10,7 @@ export interface IConstant {
   color: string
 }
 
-export interface IOption {
+export interface IOption<T> {
   label: string
-  value: number
+  value: T
 }

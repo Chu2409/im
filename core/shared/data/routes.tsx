@@ -1,14 +1,16 @@
-import { Boxes, FileText, MapPinHouse, Tags, Truck } from 'lucide-react'
+import {
+  Boxes,
+  CircleAlert,
+  FileText,
+  MapPinHouse,
+  Tags,
+  Truck,
+} from 'lucide-react'
 import { IRoute } from '../types'
 
 export const routes: IRoute[] = [
   {
-    href: '/products',
-    label: 'Productos',
-    icon: <Tags />,
-  },
-  {
-    href: '/inventory',
+    href: '/',
     label: 'Inventario',
     icon: <Boxes />,
   },
@@ -16,6 +18,16 @@ export const routes: IRoute[] = [
     href: '/records',
     label: 'Registros',
     icon: <FileText />,
+  },
+  {
+    href: '/alerts',
+    label: 'Alertas',
+    icon: <CircleAlert />,
+  },
+  {
+    href: '/products',
+    label: 'Productos',
+    icon: <Tags />,
   },
   {
     href: '/providers',

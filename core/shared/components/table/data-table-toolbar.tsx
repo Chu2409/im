@@ -15,18 +15,20 @@ interface DataTableToolbarProps<TData> {
   table: Table<TData>
   inputFilterKey?: string
   filters?: IFilter[]
+  statusColumn: boolean
+  viewOptions: boolean
 }
 
 export function DataTableToolbar<TData>({
   table,
   inputFilterKey,
   filters,
+  statusColumn,
+  viewOptions,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
   const inputColumn = inputFilterKey ? table.getColumn(inputFilterKey) : null
-
-  const activeColumn = table.getColumn('status')
 
   return (
     <div className='flex items-center justify-between gap-2 flex-wrap'>
@@ -59,7 +61,9 @@ export function DataTableToolbar<TData>({
             )
           })}
 
-          {activeColumn && <DataTableStatusFilter column={activeColumn} />}
+          {statusColumn && (
+            <DataTableStatusFilter column={table.getColumn('status')!} />
+          )}
 
           {isFiltered && (
             <Button
@@ -74,7 +78,7 @@ export function DataTableToolbar<TData>({
         </div>
       )}
 
-      {table.getAllColumns().length > 2 && (
+      {viewOptions && table.getAllColumns().length > 2 && (
         <DataTableViewOptions table={table} />
       )}
     </div>

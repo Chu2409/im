@@ -1,11 +1,11 @@
 import { Modal } from '@/core/shared/components/modal/modal'
-import { useLocationrModal } from '../hooks/use-location-modal'
+import { useLocationModal } from '../hooks/use-location-modal'
 import { LocationForm } from './form'
 
 export const LocationModal = () => {
-  const initialData = useLocationrModal((state) => state.location)
-  const isOpen = useLocationrModal((state) => state.isOpen)
-  const onClose = useLocationrModal((state) => state.onClose)
+  const initialData = useLocationModal((state) => state.location)
+  const isOpen = useLocationModal((state) => state.isOpen)
+  const onClose = useLocationModal((state) => state.onClose)
 
   return (
     <Modal

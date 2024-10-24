@@ -20,7 +20,7 @@ import { IOption } from '../../types'
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>
   title?: string
-  options: IOption[]
+  options: IOption<number>[]
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
