@@ -43,9 +43,9 @@ export const ItemSelector = ({
           <CommandGroup className='overflow-y-auto max-h-52 p-0 m-0'>
             {lotLocations.length > 0 && (
               <div className='w-full text-sm font-medium px-2 grid-cols-5 grid gap-2 text-center'>
-                <span className='col-span-2'>Nombre</span>
-
                 <span>Lote</span>
+
+                <span className='col-span-2'>Nombre</span>
 
                 <span>Ubicación</span>
 
@@ -65,15 +65,15 @@ export const ItemSelector = ({
                   `${lotLocation.id}@${lotLocation.lot.product.name}`,
                 )}
               >
+                <span>{lotLocation.lotId}</span>
+
                 <span className='col-span-2'>
                   {lotLocation.lot.product.name}
                 </span>
 
-                <span>{lotLocation.lotId}</span>
-
                 <span>{lotLocation.location.laboratory}</span>
 
-                <span>{lotLocation.stock * lotLocation.lot.usesPerUnit}</span>
+                <span>{lotLocation.stock}</span>
               </CommandItem>
             ))}
           </CommandGroup>

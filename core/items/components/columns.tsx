@@ -8,19 +8,21 @@ import { Badge } from '@/ui/badge'
 
 export const itemsColumns: ColumnDef<IItemWithLotLocation>[] = [
   {
+    accessorKey: 'lot',
+    meta: 'Lote',
+    header: () => <div className='text-center'>Lote</div>,
+    cell: ({ row }) => (
+      <div className='text-center'>{row.original.lotLocation.lot.id}</div>
+    ),
+  },
+  {
     accessorKey: 'name',
     header: 'Nombre',
     cell: ({ row }) => (
       <div className=''>{row.original.lotLocation.lot.product.name}</div>
     ),
   },
-  {
-    accessorKey: 'lot',
-    header: 'Lote',
-    cell: ({ row }) => (
-      <div className=''>{row.original.lotLocation.lot.id}</div>
-    ),
-  },
+
   {
     accessorKey: 'location',
     header: 'Ubicación',
@@ -57,9 +59,7 @@ export const itemsColumns: ColumnDef<IItemWithLotLocation>[] = [
   },
   {
     accessorKey: 'usesPerUnit',
-    header: 'Usos por unidad',
-    cell: ({ row }) => (
-      <div className=''>{row.original.lotLocation.lot.usesPerUnit}</div>
-    ),
+    header: 'U/U',
+    cell: ({ row }) => row.original.lotLocation.lot.usesPerUnit,
   },
 ]
