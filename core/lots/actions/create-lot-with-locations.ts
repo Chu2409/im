@@ -20,7 +20,7 @@ export const createLotWithLocations = async (
         lotLocations: {
           create: data.lotLocations.map((lotLocation) => ({
             locationId: lotLocation.location.id,
-            quantity: lotLocation.quantity.value,
+            stock: lotLocation.quantity.value,
           })),
         },
       },

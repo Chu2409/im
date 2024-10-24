@@ -103,17 +103,19 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
   {
     accessorKey: 'stock',
     header: 'Stock',
-    cell: ({ row }) => row.original.lotLocation.quantity,
+    cell: ({ row }) => row.original.lotLocation.stock,
   },
   {
     accessorKey: 'expiration',
     header: 'Vencimiento',
     sortingFn: (rowA, rowB) =>
-      new Date(rowA.original.lotLocation.lot.expirationDate).getTime() -
-      new Date(rowB.original.lotLocation.lot.expirationDate).getTime(),
+      new Date(rowA.original.lotLocation.lot.expirationDate ?? 0).getTime() -
+      new Date(rowB.original.lotLocation.lot.expirationDate ?? 0).getTime(),
     cell: ({ row }) => (
       <span className='capitalize'>
-        {formatDate(row.original.lotLocation.lot.expirationDate)}
+        {row.original.lotLocation.lot.expirationDate
+          ? formatDate(row.original.lotLocation.lot.expirationDate)
+          : 'N/A'}
       </span>
     ),
   },

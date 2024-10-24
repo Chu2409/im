@@ -33,12 +33,12 @@ const formSchema = z.object({
   usesPerUnit: z.coerce
     .number({ message: 'Ingrese la cantidad' })
     .min(0.01, 'Mínimo 0.01'),
-  expirationDate: z.coerce.date({
-    message: 'Seleccione una fecha de expiración',
-  }),
+  expirationDate: z.date().nullish(),
   price: z.coerce.number({ message: 'Ingrese el precio' }).min(1, 'Mínimo 1'),
-  orderDate: z.coerce.date({ message: 'Seleccione una fecha de orden' }),
-  receptionDate: z.coerce.date().nullish(),
+  orderDate: z.date({
+    message: 'Seleccione una fecha',
+  }),
+  receptionDate: z.date().nullish(),
   productId: z.coerce
     .number({ message: 'Seleccione un producto' })
     .min(1, 'Seleccione un producto'),
@@ -79,7 +79,7 @@ export const LotForm = ({
       expirationDate: initialData?.expirationDate,
       // @ts-ignore
       price: initialData?.price || '',
-      orderDate: initialData?.expirationDate,
+      orderDate: initialData?.orderDate,
       receptionDate: initialData?.receptionDate,
       productId: initialData?.productId,
       providerId: initialData?.providerId,
@@ -116,6 +116,7 @@ export const LotForm = ({
     if (initialData)
       result = await updateLotWithLocations(initialData.id, {
         ...values,
+        expirationDate: values.expirationDate || null,
         receptionDate: values.receptionDate || null,
         providerId: values.providerId || null,
         lotLocations: lotLocationsTable,
@@ -123,6 +124,7 @@ export const LotForm = ({
     else
       result = await createLotWithLocations({
         ...values,
+        expirationDate: values.expirationDate || null,
         receptionDate: values.receptionDate || null,
         providerId: values.providerId || null,
         lotLocations: lotLocationsTable,
@@ -209,7 +211,7 @@ export const LotForm = ({
             name='usesPerUnit'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Usos por unidad</FormLabel>
+                <FormLabel>Usos por unidad (U/U)</FormLabel>
 
                 <FormControl>
                   <Input
@@ -281,7 +283,7 @@ export const LotForm = ({
                 <FormControl>
                   <DatePicker
                     disabled={isLoading}
-                    value={field.value}
+                    value={field.value || undefined}
                     // eslint-disable-next-line react/jsx-handler-names
                     onChange={field.onChange}
                   />

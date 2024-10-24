@@ -67,6 +67,12 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
     header: 'U/U',
   },
   {
+    accessorKey: 'maxUses',
+    header: 'U/M',
+    cell: ({ row }) =>
+      row.original.quantityPurchased * row.original.usesPerUnit,
+  },
+  {
     accessorKey: 'orderDate',
     meta: 'Orden',
     header: ({ column }) => (
@@ -90,11 +96,13 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
       />
     ),
     sortingFn: (rowA, rowB) =>
-      new Date(rowA.original.expirationDate).getTime() -
-      new Date(rowB.original.expirationDate).getTime(),
+      new Date(rowA.original.expirationDate ?? 0).getTime() -
+      new Date(rowB.original.expirationDate ?? 0).getTime(),
     cell: ({ row }) => (
       <span className='capitalize'>
-        {formatDate(row.original.expirationDate)}
+        {row.original.expirationDate
+          ? formatDate(row.original.expirationDate)
+          : 'N/A'}
       </span>
     ),
   },
@@ -133,7 +141,7 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
                 variant='outline'
                 className='rounded-full px-1.5 font-normal'
               >
-                {lotLocation.quantity}
+                {lotLocation.stock}
               </Badge>
             </div>
           )

@@ -5,7 +5,7 @@ import { IUpsertLotLocationBulkProps } from '../types'
 
 interface BulkItem {
   locationId: number
-  quantity: number
+  stock: number
 }
 
 export const updateLotWithLocations = async (
@@ -21,17 +21,17 @@ export const updateLotWithLocations = async (
       if (!lotLocation.isSaved) {
         toAdd.push({
           locationId: lotLocation.location.id,
-          quantity: lotLocation.quantity.value,
+          stock: lotLocation.quantity.value,
         })
       } else if (lotLocation.toEdit && !lotLocation.toDelete) {
         toEdit.push({
           locationId: lotLocation.location.id,
-          quantity: lotLocation.quantity.value,
+          stock: lotLocation.quantity.value,
         })
       } else if (lotLocation.toDelete) {
         toDelete.push({
           locationId: lotLocation.location.id,
-          quantity: lotLocation.quantity.value,
+          stock: lotLocation.quantity.value,
         })
       }
     })
@@ -41,7 +41,7 @@ export const updateLotWithLocations = async (
         await prisma.lotLocation.createMany({
           data: toAdd.map((lotLocation) => ({
             locationId: lotLocation.locationId,
-            quantity: lotLocation.quantity,
+            stock: lotLocation.stock,
             lotId,
           })),
         })
@@ -55,7 +55,7 @@ export const updateLotWithLocations = async (
               locationId: lotLocation.locationId,
             },
             data: {
-              quantity: lotLocation.quantity,
+              stock: lotLocation.stock,
             },
           })
         }
