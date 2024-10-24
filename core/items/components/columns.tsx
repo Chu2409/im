@@ -55,4 +55,11 @@ export const itemsColumns: ColumnDef<IItemWithLotLocation>[] = [
       <DataTableColumnHeader column={column} title='Cantidad' />
     ),
   },
+  {
+    accessorKey: 'usesPerUnit',
+    header: 'Usos por unidad',
+    cell: ({ row }) => (
+      <div className=''>{row.original.lotLocation.lot.usesPerUnit}</div>
+    ),
+  },
 ]
