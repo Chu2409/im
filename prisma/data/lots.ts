@@ -1,7 +1,8 @@
 interface ILot {
   quantityPurchased: number
   usesPerUnit: number
-  expirationDate: Date
+  maxUses: number
+  expirationDate: Date | null
   price: number
   orderDate: Date
   receptionDate: Date | null
@@ -13,6 +14,7 @@ export const lots: ILot[] = [
   {
     quantityPurchased: 34,
     usesPerUnit: 1,
+    maxUses: 34 * 1,
     expirationDate: new Date('2025-06-01'),
     price: 435,
     orderDate: new Date('2024-05-01'),
@@ -23,6 +25,7 @@ export const lots: ILot[] = [
   {
     quantityPurchased: 128,
     usesPerUnit: 1,
+    maxUses: 128 * 1,
     expirationDate: new Date('2025-06-01'),
     price: 100,
     orderDate: new Date('2024-05-01'),
@@ -33,6 +36,7 @@ export const lots: ILot[] = [
   {
     quantityPurchased: 333,
     usesPerUnit: 1,
+    maxUses: 333 * 1,
     expirationDate: new Date('2025-06-01'),
     price: 1234,
     orderDate: new Date('2024-05-01'),
