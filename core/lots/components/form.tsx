@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 'use client'
 
 import {
@@ -25,12 +23,14 @@ import { DatePicker } from '@/core/shared/components/date-picker'
 import { Combobox } from '@/core/shared/components/combobox/combobox'
 import { MultiCombobox } from '@/core/shared/components/combobox/multi-combobox'
 import { LotLocationFormDataTable } from './form-data-table'
+import { createLotWithLocations } from '../actions/create-lot-with-locations'
+import { updateLotWithLocations } from '../actions/update-lot-with-locations'
 
 const formSchema = z.object({
   quantityPurchased: z
     .number({ message: 'Ingrese la cantidad' })
     .min(1, 'Mínimo 1'),
-  quantityPerUse: z
+  usesPerUnit: z
     .number({ message: 'Ingrese la cantidad' })
     .min(0.01, 'Mínimo 0.01'),
   expirationDate: z.date({ message: 'Seleccione una fecha de expiración' }),
@@ -58,13 +58,13 @@ export const LotForm = ({
   providers: Provider[]
   onModalClose: () => void
 }) => {
-  // const toastTitle = initialData ? 'Lote actualizado' : 'Lote creado'
-  // const toastDescription = initialData
-  //   ? 'El lote ha sido actualizado correctamente'
-  //   : 'El lote ha sido creado correctamente'
-  // const errorMessage = initialData
-  //   ? 'Hubo un error al actualizar el lote'
-  //   : 'Hubo un error al crear el lote'
+  const toastTitle = initialData ? 'Lote actualizado' : 'Lote creado'
+  const toastDescription = initialData
+    ? 'El lote ha sido actualizado correctamente'
+    : 'El lote ha sido creado correctamente'
+  const errorMessage = initialData
+    ? 'Hubo un error al actualizar el lote'
+    : 'Hubo un error al crear el lote'
   const action = initialData ? 'Actualizar lote' : 'Crear lote'
 
   const form = useForm<formType>({
@@ -73,7 +73,7 @@ export const LotForm = ({
       // @ts-ignore
       quantityPurchased: initialData?.quantityPurchased || '',
       // @ts-ignore
-      quantityPerUse: initialData?.quantityPerUse || '',
+      usesPerUnit: initialData?.usesPerUnit || '',
       expirationDate: initialData?.expirationDate,
       // @ts-ignore
       price: initialData?.price || '',
@@ -111,38 +111,36 @@ export const LotForm = ({
 
     let result
 
-    // if (initialData)
-    //   result = await updateRecordWithItems(initialData.id, {
-    //     start: new Date(values.start),
-    //     end: new Date(values.end),
-    //     items: itemsTable,
-    //   })
-    // else
-    //   result = await createRecordWithItems({
-    //     start: new Date(values.start),
-    //     end: new Date(values.end),
-    //     items: itemsTable,
-    //   })
+    if (initialData)
+      result = await updateLotWithLocations(initialData.id, {
+        ...values,
+        receptionDate: values.receptionDate || null,
+        providerId: values.providerId || null,
+        lotLocations: lotLocationsTable,
+      })
+    else
+      result = await createLotWithLocations({
+        ...values,
+        receptionDate: values.receptionDate || null,
+        providerId: values.providerId || null,
+        lotLocations: lotLocationsTable,
+      })
 
-    // if (result != null) {
-    //   toast({
-    //     variant: 'success',
-    //     title: toastTitle,
-    //     description: toastDescription,
-    //   })
+    if (result != null) {
+      toast({
+        variant: 'success',
+        title: toastTitle,
+        description: toastDescription,
+      })
 
-    //   const record = await getRecordWithItems(result)
-    //   setRecord(record || undefined)
-    //   router.refresh()
-    // } else {
-    //   toast({
-    //     variant: 'destructive',
-    //     title: 'Algo salió mal',
-    //     description: errorMessage,
-    //   })
-
-    //   setRecord(undefined)
-    // }
+      router.refresh()
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Algo salió mal',
+        description: errorMessage,
+      })
+    }
 
     setIsLoading(false)
     form.reset()
@@ -206,10 +204,10 @@ export const LotForm = ({
 
           <FormField
             control={form.control}
-            name='quantityPerUse'
+            name='usesPerUnit'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Cantidad Por Uso</FormLabel>
+                <FormLabel>Usos por unidad</FormLabel>
 
                 <FormControl>
                   <Input
