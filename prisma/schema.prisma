@@ -70,7 +70,8 @@ model LotLocation {
   locationId Int      @map("location_id")
   location   Location @relation(fields: [locationId], references: [id])
 
-  items Item[]
+  items  Item[]
+  alerts Alert[]
 
   @@map("lots_locations")
 }
@@ -95,4 +96,15 @@ model Item {
   record        Record      @relation(fields: [recordId], references: [id])
 
   @@map("items")
+}
+
+model Alert {
+  id       Int    @id @default(autoincrement()) @map("id")
+  type     String @map("type")
+  severity String @map("severity")
+
+  lotLocationId Int         @map("lot_location_id")
+  lotLocation   LotLocation @relation(fields: [lotLocationId], references: [id])
+
+  @@map("alerts")
 }
