@@ -27,16 +27,18 @@ import { createLotWithLocations } from '../actions/create-lot-with-locations'
 import { updateLotWithLocations } from '../actions/update-lot-with-locations'
 
 const formSchema = z.object({
-  quantityPurchased: z
+  quantityPurchased: z.coerce
     .number({ message: 'Ingrese la cantidad' })
     .min(1, 'Mínimo 1'),
-  usesPerUnit: z
+  usesPerUnit: z.coerce
     .number({ message: 'Ingrese la cantidad' })
     .min(0.01, 'Mínimo 0.01'),
-  expirationDate: z.date({ message: 'Seleccione una fecha de expiración' }),
-  price: z.number({ message: 'Ingrese el precio' }).min(1, 'Mínimo 1'),
-  orderDate: z.date({ message: 'Seleccione una fecha de orden' }),
-  receptionDate: z.date().nullish(),
+  expirationDate: z.coerce.date({
+    message: 'Seleccione una fecha de expiración',
+  }),
+  price: z.coerce.number({ message: 'Ingrese el precio' }).min(1, 'Mínimo 1'),
+  orderDate: z.coerce.date({ message: 'Seleccione una fecha de orden' }),
+  receptionDate: z.coerce.date().nullish(),
   productId: z.coerce
     .number({ message: 'Seleccione un producto' })
     .min(1, 'Seleccione un producto'),
