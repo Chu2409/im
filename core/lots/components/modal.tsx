@@ -22,7 +22,6 @@ export const LotModal = ({
       description={initialData ? 'Edita el lote' : 'Agrega un nuevo lote'}
       isOpen={isOpen}
       onClose={onClose}
-      className='max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl max-h-[90vh] overflow-y-auto'
     >
       <LotForm
         initialData={initialData}

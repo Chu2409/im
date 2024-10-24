@@ -21,7 +21,6 @@ export const RecordModal = ({
       }
       isOpen={isOpen}
       onClose={onClose}
-      className='max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-3xl max-h-[90vh] overflow-y-auto'
     >
       <RecordForm
         initialData={initialData}

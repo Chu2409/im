@@ -35,7 +35,7 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onChange}>
       <DialogContent
-        className={cn('rounded-md max-w-sm md:max-w-lg', className)}
+        className={cn(className || 'min-w-[90%] md:min-w-[80%] lg:min-w-[70%] xl:min-w-[65%] 2xl:min-w-[55%] max max-h-[90vh] overflow-y-auto')}
       >
         <DialogHeader className='text-left'>
           <DialogTitle>{title}</DialogTitle>
