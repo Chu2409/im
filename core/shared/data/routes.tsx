@@ -10,7 +10,7 @@ import { IRoute } from '../types'
 
 export const routes: IRoute[] = [
   {
-    href: '/',
+    href: '/inventory',
     label: 'Inventario',
     icon: <Boxes />,
   },
