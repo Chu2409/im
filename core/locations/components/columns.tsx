@@ -8,7 +8,7 @@ import { toggleLocationStatus } from '../actions/toggle-location-status'
 import { useLocationModal } from '../hooks/use-location-modal'
 import { Badge } from '@/ui/badge'
 import { getLaboratoryByName } from '../data/labobratories'
-import { InactiveIndicator } from '@/core/shared/components/inactive-indicator'
+import { FlagIndicator } from '@/core/shared/components/flag-indicator'
 
 export const locationColumns: ColumnDef<Location>[] = [
   {
@@ -19,7 +19,7 @@ export const locationColumns: ColumnDef<Location>[] = [
     accessorKey: 'status',
     meta: 'Estado',
     header: '',
-    cell: ({ row }) => !row.original.active && <InactiveIndicator />,
+    cell: ({ row }) => !row.original.active && <FlagIndicator />,
     filterFn: (row, id, filterValue) => {
       const value = row.original.active ? 1 : 0
       return filterValue.includes(value)

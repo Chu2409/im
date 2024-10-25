@@ -8,6 +8,9 @@ import { getTypeByName } from '../data/types'
 import { getSeverityByName } from '../data/severities'
 import { getLaboratoryByName } from '@/core/locations/data/labobratories'
 import { formatDate } from '@/lib/utils'
+import { DataTableRowActions } from './data-table-row-actions'
+import { toggleAlertResolved } from '../actions/toggle-alert-resolved'
+import { FlagIndicator } from '@/core/shared/components/flag-indicator'
 
 export const productsColumns: ColumnDef<IFullAlert>[] = [
   {
@@ -40,6 +43,16 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
         .toLowerCase()
         .trim()
         .includes(filterValue.toLowerCase().trim()),
+  },
+  {
+    accessorKey: 'status',
+    meta: 'Estado',
+    header: '',
+    cell: ({ row }) => !row.original.resolved && <FlagIndicator />,
+    filterFn: (row, id, filterValue) => {
+      const value = row.original.resolved ? 0 : 1
+      return filterValue.includes(value)
+    },
   },
   {
     accessorKey: 'category',
@@ -146,5 +159,15 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
         </div>
       )
     },
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => (
+      <DataTableRowActions
+        id={row.original.id}
+        resolved={row.original.resolved}
+        toggleResolved={toggleAlertResolved}
+      />
+    ),
   },
 ]

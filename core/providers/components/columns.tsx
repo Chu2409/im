@@ -6,7 +6,7 @@ import { Provider } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 import { toggleProviderStatus } from '../actions/toggle-provider-status'
 import { useProviderModal } from '../hooks/use-provider-modal'
-import { InactiveIndicator } from '@/core/shared/components/inactive-indicator'
+import { FlagIndicator } from '@/core/shared/components/flag-indicator'
 
 export const providersColumns: ColumnDef<Provider>[] = [
   {
@@ -20,7 +20,7 @@ export const providersColumns: ColumnDef<Provider>[] = [
     accessorKey: 'status',
     meta: 'Estado',
     header: '',
-    cell: ({ row }) => !row.original.active && <InactiveIndicator />,
+    cell: ({ row }) => !row.original.active && <FlagIndicator />,
     filterFn: (row, id, filterValue) => {
       const value = row.original.active ? 1 : 0
       return filterValue.includes(value)

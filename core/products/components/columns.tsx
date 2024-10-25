@@ -6,7 +6,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { useProductModal } from '../hooks/use-product-modal'
 import { Badge } from '@/ui/badge'
 import { getCategoryByName } from '../data/categories'
-import { InactiveIndicator } from '@/core/shared/components/inactive-indicator'
+import { FlagIndicator } from '@/core/shared/components/flag-indicator'
 import { toggleProductStatus } from '../actions/toggle-product-status'
 import { Product } from '@prisma/client'
 
@@ -22,7 +22,7 @@ export const productsColumns: ColumnDef<Product>[] = [
     accessorKey: 'status',
     meta: 'Estado',
     header: '',
-    cell: ({ row }) => !row.original.active && <InactiveIndicator />,
+    cell: ({ row }) => !row.original.active && <FlagIndicator />,
     filterFn: (row, id, filterValue) => {
       const value = row.original.active ? 1 : 0
       return filterValue.includes(value)

@@ -6,9 +6,6 @@ import { IFullAlert } from '../types'
 export const getAlerts = async (): Promise<IFullAlert[]> => {
   try {
     const alerts = await prisma.alert.findMany({
-      where: {
-        resolved: false,
-      },
       include: {
         lotLocation: {
           include: {
