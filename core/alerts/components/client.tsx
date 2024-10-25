@@ -30,6 +30,19 @@ const filters = [
       label: type.name,
     })),
   },
+  {
+    key: 'status',
+    values: [
+      {
+        value: 0,
+        label: 'Resueltas',
+      },
+      {
+        value: 1,
+        label: 'No Resueltas',
+      },
+    ],
+  },
 ]
 
 export const AlertsClient = ({ alerts }: { alerts: IFullAlert[] }) => {
