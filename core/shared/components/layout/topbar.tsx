@@ -8,7 +8,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
-import { Input } from '@/ui/input'
 import {
   Sheet,
   SheetContent,
@@ -17,10 +16,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/ui/sheet'
-import { CircleUser, Menu, Package2, Search } from 'lucide-react'
+import { CircleUser, Menu, Package2 } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { IRoute } from '../../types'
+import { signOut } from 'next-auth/react'
 
 export const Topbar = ({
   routes,
@@ -83,22 +83,13 @@ export const Topbar = ({
         </SheetContent>
       </Sheet>
 
-      <div className='w-full flex-1'>
-        <form>
-          <div className='relative'>
-            <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-            <Input
-              type='search'
-              placeholder='Buscar producto...'
-              className='w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-2/4'
-            />
-          </div>
-        </form>
-      </div>
-
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant='secondary' size='icon' className='rounded-full'>
+          <Button
+            variant='secondary'
+            size='icon'
+            className='rounded-full ml-auto'
+          >
             <CircleUser className='h-5 w-5' />
             <span className='sr-only'>Habilitar menú de usuario</span>
           </Button>
@@ -108,7 +99,10 @@ export const Topbar = ({
           <DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem className='cursor-pointer hover:bg-gray-50'>
+          <DropdownMenuItem
+            className='cursor-pointer hover:bg-gray-50'
+            onClick={() => signOut()}
+          >
             Cerrar sesión
           </DropdownMenuItem>
         </DropdownMenuContent>

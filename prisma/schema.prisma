@@ -109,3 +109,13 @@ model Alert {
 
   @@map("alerts")
 }
+
+model User {
+  id        Int    @id @default(autoincrement()) @map("id")
+  dni       String @unique @map("dni")
+  firstName String @map("first_name")
+  lastName  String @map("last_name")
+  password  String @map("password")
+
+  @@map("users")
+}

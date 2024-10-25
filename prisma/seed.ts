@@ -7,6 +7,7 @@ import { lotsLocations } from './data/lots-locations'
 import { records } from './data/record'
 import { items } from './data/items'
 import { alerts } from './data/alerts'
+import { users } from './data/users'
 
 const prisma = new PrismaClient()
 
@@ -41,6 +42,10 @@ const main = async () => {
 
   await prisma.alert.createMany({
     data: alerts,
+  })
+
+  await prisma.user.createMany({
+    data: users,
   })
 }
 
