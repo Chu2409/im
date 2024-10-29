@@ -7,15 +7,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/ui/form'
+} from '@/core/shared/ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '@/ui/input'
-import { Button } from '@/ui/button'
+import { Input } from '@/core/shared/ui/input'
+import { Button } from '@/core/shared/ui/button'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/core/shared/hooks/use-toast'
 import { CATEGORIES } from '../data/categories'
 import { Product } from '@prisma/client'
 import { createProduct } from '../actions/create-product'
@@ -69,30 +69,43 @@ export const ProductForm = ({
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const onSubmit = (values: formType) => {
+  const onSubmit = async (values: formType) => {
     setIsLoading(true)
 
-    let result
-
     if (initialData) {
-      result = updateProduct(initialData.id, values)
-    } else {
-      result = createProduct(values)
-    }
+      const result = updateProduct(initialData.id, values)
 
-    if (result != null) {
-      toast({
-        variant: 'success',
-        title: toastTitle,
-        description: toastDescription,
-      })
-      router.refresh()
+      if (result != null) {
+        toast({
+          variant: 'success',
+          title: toastTitle,
+          description: toastDescription,
+        })
+        router.refresh()
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Algo salió mal',
+          description: errorMessage,
+        })
+      }
     } else {
-      toast({
-        variant: 'destructive',
-        title: 'Algo salió mal',
-        description: errorMessage,
-      })
+      const { data: success, error } = await createProduct(values)
+
+      if (error) {
+        toast({
+          variant: 'destructive',
+          title: 'Algo salió mal',
+          description: error,
+        })
+      } else if (success) {
+        toast({
+          variant: 'success',
+          title: toastTitle,
+          description: toastDescription,
+        })
+        router.refresh()
+      }
     }
 
     setIsLoading(false)

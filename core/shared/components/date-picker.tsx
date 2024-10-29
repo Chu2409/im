@@ -2,10 +2,14 @@
 
 import { Calendar as CalendarIcon } from 'lucide-react'
 
-import { cn, formatDate } from '@/lib/utils'
-import { Button } from '@/ui/button'
-import { Calendar } from '@/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover'
+import { cn, formatDate } from '@/core/shared/utils/utils'
+import { Button } from '@/core/shared/ui/button'
+import { Calendar } from '@/core/shared/ui/calendar'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/core/shared/ui/popover'
 
 interface DatePickerProps {
   value?: Date

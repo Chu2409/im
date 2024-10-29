@@ -7,14 +7,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/ui/form'
+} from '@/core/shared/ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '@/ui/button'
+import { Button } from '@/core/shared/ui/button'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/core/shared/hooks/use-toast'
 import { IRecordWithItems } from '../types'
 import { ItemFormDataTable } from '@/core/items/components/form-data-table'
 import { ItemSelector } from '@/core/items/components/item-selector'

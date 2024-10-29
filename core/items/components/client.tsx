@@ -4,7 +4,7 @@ import { IRecordWithItems } from '@/core/records/types'
 import { itemsColumns } from './columns'
 import { DataTable } from '@/core/shared/components/table/data-table'
 
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/core/shared/utils/utils'
 
 export const ItemsClient = ({ record }: { record?: IRecordWithItems }) => {
   return (

@@ -7,19 +7,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/ui/form'
+} from '@/core/shared/ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '@/ui/input'
-import { Button } from '@/ui/button'
+import { Input } from '@/core/shared/ui/input'
+import { Button } from '@/core/shared/ui/button'
 import { Location } from '@prisma/client'
 import { useState } from 'react'
 import { LABORATORIES } from '../data/labobratories'
 import { createLocation } from '../actions/create-location'
 import { updateLocation } from '../actions/update-location'
 import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/core/shared/hooks/use-toast'
 import { Combobox } from '@/core/shared/components/combobox/combobox'
 
 const formSchema = z.object({

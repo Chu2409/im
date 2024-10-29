@@ -6,7 +6,7 @@ import { Location } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 import { toggleLocationStatus } from '../actions/toggle-location-status'
 import { useLocationModal } from '../hooks/use-location-modal'
-import { Badge } from '@/ui/badge'
+import { Badge } from '@/core/shared/ui/badge'
 import { getLaboratoryByName } from '../data/labobratories'
 import { FlagIndicator } from '@/core/shared/components/flag-indicator'
 

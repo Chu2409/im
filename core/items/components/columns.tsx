@@ -4,7 +4,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { IItemWithLotLocation } from '../types'
 import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
 import { getLaboratoryByName } from '@/core/locations/data/labobratories'
-import { Badge } from '@/ui/badge'
+import { Badge } from '@/core/shared/ui/badge'
 
 export const itemsColumns: ColumnDef<IItemWithLotLocation>[] = [
   {

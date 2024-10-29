@@ -1,6 +1,6 @@
 'use server'
 
-import prisma from '@/lib/prisma'
+import prisma from '@/core/shared/utils/prisma'
 import { Provider } from '@prisma/client'
 
 interface IUpdateProvider extends Partial<Omit<Provider, 'id' | 'active'>> {}

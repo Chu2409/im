@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 
-import { Button } from '@/ui/button'
+import { Button } from '@/core/shared/ui/button'
 import {
   Form,
   FormControl,
@@ -15,8 +15,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/ui/form'
-import { Input } from '@/ui/input'
+} from '@/core/shared/ui/form'
+import { Input } from '@/core/shared/ui/input'
 import { LogIn } from 'lucide-react'
 import {
   Card,
@@ -25,8 +25,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/ui/card'
-import { useToast } from '@/hooks/use-toast'
+} from '@/core/shared/ui/card'
+import { useToast } from '@/core/shared/hooks/use-toast'
 import { getUserByDni } from '../actions/get-user-by-dni'
 
 const formSchema = z.object({

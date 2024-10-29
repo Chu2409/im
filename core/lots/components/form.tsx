@@ -8,16 +8,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/ui/form'
+} from '@/core/shared/ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '@/ui/button'
+import { Button } from '@/core/shared/ui/button'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/core/shared/hooks/use-toast'
 import { IEditableRowLotLocation, IFullLot } from '../types'
-import { Input } from '@/ui/input'
+import { Input } from '@/core/shared/ui/input'
 import { Location, Product, Provider } from '@prisma/client'
 import { DatePicker } from '@/core/shared/components/date-picker'
 import { Combobox } from '@/core/shared/components/combobox/combobox'

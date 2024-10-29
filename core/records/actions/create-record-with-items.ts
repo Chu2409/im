@@ -1,6 +1,6 @@
 'use server'
 
-import prisma from '@/lib/prisma'
+import prisma from '@/core/shared/utils/prisma'
 import { IUpsertProductBulkProps } from '../types'
 
 export const createRecordWithItems = async (data: IUpsertProductBulkProps) => {

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { Toaster } from '@/ui/toaster'
-import AuthProvider from '@/providers/auth-provider'
+import AuthProvider from '@/core/shared/providers/auth-provider'
 import { getServerSession } from 'next-auth'
+import { Toaster } from '@/core/shared/ui/toaster'
 
 export const metadata: Metadata = {
   title: 'Create Next App',

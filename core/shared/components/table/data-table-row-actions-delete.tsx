@@ -6,16 +6,16 @@ import {
   TrashIcon,
 } from '@radix-ui/react-icons'
 
-import { Button } from '@/ui/button'
+import { Button } from '@/core/shared/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/ui/dropdown-menu'
+} from '@/core/shared/ui/dropdown-menu'
 import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/core/shared/hooks/use-toast'
 import { useState } from 'react'
 import { AlertModal } from '@/core/shared/components/modal/alert-modal'
 

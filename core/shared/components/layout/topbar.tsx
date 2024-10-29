@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils'
-import { Button } from '@/ui/button'
+import { cn } from '@/core/shared/utils/utils'
+import { Button } from '@/core/shared/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/ui/dropdown-menu'
+} from '@/core/shared/ui/dropdown-menu'
 import {
   Sheet,
   SheetContent,
@@ -15,7 +15,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/ui/sheet'
+} from '@/core/shared/ui/sheet'
 import { CircleUser, Menu, Package2 } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'

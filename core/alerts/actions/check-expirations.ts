@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import prisma from '@/core/shared/utils/prisma'
 import { EXP_DAYS_LIMITS } from '../data/limits'
 import { addDays, calculateSeverity, getDaysDifference } from '../utils'
 import { TYPES } from '../data/types'

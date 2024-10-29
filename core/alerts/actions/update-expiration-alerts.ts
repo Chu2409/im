@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import prisma from '@/core/shared/utils/prisma'
 import { TYPES } from '../data/types'
 import { calculateSeverity, getDaysDifference } from '../utils'
 

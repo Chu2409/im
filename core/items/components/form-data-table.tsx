@@ -1,6 +1,6 @@
 'use client'
 
-import { Input } from '@/ui/input'
+import { Input } from '@/core/shared/ui/input'
 import {
   Table,
   TableBody,
@@ -8,8 +8,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/ui/table'
-import { cn } from '@/lib/utils'
+} from '@/core/shared/ui/table'
+import { cn } from '@/core/shared/utils/utils'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { Trash } from 'lucide-react'
 import { IEditableRowItem } from '../types'

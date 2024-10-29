@@ -7,18 +7,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/ui/form'
+} from '@/core/shared/ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '@/ui/input'
-import { Button } from '@/ui/button'
+import { Input } from '@/core/shared/ui/input'
+import { Button } from '@/core/shared/ui/button'
 import { Provider } from '@prisma/client'
 import { useState } from 'react'
 import { createProvider } from '../actions/create-provider'
 import { updateProvider } from '../actions/update-provider'
 import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/core/shared/hooks/use-toast'
 
 const formSchema = z.object({
   name: z

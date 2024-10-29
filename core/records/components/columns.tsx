@@ -1,7 +1,7 @@
 'use client'
 
 import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/core/shared/utils/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { useRecord } from '../hooks/use-record'
 import { IRecordWithItems } from '../types'

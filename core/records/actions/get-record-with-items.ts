@@ -1,6 +1,6 @@
 'use server'
 
-import prisma from '@/lib/prisma'
+import prisma from '@/core/shared/utils/prisma'
 import { IRecordWithItems } from '../types'
 
 export const getRecordWithItems = async (

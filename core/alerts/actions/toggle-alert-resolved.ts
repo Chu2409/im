@@ -1,6 +1,6 @@
 'use server'
 
-import prisma from '@/lib/prisma'
+import prisma from '@/core/shared/utils/prisma'
 
 export const toggleAlertResolved = async (id: number, resolved: boolean) => {
   try {
