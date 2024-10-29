@@ -23,7 +23,7 @@ import { AlertModal } from '../modal/alert-modal'
 interface DataTableRowActionsProps {
   id: number
   status: boolean
-  toggleStatus?: (id: number, status: boolean) => Promise<boolean>
+  toggleStatus?: (id: number, status: boolean) => Promise<boolean | undefined>
   onEdit: () => void
 }
 

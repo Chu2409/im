@@ -14,11 +14,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/core/shared/ui/input'
 import { Button } from '@/core/shared/ui/button'
 import { Provider } from '@prisma/client'
-import { useState } from 'react'
 import { createProvider } from '../actions/create-provider'
 import { updateProvider } from '../actions/update-provider'
-import { useRouter } from 'next/navigation'
-import { useToast } from '@/core/shared/hooks/use-toast'
+import useFormSubmit from '@/core/shared/hooks/use-form-submit'
 
 const formSchema = z.object({
   name: z
@@ -40,19 +38,6 @@ export const ProviderForm = ({
   initialData?: Provider
   onModalClose: () => void
 }) => {
-  const toastTitle = initialData ? 'Proveedor actualizado' : 'Proveedor creado'
-  const toastDescription = initialData
-    ? 'El proveedor ha sido actualizado correctamente'
-    : 'El proveedor ha sido creado correctamente'
-  const errorMessage = initialData
-    ? 'Hubo un error al actualizar el proveedor'
-    : 'Hubo un error al crear el proveedor'
-  const action = initialData ? 'Actualizar proveedor' : 'Crear proveedor'
-
-  const router = useRouter()
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(false)
-
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,40 +46,27 @@ export const ProviderForm = ({
     },
   })
 
-  const onSubmit = (values: formType) => {
-    setIsLoading(true)
+  const action = initialData ? 'Actualizar proveedor' : 'Crear proveedor'
+  const toastTitle = initialData ? 'Proveedor actualizado' : 'Proveedor creado'
+  const toastDescription = initialData
+    ? 'El proveedor ha sido actualizado correctamente'
+    : 'El proveedor ha sido creado correctamente'
 
-    let result
+  const { onSubmit, isLoading } = useFormSubmit<Provider, formType>({
+    initialData,
+    createFn: createProvider,
+    updateFn: updateProvider,
+    toastTitle,
+    toastDescription,
+    onModalClose,
+  })
 
-    if (initialData) result = updateProvider(initialData.id, values)
-    else result = createProvider(values)
-
-    if (result != null) {
-      toast({
-        variant: 'success',
-        title: toastTitle,
-        description: toastDescription,
-      })
-
-      router.push('/providers')
-      router.refresh()
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Algo salió mal',
-        description: errorMessage,
-      })
-    }
-
-    setIsLoading(false)
-    form.reset()
-    onModalClose()
-  }
+  const handleSubmit = async (values: formType) => await onSubmit(values, form)
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className='flex flex-col gap-6'
         id='form'
       >
