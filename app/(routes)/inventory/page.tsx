@@ -9,7 +9,7 @@ export const revalidate = 0
 const LotsPage = async () => {
   const lots = await getFullLots()
   const { data: locations = [] } = await getLocations()
-  const products = await getProducts()
+  const { data: products = [] } = await getProducts()
   const { data: providers = [] } = await getProviders()
 
   return (

@@ -1,22 +1,18 @@
 'use server'
 
+import { handleAction } from '@/core/shared/utils/action-handler'
 import prisma from '@/core/shared/utils/prisma'
 
 export const toggleProductStatus = async (id: number, status: boolean) => {
-  try {
-    const product = await prisma.product.update({
+  const toggleProductStatus = async () =>
+    !!(await prisma.product.update({
       where: {
         id,
       },
       data: {
         active: status,
       },
-    })
+    }))
 
-    return !!product
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[TOGGLE_PRODUCT_STATUS]', error.message)
-    return false
-  }
+  return await handleAction(toggleProductStatus, '[TOGGLE_PRODUCT_STATUS]')
 }

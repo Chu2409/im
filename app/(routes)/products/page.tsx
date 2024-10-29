@@ -4,7 +4,7 @@ import { ProductsClient } from '@/core/products/components/client'
 export const revalidate = 0
 
 const ProductsPage = async () => {
-  const products = await getProducts(true)
+  const { data: products = [] } = await getProducts(true)
 
   return <ProductsClient products={products} />
 }

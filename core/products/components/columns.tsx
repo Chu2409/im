@@ -65,11 +65,17 @@ export const productsColumns: ColumnDef<Product>[] = [
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const onOpen = useProductModal((state) => state.onOpen)
 
+      const toggleStatus = async (id: number, status: boolean) => {
+        const { data: deleted } = await toggleProductStatus(id, status)
+
+        return deleted
+      }
+
       return (
         <DataTableRowActions
           id={row.original.id}
           status={row.original.active}
-          toggleStatus={toggleProductStatus}
+          toggleStatus={toggleStatus}
           onEdit={() => onOpen(row.original)}
         />
       )

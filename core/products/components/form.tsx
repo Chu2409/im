@@ -53,17 +53,21 @@ export const ProductForm = ({
   })
 
   const action = initialData ? 'Actualizar locación' : 'Crear locación'
+  const toastTitle = initialData ? 'Producto actualizado' : 'Producto creado'
+  const toastDescription = initialData
+    ? 'El producto ha sido actualizado'
+    : 'El producto ha sido creado'
 
   const { onSubmit, isLoading } = useFormSubmit<Product, formType>({
     initialData,
     createFn: createProduct,
     updateFn: updateProduct,
+    toastTitle,
+    toastDescription,
     onModalClose,
   })
 
-  const handleSubmit = async (values: formType) => {
-    await onSubmit(values, form)
-  }
+  const handleSubmit = async (values: formType) => await onSubmit(values, form)
 
   return (
     <Form {...form}>
