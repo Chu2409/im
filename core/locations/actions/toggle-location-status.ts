@@ -1,22 +1,18 @@
 'use server'
 
+import { handleAction } from '@/core/shared/utils/action-handler'
 import prisma from '@/core/shared/utils/prisma'
 
 export const toggleLocationStatus = async (id: number, status: boolean) => {
-  try {
-    const location = await prisma.location.update({
+  const toggleLocationStatus = async () =>
+    !!(await prisma.location.update({
       where: {
         id,
       },
       data: {
         active: status,
       },
-    })
+    }))
 
-    return !!location
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[TOGGLE_LOCATION_STATUS]', error.message)
-    return false
-  }
+  return await handleAction(toggleLocationStatus, '[TOGGLE_LOCATION_STATUS]')
 }

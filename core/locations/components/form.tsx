@@ -14,13 +14,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/core/shared/ui/input'
 import { Button } from '@/core/shared/ui/button'
 import { Location } from '@prisma/client'
-import { useState } from 'react'
 import { LABORATORIES } from '../data/labobratories'
 import { createLocation } from '../actions/create-location'
 import { updateLocation } from '../actions/update-location'
-import { useRouter } from 'next/navigation'
-import { useToast } from '@/core/shared/hooks/use-toast'
 import { Combobox } from '@/core/shared/components/combobox/combobox'
+import useFormSubmit from '@/core/shared/hooks/use-form-submit'
 
 const formSchema = z.object({
   name: z
@@ -45,9 +43,6 @@ export const LocationForm = ({
   initialData?: Location
   onModalClose: () => void
 }) => {
-  const router = useRouter()
-  const { toast } = useToast()
-
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,50 +52,27 @@ export const LocationForm = ({
     },
   })
 
+  const action = initialData ? 'Actualizar locación' : 'Crear locación'
   const toastTitle = initialData ? 'Locación actualizada' : 'Locación creada'
   const toastDescription = initialData
     ? 'La locación ha sido actualizada'
     : 'La locación ha sido creada'
-  const errorMessage = initialData
-    ? 'Hubo un error al actualizar la locación'
-    : 'Hubo un error al crear la locación'
-  const action = initialData ? 'Actualizar locación' : 'Crear locación'
 
-  const [isLoading, setIsLoading] = useState(false)
+  const { onSubmit, isLoading } = useFormSubmit<Location, formType>({
+    initialData,
+    createFn: createLocation,
+    updateFn: updateLocation,
+    toastTitle,
+    toastDescription,
+    onModalClose,
+  })
 
-  const onSubmit = (values: formType) => {
-    setIsLoading(true)
-
-    let result
-
-    if (initialData) result = updateLocation(initialData.id, values)
-    else result = createLocation(values)
-
-    if (result != null) {
-      toast({
-        variant: 'success',
-        title: toastTitle,
-        description: toastDescription,
-      })
-      router.push('/locations')
-      router.refresh()
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Algo salió mal',
-        description: errorMessage,
-      })
-    }
-
-    setIsLoading(false)
-    form.reset()
-    onModalClose()
-  }
+  const handleSubmit = async (values: formType) => await onSubmit(values, form)
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className='flex flex-col gap-6'
         id='form'
       >

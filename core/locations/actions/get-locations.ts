@@ -1,9 +1,10 @@
 'use server'
 
+import { handleAction } from '@/core/shared/utils/action-handler'
 import prisma from '@/core/shared/utils/prisma'
 
 export const getLocations = async (includeInactive?: boolean) => {
-  try {
+  const getLocations = async () => {
     if (includeInactive) {
       return await prisma.location.findMany({
         orderBy: {
@@ -20,10 +21,7 @@ export const getLocations = async (includeInactive?: boolean) => {
         },
       })
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[GET_LOCATIONS]', error.message)
-    return []
   }
+
+  return await handleAction(getLocations, '[GET_LOCATIONS]')
 }

@@ -62,11 +62,17 @@ export const locationColumns: ColumnDef<Location>[] = [
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const onOpen = useLocationModal((state) => state.onOpen)
 
+      const toggleStatus = async (id: number, status: boolean) => {
+        const { data: deleted } = await toggleLocationStatus(id, status)
+
+        return deleted
+      }
+
       return (
         <DataTableRowActions
           id={row.original.id}
           status={row.original.active}
-          toggleStatus={toggleLocationStatus}
+          toggleStatus={toggleStatus}
           onEdit={() => onOpen(row.original)}
         />
       )
