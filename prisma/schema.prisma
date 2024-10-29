@@ -63,7 +63,7 @@ model Lot {
 
 model LotLocation {
   id    Int   @id @default(autoincrement()) @map("id")
-  stock Float @map("quantity")
+  stock Float @map("stock")
 
   lotId      Int      @map("lot_id")
   lot        Lot      @relation(fields: [lotId], references: [id])
