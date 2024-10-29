@@ -1,11 +1,11 @@
 'use server'
 
 import prisma from '@/core/shared/utils/prisma'
-import { IFullAlert } from '../types'
+import { handleAction } from '@/core/shared/utils/action-handler'
 
-export const getAlerts = async (): Promise<IFullAlert[]> => {
-  try {
-    const alerts = await prisma.alert.findMany({
+export const getAlerts = async () => {
+  const getAlerts = async () =>
+    await prisma.alert.findMany({
       include: {
         lotLocation: {
           include: {
@@ -20,10 +20,5 @@ export const getAlerts = async (): Promise<IFullAlert[]> => {
       },
     })
 
-    return alerts
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[GET_ALERTS]', error.message)
-    return []
-  }
+  return await handleAction(getAlerts, '[GET_ALERTS]')
 }

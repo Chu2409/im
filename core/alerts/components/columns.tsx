@@ -162,12 +162,20 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => (
-      <DataTableRowActions
-        id={row.original.id}
-        resolved={row.original.resolved}
-        toggleResolved={toggleAlertResolved}
-      />
-    ),
+    cell: ({ row }) => {
+      const toggleStatus = async (id: number, status: boolean) => {
+        const { data: deleted } = await toggleAlertResolved(id, status)
+
+        return deleted
+      }
+
+      return (
+        <DataTableRowActions
+          id={row.original.id}
+          resolved={row.original.resolved}
+          toggleResolved={toggleStatus}
+        />
+      )
+    },
   },
 ]

@@ -1,22 +1,18 @@
 'use server'
 
+import { handleAction } from '@/core/shared/utils/action-handler'
 import prisma from '@/core/shared/utils/prisma'
 
 export const toggleAlertResolved = async (id: number, resolved: boolean) => {
-  try {
-    const alert = await prisma.alert.update({
+  const toggleAlertResolved = async () =>
+    !!(await prisma.alert.update({
       where: {
         id,
       },
       data: {
         resolved,
       },
-    })
+    }))
 
-    return !!alert
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[TOGGLE_ALERT_RESOLVED]', error.message)
-    return false
-  }
+  return await handleAction(toggleAlertResolved, '[TOGGLE_ALERT_RESOLVED]')
 }

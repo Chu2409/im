@@ -21,7 +21,7 @@ import { AlertModal } from '@/core/shared/components/modal/alert-modal'
 interface DataTableRowActionsProps {
   id: number
   resolved: boolean
-  toggleResolved?: (id: number, status: boolean) => Promise<boolean>
+  toggleResolved?: (id: number, status: boolean) => Promise<boolean | undefined>
 }
 
 export function DataTableRowActions({
