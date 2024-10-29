@@ -21,6 +21,7 @@ import { Product } from '@prisma/client'
 import { createProduct } from '../actions/create-product'
 import { updateProduct } from '../actions/update-product'
 import { Combobox } from '@/core/shared/components/combobox/combobox'
+import useToastNotification from '@/core/shared/hooks/use-notification'
 
 const formSchema = z.object({
   name: z
@@ -55,6 +56,7 @@ export const ProductForm = ({
 
   const router = useRouter()
   const { toast } = useToast()
+  const showNotification = useToastNotification(toast)
 
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
@@ -90,22 +92,9 @@ export const ProductForm = ({
         })
       }
     } else {
-      const { data: success, error } = await createProduct(values)
+      const result = await createProduct(values)
 
-      if (error) {
-        toast({
-          variant: 'destructive',
-          title: 'Algo salió mal',
-          description: error,
-        })
-      } else if (success) {
-        toast({
-          variant: 'success',
-          title: toastTitle,
-          description: toastDescription,
-        })
-        router.refresh()
-      }
+      showNotification(result, toastTitle, toastDescription)
     }
 
     setIsLoading(false)

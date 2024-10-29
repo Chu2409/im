@@ -4,14 +4,16 @@ import { handleAction } from '@/core/shared/utils/action-handler'
 import prisma from '@/core/shared/utils/prisma'
 import { Product } from '@prisma/client'
 
-interface ICreateProduct extends Omit<Product, 'id' | 'active'> {}
+export interface ICreateProduct extends Omit<Product, 'id' | 'active'> {}
 
 export const createProduct = async (data: ICreateProduct) => {
-  return await handleAction(async () => {
+  const action = async () => {
     return await prisma.product.create({
       data: {
         ...data,
       },
     })
-  }, '[CREATE_PRODUCT]')
+  }
+
+  return await handleAction(action, '[CREATE_PRODUCT]')
 }
