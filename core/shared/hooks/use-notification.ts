@@ -19,7 +19,8 @@ const useToastNotification = <T>(toast: (options: ToastOptions) => void) => {
         toast({
           variant: 'destructive',
           title: 'Algo salió mal',
-          description: error,
+          description:
+            error.length > 40 ? 'Ha ocurrido un error en el servidor' : error,
         })
       } else if (success) {
         toast({

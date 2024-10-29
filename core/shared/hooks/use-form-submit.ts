@@ -8,13 +8,17 @@ interface UseFormSubmitProps<T, F> {
   initialData?: T
   createFn: (values: F) => Promise<ActionRes<T>>
   updateFn: (id: number, values: F) => Promise<ActionRes<T>>
-  onModalClose: () => void
+  toastTitle: string
+  toastDescription: string
+  onModalClose?: () => void
 }
 
 const useFormSubmit = <T, F>({
   initialData,
   createFn,
   updateFn,
+  toastTitle,
+  toastDescription,
   onModalClose,
 }: UseFormSubmitProps<T, F>) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -32,20 +36,26 @@ const useFormSubmit = <T, F>({
           await updateFn((initialData as any).id, values)
         : await createFn(values)
 
-      showNotification(
-        result,
-        initialData ? 'Elemento actualizado' : 'Elemento creado',
-        initialData
-          ? 'El elemento ha sido actualizado'
-          : 'El elemento ha sido creado',
-      )
+      showNotification(result, toastTitle, toastDescription)
 
       setIsLoading(false)
-      form.reset()
-      onModalClose()
-      router.refresh()
+
+      if (!result.error) {
+        form.reset()
+        if (onModalClose) onModalClose()
+        router.refresh()
+      }
     },
-    [initialData, updateFn, createFn, showNotification, onModalClose, router],
+    [
+      initialData,
+      updateFn,
+      createFn,
+      showNotification,
+      toastTitle,
+      toastDescription,
+      onModalClose,
+      router,
+    ],
   )
 
   return { onSubmit, isLoading }
