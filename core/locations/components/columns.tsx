@@ -12,6 +12,12 @@ import { FlagIndicator } from '@/core/shared/components/flag-indicator'
 
 export const locationColumns: ColumnDef<Location>[] = [
   {
+    accessorKey: 'id',
+    meta: 'Id',
+    header: () => <div className='text-center'>ID</div>,
+    cell: ({ row }) => <div className='text-center'>{row.original.id}</div>,
+  },
+  {
     accessorKey: 'name',
     header: 'Nombre',
   },

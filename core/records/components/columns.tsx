@@ -11,6 +11,12 @@ import { DataTableRowActions } from '../../shared/components/table/data-table-ro
 
 export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
   {
+    accessorKey: 'id',
+    meta: 'Id',
+    header: () => <div className='text-center'>ID</div>,
+    cell: ({ row }) => <div className='text-center'>{row.original.id}</div>,
+  },
+  {
     accessorKey: 'date',
     meta: 'Fecha',
     header: ({ column }) => (

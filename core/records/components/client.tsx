@@ -47,6 +47,7 @@ export const RecordsClient = ({
             data={records}
             columns={recordsColumns}
             statusColumn={false}
+            viewOptions={false}
           />
         </div>
 

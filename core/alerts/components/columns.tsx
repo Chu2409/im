@@ -14,6 +14,12 @@ import { FlagIndicator } from '@/core/shared/components/flag-indicator'
 
 export const productsColumns: ColumnDef<IFullAlert>[] = [
   {
+    accessorKey: 'id',
+    meta: 'Id',
+    header: () => <div className='text-center'>ID</div>,
+    cell: ({ row }) => <div className='text-center'>{row.original.id}</div>,
+  },
+  {
     accessorKey: 'product',
     header: 'Producto',
     cell: ({ row }) => {
