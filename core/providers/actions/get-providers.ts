@@ -1,9 +1,10 @@
 'use server'
 
-import prisma from '@/lib/prisma'
+import { handleAction } from '@/core/shared/utils/action-handler'
+import prisma from '@/core/shared/utils/prisma'
 
 export const getProviders = async (includeInactive?: boolean) => {
-  try {
+  const getProviders = async () => {
     if (includeInactive) {
       return await prisma.provider.findMany({
         orderBy: {
@@ -20,9 +21,7 @@ export const getProviders = async (includeInactive?: boolean) => {
         },
       })
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[GET_PROVIDERS]', error.message)
-    return []
   }
+
+  return await handleAction(getProviders, '[GET_PROVIDERS]')
 }

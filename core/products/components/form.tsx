@@ -7,20 +7,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/ui/form'
+} from '@/core/shared/ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '@/ui/input'
-import { Button } from '@/ui/button'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
+import { Input } from '@/core/shared/ui/input'
+import { Button } from '@/core/shared/ui/button'
 import { CATEGORIES } from '../data/categories'
 import { Product } from '@prisma/client'
 import { createProduct } from '../actions/create-product'
 import { updateProduct } from '../actions/update-product'
 import { Combobox } from '@/core/shared/components/combobox/combobox'
+import useFormSubmit from '@/core/shared/hooks/use-form-submit'
 
 const formSchema = z.object({
   name: z
@@ -45,17 +43,6 @@ export const ProductForm = ({
   initialData?: Product
   onModalClose: () => void
 }) => {
-  const toastTitle = initialData ? 'Producto actualizado' : 'Producto creado'
-  const toastDescription = initialData
-    ? 'El producto ha sido actualizado'
-    : 'El producto ha sido creado'
-  const errorMessage = initialData
-    ? 'Hubo un error al actualizar el producto'
-    : 'Hubo un error al crear el producto'
-
-  const router = useRouter()
-  const { toast } = useToast()
-
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,44 +53,26 @@ export const ProductForm = ({
   })
 
   const action = initialData ? 'Actualizar locación' : 'Crear locación'
+  const toastTitle = initialData ? 'Producto actualizado' : 'Producto creado'
+  const toastDescription = initialData
+    ? 'El producto ha sido actualizado'
+    : 'El producto ha sido creado'
 
-  const [isLoading, setIsLoading] = useState(false)
+  const { onSubmit, isLoading } = useFormSubmit<Product, formType>({
+    initialData,
+    createFn: createProduct,
+    updateFn: updateProduct,
+    toastTitle,
+    toastDescription,
+    onModalClose,
+  })
 
-  const onSubmit = (values: formType) => {
-    setIsLoading(true)
-
-    let result
-
-    if (initialData) {
-      result = updateProduct(initialData.id, values)
-    } else {
-      result = createProduct(values)
-    }
-
-    if (result != null) {
-      toast({
-        variant: 'success',
-        title: toastTitle,
-        description: toastDescription,
-      })
-      router.refresh()
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Algo salió mal',
-        description: errorMessage,
-      })
-    }
-
-    setIsLoading(false)
-    form.reset()
-    onModalClose()
-  }
+  const handleSubmit = async (values: formType) => await onSubmit(values, form)
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className='flex flex-col gap-6'
         id='form'
       >

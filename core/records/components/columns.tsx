@@ -1,7 +1,7 @@
 'use client'
 
 import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/core/shared/utils/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { useRecord } from '../hooks/use-record'
 import { IRecordWithItems } from '../types'
@@ -48,7 +48,9 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
 
       const onDelete = async (id: number) => {
         setRecord(undefined)
-        return await deleteRecord(id)
+        const { data: deleted } = await deleteRecord(id)
+
+        return deleted || false
       }
 
       return (

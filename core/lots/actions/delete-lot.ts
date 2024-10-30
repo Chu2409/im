@@ -1,9 +1,10 @@
 'use server'
 
-import prisma from '@/lib/prisma'
+import { handleAction } from '@/core/shared/utils/action-handler'
+import prisma from '@/core/shared/utils/prisma'
 
 export const deleteLot = async (id: number) => {
-  try {
+  const deleteLot = async () => {
     await prisma.lotLocation.deleteMany({
       where: {
         lotId: id,
@@ -17,9 +18,7 @@ export const deleteLot = async (id: number) => {
     })
 
     return !!record
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[DELETE_LOT]', error.message)
-    return false
   }
+
+  return await handleAction(deleteLot, '[DELETE_LOT]')
 }

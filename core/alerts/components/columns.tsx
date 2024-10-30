@@ -3,11 +3,11 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { IFullAlert } from '../types'
 import { getCategoryByName } from '@/core/products/data/categories'
-import { Badge } from '@/ui/badge'
+import { Badge } from '@/core/shared/ui/badge'
 import { getTypeByName } from '../data/types'
 import { getSeverityByName } from '../data/severities'
 import { getLaboratoryByName } from '@/core/locations/data/labobratories'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/core/shared/utils/utils'
 import { DataTableRowActions } from './data-table-row-actions'
 import { toggleAlertResolved } from '../actions/toggle-alert-resolved'
 import { FlagIndicator } from '@/core/shared/components/flag-indicator'
@@ -162,12 +162,20 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => (
-      <DataTableRowActions
-        id={row.original.id}
-        resolved={row.original.resolved}
-        toggleResolved={toggleAlertResolved}
-      />
-    ),
+    cell: ({ row }) => {
+      const toggleStatus = async (id: number, status: boolean) => {
+        const { data: deleted } = await toggleAlertResolved(id, status)
+
+        return deleted
+      }
+
+      return (
+        <DataTableRowActions
+          id={row.original.id}
+          resolved={row.original.resolved}
+          toggleResolved={toggleStatus}
+        />
+      )
+    },
   },
 ]

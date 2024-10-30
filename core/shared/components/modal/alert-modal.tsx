@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 
 import { Modal } from './modal'
-import { Button } from '@/ui/button'
+import { Button } from '@/core/shared/ui/button'
 
 interface AlertModalProps {
   isOpen: boolean

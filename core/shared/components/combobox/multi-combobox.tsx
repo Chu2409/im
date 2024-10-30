@@ -1,5 +1,5 @@
-import { Badge } from '@/ui/badge'
-import { Button } from '@/ui/button'
+import { Badge } from '@/core/shared/ui/badge'
+import { Button } from '@/core/shared/ui/button'
 import {
   Command,
   CommandEmpty,
@@ -7,10 +7,14 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover'
-import { Separator } from '@/ui/separator'
-import { cn } from '@/lib/utils'
+} from '@/core/shared/ui/command'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/core/shared/ui/popover'
+import { Separator } from '@/core/shared/ui/separator'
+import { cn } from '@/core/shared/utils/utils'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
 import { IOption } from '../../types'

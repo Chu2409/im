@@ -3,12 +3,21 @@
 import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons'
 import { Column } from '@tanstack/react-table'
 
-import { cn } from '@/lib/utils'
-import { Badge } from '@/ui/badge'
-import { Button } from '@/ui/button'
-import { Command, CommandGroup, CommandItem, CommandList } from '@/ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover'
-import { Separator } from '@/ui/separator'
+import { cn } from '@/core/shared/utils/utils'
+import { Badge } from '@/core/shared/ui/badge'
+import { Button } from '@/core/shared/ui/button'
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from '@/core/shared/ui/command'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/core/shared/ui/popover'
+import { Separator } from '@/core/shared/ui/separator'
 import { status } from '../../data/status-options'
 import { useEffect } from 'react'
 

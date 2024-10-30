@@ -36,11 +36,17 @@ export const providersColumns: ColumnDef<Provider>[] = [
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const onOpen = useProviderModal((state) => state.onOpen)
 
+      const toggleStatus = async (id: number, status: boolean) => {
+        const { data: deleted } = await toggleProviderStatus(id, status)
+
+        return deleted
+      }
+
       return (
         <DataTableRowActions
           id={row.original.id}
           status={row.original.active}
-          toggleStatus={toggleProviderStatus}
+          toggleStatus={toggleStatus}
           onEdit={() => onOpen(row.original)}
         />
       )

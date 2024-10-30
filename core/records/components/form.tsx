@@ -7,24 +7,22 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/ui/form'
+} from '@/core/shared/ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '@/ui/button'
+import { Button } from '@/core/shared/ui/button'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
-import { IRecordWithItems } from '../types'
+import { IRecordWithItems, IUpsertProductBulkProps } from '../types'
 import { ItemFormDataTable } from '@/core/items/components/form-data-table'
 import { ItemSelector } from '@/core/items/components/item-selector'
 import { createRecordWithItems } from '../actions/create-record-with-items'
 import { updateRecordWithItems } from '../actions/update-record-with-items'
-import { useRecord } from '../hooks/use-record'
-import { getRecordWithItems } from '../actions/get-record-with-items'
 import { IEditableRowItem } from '@/core/items/types'
 import { IFullLotLocation } from '@/core/lots/types'
 import { DatePicker } from '@/core/shared/components/date-picker'
+import useFormSubmit from '@/core/shared/hooks/use-form-submit'
+import { Record } from '@prisma/client'
 
 const formSchema = z.object({
   start: z.date({ message: 'Seleccione una fecha de inicio' }),
@@ -42,15 +40,6 @@ export const RecordForm = ({
   lotProducts: IFullLotLocation[]
   onModalClose: () => void
 }) => {
-  const toastTitle = initialData ? 'Registro actualizado' : 'Registro creado'
-  const toastDescription = initialData
-    ? 'El registro ha sido actualizado correctamente'
-    : 'El registro ha sido creado correctamente'
-  const errorMessage = initialData
-    ? 'Hubo un error al actualizar el registro'
-    : 'Hubo un error al crear el registro'
-  const action = initialData ? 'Actualizar registro' : 'Crear registro'
-
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,11 +48,11 @@ export const RecordForm = ({
     },
   })
 
-  const router = useRouter()
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(false)
-
-  const setRecord = useRecord((state) => state.setRecord)
+  const action = initialData ? 'Actualizar registro' : 'Crear registro'
+  const toastTitle = initialData ? 'Registro actualizado' : 'Registro creado'
+  const toastDescription = initialData
+    ? 'El registro ha sido actualizado correctamente'
+    : 'El registro ha sido creado correctamente'
 
   const [itemsTable, setItemsTable] = useState<IEditableRowItem[]>(
     () =>
@@ -86,51 +75,31 @@ export const RecordForm = ({
       })) || [],
   )
 
-  const onSubmit = async (values: formType) => {
-    setIsLoading(true)
+  const { onSubmit, isLoading } = useFormSubmit<
+    Record,
+    IUpsertProductBulkProps
+  >({
+    initialData,
+    createFn: createRecordWithItems,
+    updateFn: updateRecordWithItems,
+    toastTitle,
+    toastDescription,
+    onModalClose,
+  })
 
-    let result
-
-    if (initialData)
-      result = await updateRecordWithItems(initialData.id, {
+  const handleSubmit = async (values: formType) =>
+    await onSubmit(
+      {
         ...values,
         items: itemsTable,
-      })
-    else
-      result = await createRecordWithItems({
-        ...values,
-        items: itemsTable,
-      })
-
-    if (result != null) {
-      toast({
-        variant: 'success',
-        title: toastTitle,
-        description: toastDescription,
-      })
-
-      const record = await getRecordWithItems(result)
-      setRecord(record || undefined)
-      router.refresh()
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Algo salió mal',
-        description: errorMessage,
-      })
-
-      setRecord(undefined)
-    }
-
-    setIsLoading(false)
-    form.reset()
-    onModalClose()
-  }
+      },
+      form,
+    )
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className='flex flex-col gap-6'
         id='form'
       >

@@ -14,3 +14,8 @@ export interface IOption<T> {
   label: string
   value: T
 }
+
+export interface ActionRes<T> {
+  data?: T
+  error?: string
+}

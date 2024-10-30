@@ -1,12 +1,12 @@
 'use server'
 
-import prisma from '@/lib/prisma'
+import prisma from '@/core/shared/utils/prisma'
 import { CATEGORIES } from '../../products/data/categories'
-import { IFullLotLocation } from '../types'
+import { handleAction } from '@/core/shared/utils/action-handler'
 
-export const getLotProductsToRecord = async (): Promise<IFullLotLocation[]> => {
-  try {
-    const lots = await prisma.lotLocation.findMany({
+export const getLotProductsToRecord = async () => {
+  const getLotProductsToRecord = async () =>
+    await prisma.lotLocation.findMany({
       where: {
         lot: {
           product: {
@@ -28,10 +28,8 @@ export const getLotProductsToRecord = async (): Promise<IFullLotLocation[]> => {
       },
     })
 
-    return lots
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[GET_LOT_PRODUCTS_TO_RECORD]', error.message)
-    return []
-  }
+  return await handleAction(
+    getLotProductsToRecord,
+    '[GET_LOT_PRODUCTS_TO_RECORD]',
+  )
 }

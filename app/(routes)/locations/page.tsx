@@ -4,7 +4,7 @@ import { LocationsClient } from '@/core/locations/components/client'
 export const revalidate = 0
 
 const LocationsPage = async () => {
-  const locations = await getLocations(true)
+  const { data: locations = [] } = await getLocations(true)
 
   return <LocationsClient locations={locations} />
 }

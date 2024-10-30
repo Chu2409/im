@@ -1,7 +1,7 @@
 import { Plus } from 'lucide-react'
-import { Separator } from '@/ui/separator'
+import { Separator } from '@/core/shared/ui/separator'
 import { Heading } from './heading'
-import { Button } from '@/ui/button'
+import { Button } from '@/core/shared/ui/button'
 
 interface HeaderProps {
   title: string

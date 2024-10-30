@@ -4,7 +4,7 @@ import { DataTableColumnHeader } from '@/core/shared/components/table/data-table
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { ColumnDef } from '@tanstack/react-table'
 import { useProductModal } from '../hooks/use-product-modal'
-import { Badge } from '@/ui/badge'
+import { Badge } from '@/core/shared/ui/badge'
 import { getCategoryByName } from '../data/categories'
 import { FlagIndicator } from '@/core/shared/components/flag-indicator'
 import { toggleProductStatus } from '../actions/toggle-product-status'
@@ -65,11 +65,17 @@ export const productsColumns: ColumnDef<Product>[] = [
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const onOpen = useProductModal((state) => state.onOpen)
 
+      const toggleStatus = async (id: number, status: boolean) => {
+        const { data: deleted } = await toggleProductStatus(id, status)
+
+        return deleted
+      }
+
       return (
         <DataTableRowActions
           id={row.original.id}
           status={row.original.active}
-          toggleStatus={toggleProductStatus}
+          toggleStatus={toggleStatus}
           onEdit={() => onOpen(row.original)}
         />
       )

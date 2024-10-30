@@ -1,11 +1,11 @@
 'use server'
 
-import prisma from '@/lib/prisma'
-import { IRecordWithItems } from '../types'
+import prisma from '@/core/shared/utils/prisma'
+import { handleAction } from '@/core/shared/utils/action-handler'
 
-export const getRecordsWithItems = async (): Promise<IRecordWithItems[]> => {
-  try {
-    const records = await prisma.record.findMany({
+export const getRecordsWithItems = async () => {
+  const getRecordsWithItems = async () =>
+    await prisma.record.findMany({
       include: {
         items: {
           include: {
@@ -27,10 +27,5 @@ export const getRecordsWithItems = async (): Promise<IRecordWithItems[]> => {
       },
     })
 
-    return records
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[GET_RECORDS_WITH_ITEMS]', error.message)
-    return []
-  }
+  return await handleAction(getRecordsWithItems, '[GET_RECORDS_WITH_ITEMS]')
 }

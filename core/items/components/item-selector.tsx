@@ -8,8 +8,8 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/ui/command'
-import { Label } from '@/ui/label'
+} from '@/core/shared/ui/command'
+import { Label } from '@/core/shared/ui/label'
 
 export const ItemSelector = ({
   lotLocations,
