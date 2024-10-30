@@ -5,7 +5,7 @@ import { RecordsClient } from '@/core/records/components/client'
 export const revalidate = 0
 
 const RecordsPage = async () => {
-  const records = await getRecordsWithItems()
+  const { data: records = [] } = await getRecordsWithItems()
   const lotProducts = await getLotProductsToRecord()
 
   return <RecordsClient records={records} lotProducts={lotProducts} />

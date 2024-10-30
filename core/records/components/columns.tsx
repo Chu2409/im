@@ -48,7 +48,9 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
 
       const onDelete = async (id: number) => {
         setRecord(undefined)
-        return await deleteRecord(id)
+        const { data: deleted } = await deleteRecord(id)
+
+        return deleted || false
       }
 
       return (

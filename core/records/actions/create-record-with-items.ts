@@ -2,9 +2,10 @@
 
 import prisma from '@/core/shared/utils/prisma'
 import { IUpsertProductBulkProps } from '../types'
+import { handleAction } from '@/core/shared/utils/action-handler'
 
 export const createRecordWithItems = async (data: IUpsertProductBulkProps) => {
-  try {
+  const createRecordWithItems = async () => {
     const recordBulk = await prisma.record.create({
       data: {
         start: data.start,
@@ -18,22 +19,19 @@ export const createRecordWithItems = async (data: IUpsertProductBulkProps) => {
       },
     })
 
-    data.items.forEach(
-      async (item) =>
-        await prisma.lotLocation.update({
-          where: {
-            id: item.lotLocation.id,
-          },
-          data: {
-            stock: { decrement: item.quantity.value },
-          },
-        }),
-    )
+    for (const item of data.items) {
+      await prisma.lotLocation.update({
+        where: {
+          id: item.lotLocation.id,
+        },
+        data: {
+          stock: { decrement: item.quantity.value },
+        },
+      })
+    }
 
-    return recordBulk.id
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[CREATE_RECORD_WITH_ITEMS]', error.message)
-    return null
+    return recordBulk
   }
+
+  return await handleAction(createRecordWithItems, '[CREATE_RECORD_WITH_ITEMS]')
 }

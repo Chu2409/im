@@ -2,6 +2,7 @@
 
 import prisma from '@/core/shared/utils/prisma'
 import { IUpsertProductBulkProps } from '../types'
+import { handleAction } from '@/core/shared/utils/action-handler'
 
 interface BulkItem {
   lotLocationId: number
@@ -13,10 +14,10 @@ interface ToEditItem extends BulkItem {
 }
 
 export const updateRecordWithItems = async (
-  recordId: number,
+  id: number,
   data: IUpsertProductBulkProps,
 ) => {
-  try {
+  const updateRecordWithItems = async () => {
     const toAdd: BulkItem[] = []
     const toEdit: ToEditItem[] = []
     const toDelete: BulkItem[] = []
@@ -47,7 +48,7 @@ export const updateRecordWithItems = async (
           data: toAdd.map((item) => ({
             lotLocationId: item.lotLocationId,
             quantity: item.stock,
-            recordId,
+            recordId: id,
           })),
         })
 
@@ -69,7 +70,7 @@ export const updateRecordWithItems = async (
         for (const item of toEdit) {
           await prisma.item.updateMany({
             where: {
-              recordId,
+              recordId: id,
               lotLocationId: item.lotLocationId,
             },
             data: {
@@ -112,7 +113,7 @@ export const updateRecordWithItems = async (
           await prisma.item.deleteMany({
             where: {
               lotLocationId: item.lotLocationId,
-              recordId,
+              recordId: id,
             },
           })
 
@@ -128,18 +129,16 @@ export const updateRecordWithItems = async (
       }
 
       await prisma.record.update({
-        where: { id: recordId },
+        where: { id },
         data: {
           start: data.start,
           end: data.end,
         },
       })
 
-      return recordId
+      return id
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[UPDATE_RECORD_WITH_ITEMS]', error.message)
-    return null
   }
+
+  return await handleAction(updateRecordWithItems, '[UPDATE_RECORD_WITH_ITEMS]')
 }

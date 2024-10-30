@@ -1,13 +1,11 @@
 'use server'
 
 import prisma from '@/core/shared/utils/prisma'
-import { IRecordWithItems } from '../types'
+import { handleAction } from '@/core/shared/utils/action-handler'
 
-export const getRecordWithItems = async (
-  id: number,
-): Promise<IRecordWithItems | null> => {
-  try {
-    const record = await prisma.record.findUnique({
+export const getRecordWithItems = async (id: number) => {
+  const getRecordWithItems = async () =>
+    await prisma.record.findUnique({
       where: { id },
       include: {
         items: {
@@ -27,10 +25,5 @@ export const getRecordWithItems = async (
       },
     })
 
-    return record
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[GET_RECORDS]', error.message)
-    return null
-  }
+  return await handleAction(getRecordWithItems, '[GET_RECORD_WITH_ITEMS]')
 }
