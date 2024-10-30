@@ -10,6 +10,12 @@ import { FlagIndicator } from '@/core/shared/components/flag-indicator'
 
 export const providersColumns: ColumnDef<Provider>[] = [
   {
+    accessorKey: 'id',
+    meta: 'Id',
+    header: () => <div className='text-center'>ID</div>,
+    cell: ({ row }) => <div className='text-center'>{row.original.id}</div>,
+  },
+  {
     accessorKey: 'name',
     meta: 'Nombre',
     header: ({ column }) => (

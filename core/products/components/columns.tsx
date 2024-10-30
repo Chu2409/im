@@ -12,6 +12,12 @@ import { Product } from '@prisma/client'
 
 export const productsColumns: ColumnDef<Product>[] = [
   {
+    accessorKey: 'id',
+    meta: 'Id',
+    header: () => <div className='text-center'>ID</div>,
+    cell: ({ row }) => <div className='text-center'>{row.original.id}</div>,
+  },
+  {
     accessorKey: 'name',
     meta: 'Nombre',
     header: ({ column }) => (

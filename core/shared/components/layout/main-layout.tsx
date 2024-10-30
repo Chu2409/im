@@ -15,15 +15,16 @@ export const MainLayout = ({
   const pathname = usePathname()
 
   return (
-    <div className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
+    <div className='grid h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
       <Sidebar routes={routes} pathname={pathname} />
 
-      <div className='flex flex-col'>
-        <Topbar routes={routes} pathname={pathname} />
-
-        <main className='flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6'>
-          {children}
-        </main>
+      <div className='grid grid-cols-1'>
+        <div className='flex flex-col'>
+          <Topbar routes={routes} pathname={pathname} />
+          <main className='flex flex-col gap-4 p-4 lg:gap-6 lg:p-6'>
+            {children}
+          </main>
+        </div>
       </div>
     </div>
   )
