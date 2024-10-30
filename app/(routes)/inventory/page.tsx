@@ -7,7 +7,7 @@ import { getProviders } from '@/core/providers/actions/get-providers'
 export const revalidate = 0
 
 const LotsPage = async () => {
-  const lots = await getFullLots()
+  const { data: lots = [] } = await getFullLots()
   const { data: locations = [] } = await getLocations()
   const { data: products = [] } = await getProducts()
   const { data: providers = [] } = await getProviders()

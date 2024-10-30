@@ -128,7 +128,7 @@ export const updateRecordWithItems = async (
         }
       }
 
-      await prisma.record.update({
+      const record = await prisma.record.update({
         where: { id },
         data: {
           start: data.start,
@@ -136,7 +136,7 @@ export const updateRecordWithItems = async (
         },
       })
 
-      return id
+      return record
     })
   }
 

@@ -2,12 +2,13 @@
 
 import prisma from '@/core/shared/utils/prisma'
 import { IUpsertLotLocationBulkProps } from '../types'
+import { handleAction } from '@/core/shared/utils/action-handler'
 
 export const createLotWithLocations = async (
   data: IUpsertLotLocationBulkProps,
 ) => {
-  try {
-    const lotBulk = await prisma.lot.create({
+  const createLotWithLocations = async () =>
+    await prisma.lot.create({
       data: {
         ...data,
         lotLocations: {
@@ -19,10 +20,8 @@ export const createLotWithLocations = async (
       },
     })
 
-    return lotBulk.id
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[CREATE_LOT_WITH_LOCATIONS]', error.message)
-    return null
-  }
+  return await handleAction(
+    createLotWithLocations,
+    '[CREATE_LOT_WITH_LOCATIONS]',
+  )
 }

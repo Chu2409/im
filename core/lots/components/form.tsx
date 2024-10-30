@@ -14,17 +14,20 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/core/shared/ui/button'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useToast } from '@/core/shared/hooks/use-toast'
-import { IEditableRowLotLocation, IFullLot } from '../types'
+import {
+  IEditableRowLotLocation,
+  IFullLot,
+  IUpsertLotLocationBulkProps,
+} from '../types'
 import { Input } from '@/core/shared/ui/input'
-import { Location, Product, Provider } from '@prisma/client'
+import { Location, Lot, Product, Provider } from '@prisma/client'
 import { DatePicker } from '@/core/shared/components/date-picker'
 import { Combobox } from '@/core/shared/components/combobox/combobox'
 import { MultiCombobox } from '@/core/shared/components/combobox/multi-combobox'
 import { LotLocationFormDataTable } from './form-data-table'
 import { createLotWithLocations } from '../actions/create-lot-with-locations'
 import { updateLotWithLocations } from '../actions/update-lot-with-locations'
+import useFormSubmit from '@/core/shared/hooks/use-form-submit'
 
 const formSchema = z.object({
   quantityPurchased: z.coerce
@@ -60,15 +63,6 @@ export const LotForm = ({
   providers: Provider[]
   onModalClose: () => void
 }) => {
-  const toastTitle = initialData ? 'Lote actualizado' : 'Lote creado'
-  const toastDescription = initialData
-    ? 'El lote ha sido actualizado correctamente'
-    : 'El lote ha sido creado correctamente'
-  const errorMessage = initialData
-    ? 'Hubo un error al actualizar el lote'
-    : 'Hubo un error al crear el lote'
-  const action = initialData ? 'Actualizar lote' : 'Crear lote'
-
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -86,9 +80,11 @@ export const LotForm = ({
     },
   })
 
-  const router = useRouter()
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(false)
+  const action = initialData ? 'Actualizar lote' : 'Crear lote'
+  const toastTitle = initialData ? 'Lote actualizado' : 'Lote creado'
+  const toastDescription = initialData
+    ? 'El lote ha sido actualizado correctamente'
+    : 'El lote ha sido creado correctamente'
 
   const [lotLocationsTable, setLotLocationsTable] = useState<
     IEditableRowLotLocation[]
@@ -108,53 +104,34 @@ export const LotForm = ({
       })) || [],
   )
 
-  const onSubmit = async (values: formType) => {
-    setIsLoading(true)
+  const { onSubmit, isLoading } = useFormSubmit<
+    Lot,
+    IUpsertLotLocationBulkProps
+  >({
+    initialData,
+    createFn: createLotWithLocations,
+    updateFn: updateLotWithLocations,
+    toastTitle,
+    toastDescription,
+    onModalClose,
+  })
 
-    let result
-
-    if (initialData)
-      result = await updateLotWithLocations(initialData.id, {
+  const handleSubmit = async (values: formType) =>
+    await onSubmit(
+      {
         ...values,
         expirationDate: values.expirationDate || null,
         receptionDate: values.receptionDate || null,
         providerId: values.providerId || null,
         lotLocations: lotLocationsTable,
-      })
-    else
-      result = await createLotWithLocations({
-        ...values,
-        expirationDate: values.expirationDate || null,
-        receptionDate: values.receptionDate || null,
-        providerId: values.providerId || null,
-        lotLocations: lotLocationsTable,
-      })
-
-    if (result != null) {
-      toast({
-        variant: 'success',
-        title: toastTitle,
-        description: toastDescription,
-      })
-
-      router.refresh()
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Algo salió mal',
-        description: errorMessage,
-      })
-    }
-
-    setIsLoading(false)
-    form.reset()
-    onModalClose()
-  }
+      },
+      form,
+    )
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className='flex flex-col gap-6'
         id='form'
       >

@@ -6,7 +6,7 @@ export const revalidate = 0
 
 const RecordsPage = async () => {
   const { data: records = [] } = await getRecordsWithItems()
-  const lotProducts = await getLotProductsToRecord()
+  const { data: lotProducts = [] } = await getLotProductsToRecord()
 
   return <RecordsClient records={records} lotProducts={lotProducts} />
 }

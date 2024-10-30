@@ -156,7 +156,8 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
       const onOpen = useLotModal((state) => state.onOpen)
 
       const onDelete = async (id: number) => {
-        return await deleteLot(id)
+        const { data: deleted } = await deleteLot(id)
+        return deleted || false
       }
 
       return (

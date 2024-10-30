@@ -1,11 +1,11 @@
 'use server'
 
 import prisma from '@/core/shared/utils/prisma'
-import { IFullLot } from '../types'
+import { handleAction } from '@/core/shared/utils/action-handler'
 
-export const getFullLots = async (): Promise<IFullLot[]> => {
-  try {
-    const lots = await prisma.lot.findMany({
+export const getFullLots = async () => {
+  const getFullLots = async () =>
+    await prisma.lot.findMany({
       include: {
         product: true,
         provider: true,
@@ -17,10 +17,5 @@ export const getFullLots = async (): Promise<IFullLot[]> => {
       },
     })
 
-    return lots
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[GET_FULL_LOTS]', error.message)
-    return []
-  }
+  return await handleAction(getFullLots, '[GET_FULL_LOTS]')
 }

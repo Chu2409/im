@@ -2,6 +2,7 @@
 
 import prisma from '@/core/shared/utils/prisma'
 import { IUpsertLotLocationBulkProps } from '../types'
+import { handleAction } from '@/core/shared/utils/action-handler'
 
 interface BulkItem {
   locationId: number
@@ -9,10 +10,10 @@ interface BulkItem {
 }
 
 export const updateLotWithLocations = async (
-  lotId: number,
+  id: number,
   data: IUpsertLotLocationBulkProps,
 ) => {
-  try {
+  const updateLotWithLocations = async () => {
     const toAdd: BulkItem[] = []
     const toEdit: BulkItem[] = []
     const toDelete: BulkItem[] = []
@@ -38,7 +39,7 @@ export const updateLotWithLocations = async (
 
     return await prisma.$transaction(async (prisma) => {
       const lot = await prisma.lot.update({
-        where: { id: lotId },
+        where: { id },
         data: {
           quantityPurchased: data.quantityPurchased,
           usesPerUnit: data.usesPerUnit,
@@ -54,7 +55,7 @@ export const updateLotWithLocations = async (
           data: toAdd.map((lotLocation) => ({
             locationId: lotLocation.locationId,
             stock: lotLocation.stock * lot.usesPerUnit,
-            lotId,
+            lotId: id,
           })),
         })
       }
@@ -63,7 +64,7 @@ export const updateLotWithLocations = async (
         for (const lotLocation of toEdit) {
           await prisma.lotLocation.updateMany({
             where: {
-              lotId,
+              lotId: id,
               locationId: lotLocation.locationId,
             },
             data: {
@@ -78,17 +79,18 @@ export const updateLotWithLocations = async (
           await prisma.lotLocation.deleteMany({
             where: {
               locationId: lotLocation.locationId,
-              lotId,
+              lotId: id,
             },
           })
         }
       }
 
-      return lotId
+      return lot
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[UPDATE_LOT_WITH_LOCATIONS]', error.message)
-    return null
   }
+
+  return await handleAction(
+    updateLotWithLocations,
+    '[UPDATE_LOT_WITH_LOCATIONS]',
+  )
 }

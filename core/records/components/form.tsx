@@ -87,7 +87,7 @@ export const RecordForm = ({
     onModalClose,
   })
 
-  const handleSubmit = async (values: formType) => {
+  const handleSubmit = async (values: formType) =>
     await onSubmit(
       {
         ...values,
@@ -95,7 +95,6 @@ export const RecordForm = ({
       },
       form,
     )
-  }
 
   return (
     <Form {...form}>
