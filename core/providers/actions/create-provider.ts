@@ -1,6 +1,7 @@
 'use server'
 
 import { ACTIONS } from '@/core/shared/data/actions'
+import { TABLES } from '@/core/shared/data/tables'
 import { handleAction } from '@/core/shared/utils/action-handler'
 import prisma from '@/core/shared/utils/prisma'
 import { Provider } from '@prisma/client'
@@ -15,7 +16,7 @@ export const createProvider = async (data: ICreateProvider) => {
 
   return await handleAction(createProvider, '[CREATE_PROVIDER]', {
     action: ACTIONS.CREATE,
-    table: 'Proveedores',
+    table: TABLES.PROVIDERS,
     content: data,
   })
 }
