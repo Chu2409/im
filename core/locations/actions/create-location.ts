@@ -1,6 +1,7 @@
 'use server'
 
 import { ACTIONS } from '@/core/shared/data/actions'
+import { TABLES } from '@/core/shared/data/tables'
 import { handleAction } from '@/core/shared/utils/action-handler'
 import prisma from '@/core/shared/utils/prisma'
 import { Location } from '@prisma/client'
@@ -15,7 +16,7 @@ export const createLocation = async (data: ICreateLocation) => {
 
   return await handleAction(createLocation, '[CREATE_LOCATION]', {
     action: ACTIONS.CREATE,
-    table: 'Locaciones',
+    table: TABLES.LOCATIONS,
     content: data,
   })
 }

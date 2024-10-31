@@ -16,7 +16,7 @@ export const handleLog = async ({ entityId, table, action, content }: ILog) => {
     data: {
       user: session.user!.name!,
       entityId,
-      table,
+      table: table.name,
       action: action.name,
       content: JSON.stringify(content),
     },

@@ -1,4 +1,4 @@
-export const tables = {
+export const TABLES = {
   LOCATIONS: { name: 'Locaciones' },
   PROVIDERS: { name: 'Proveedores' },
   PRODUCTS: { name: 'Productos' },
