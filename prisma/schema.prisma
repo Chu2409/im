@@ -119,3 +119,15 @@ model User {
 
   @@map("users")
 }
+
+model Log {
+  id       Int      @id @default(autoincrement()) @map("id")
+  user     String   @map("user")
+  entityId Int?     @map("entity_id")
+  table    String   @map("table")
+  action   String   @map("action")
+  date     DateTime @default(now()) @map("date")
+  content  Json     @map("content")
+
+  @@map("logs")
+}
