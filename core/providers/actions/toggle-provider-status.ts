@@ -18,7 +18,7 @@ export const toggleProviderStatus = async (id: number, status: boolean) => {
   return await handleAction(toggleProviderStatus, '[TOGGLE_PROVIDER_STATUS]', {
     entityId: id,
     table: 'Proveedores',
-    action: ACTIONS.DELETE,
+    action: ACTIONS.STATUS,
     content: { active: status },
   })
 }
