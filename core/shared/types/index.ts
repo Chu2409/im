@@ -27,5 +27,5 @@ export interface ILog {
   entityId?: number
   table: (typeof TABLES)[keyof typeof TABLES]
   action: (typeof ACTIONS)[keyof typeof ACTIONS]
-  content: object
+  content?: object
 }

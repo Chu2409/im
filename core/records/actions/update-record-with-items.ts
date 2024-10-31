@@ -3,6 +3,8 @@
 import prisma from '@/core/shared/utils/prisma'
 import { IUpsertProductBulkProps } from '../types'
 import { handleAction } from '@/core/shared/utils/action-handler'
+import { TABLES } from '@/core/shared/data/tables'
+import { ACTIONS } from '@/core/shared/data/actions'
 
 interface BulkItem {
   lotLocationId: number
@@ -140,5 +142,14 @@ export const updateRecordWithItems = async (
     })
   }
 
-  return await handleAction(updateRecordWithItems, '[UPDATE_RECORD_WITH_ITEMS]')
+  return await handleAction(
+    updateRecordWithItems,
+    '[UPDATE_RECORD_WITH_ITEMS]',
+    {
+      entityId: id,
+      table: TABLES.RECORDS,
+      action: ACTIONS.UPDATE,
+      content: data,
+    },
+  )
 }

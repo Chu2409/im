@@ -3,6 +3,8 @@
 import prisma from '@/core/shared/utils/prisma'
 import { IUpsertProductBulkProps } from '../types'
 import { handleAction } from '@/core/shared/utils/action-handler'
+import { ACTIONS } from '@/core/shared/data/actions'
+import { TABLES } from '@/core/shared/data/tables'
 
 export const createRecordWithItems = async (data: IUpsertProductBulkProps) => {
   const createRecordWithItems = async () => {
@@ -33,5 +35,13 @@ export const createRecordWithItems = async (data: IUpsertProductBulkProps) => {
     return recordBulk
   }
 
-  return await handleAction(createRecordWithItems, '[CREATE_RECORD_WITH_ITEMS]')
+  return await handleAction(
+    createRecordWithItems,
+    '[CREATE_RECORD_WITH_ITEMS]',
+    {
+      action: ACTIONS.CREATE,
+      table: TABLES.RECORDS,
+      content: data,
+    },
+  )
 }

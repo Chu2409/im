@@ -18,7 +18,7 @@ export const toggleAlertResolved = async (id: number, resolved: boolean) => {
 
   return await handleAction(toggleAlertResolved, '[TOGGLE_ALERT_RESOLVED]', {
     entityId: id,
-    table: TABLES.LOCATIONS,
+    table: TABLES.ALERTS,
     action: ACTIONS.STATUS,
     content: { active: resolved },
   })
