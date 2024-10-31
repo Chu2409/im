@@ -1,5 +1,7 @@
 'use server'
 
+import { ACTIONS } from '@/core/shared/data/actions'
+import { TABLES } from '@/core/shared/data/tables'
 import { handleAction } from '@/core/shared/utils/action-handler'
 import prisma from '@/core/shared/utils/prisma'
 
@@ -14,5 +16,10 @@ export const toggleAlertResolved = async (id: number, resolved: boolean) => {
       },
     }))
 
-  return await handleAction(toggleAlertResolved, '[TOGGLE_ALERT_RESOLVED]')
+  return await handleAction(toggleAlertResolved, '[TOGGLE_ALERT_RESOLVED]', {
+    entityId: id,
+    table: TABLES.ALERTS,
+    action: ACTIONS.STATUS,
+    content: { active: resolved },
+  })
 }

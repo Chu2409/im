@@ -1,5 +1,7 @@
 'use server'
 
+import { ACTIONS } from '@/core/shared/data/actions'
+import { TABLES } from '@/core/shared/data/tables'
 import { handleAction } from '@/core/shared/utils/action-handler'
 import prisma from '@/core/shared/utils/prisma'
 
@@ -14,5 +16,10 @@ export const toggleProductStatus = async (id: number, status: boolean) => {
       },
     }))
 
-  return await handleAction(toggleProductStatus, '[TOGGLE_PRODUCT_STATUS]')
+  return await handleAction(toggleProductStatus, '[TOGGLE_PRODUCT_STATUS]', {
+    entityId: id,
+    table: TABLES.PRODUCTS,
+    action: ACTIONS.STATUS,
+    content: { active: status },
+  })
 }

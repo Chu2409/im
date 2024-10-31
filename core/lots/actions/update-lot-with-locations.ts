@@ -3,6 +3,8 @@
 import prisma from '@/core/shared/utils/prisma'
 import { IUpsertLotLocationBulkProps } from '../types'
 import { handleAction } from '@/core/shared/utils/action-handler'
+import { TABLES } from '@/core/shared/data/tables'
+import { ACTIONS } from '@/core/shared/data/actions'
 
 interface BulkItem {
   locationId: number
@@ -92,5 +94,11 @@ export const updateLotWithLocations = async (
   return await handleAction(
     updateLotWithLocations,
     '[UPDATE_LOT_WITH_LOCATIONS]',
+    {
+      entityId: id,
+      table: TABLES.LOTS,
+      action: ACTIONS.UPDATE,
+      content: data,
+    },
   )
 }

@@ -3,6 +3,8 @@
 import prisma from '@/core/shared/utils/prisma'
 import { IUpsertLotLocationBulkProps } from '../types'
 import { handleAction } from '@/core/shared/utils/action-handler'
+import { ACTIONS } from '@/core/shared/data/actions'
+import { TABLES } from '@/core/shared/data/tables'
 
 export const createLotWithLocations = async (
   data: IUpsertLotLocationBulkProps,
@@ -23,5 +25,10 @@ export const createLotWithLocations = async (
   return await handleAction(
     createLotWithLocations,
     '[CREATE_LOT_WITH_LOCATIONS]',
+    {
+      action: ACTIONS.CREATE,
+      table: TABLES.LOTS,
+      content: data,
+    },
   )
 }

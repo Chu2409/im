@@ -1,5 +1,7 @@
 'use server'
 
+import { ACTIONS } from '@/core/shared/data/actions'
+import { TABLES } from '@/core/shared/data/tables'
 import { handleAction } from '@/core/shared/utils/action-handler'
 import prisma from '@/core/shared/utils/prisma'
 import { Product } from '@prisma/client'
@@ -17,5 +19,10 @@ export const updateProduct = async (id: number, data: IUpdateProduct) => {
       },
     })
 
-  return await handleAction(updateProduct, '[UPDATE_PRODUCT]')
+  return await handleAction(updateProduct, '[UPDATE_PRODUCT]', {
+    entityId: id,
+    table: TABLES.PRODUCTS,
+    action: ACTIONS.UPDATE,
+    content: data,
+  })
 }
