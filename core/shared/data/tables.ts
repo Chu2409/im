@@ -4,4 +4,5 @@ export const TABLES = {
   PRODUCTS: { name: 'Productos' },
   ALERTS: { name: 'Alertas' },
   RECORDS: { name: 'Registros' },
+  LOTS: { name: 'Lotes' },
 } as const
