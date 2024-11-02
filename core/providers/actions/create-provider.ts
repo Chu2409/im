@@ -9,10 +9,12 @@ import { Provider } from '@prisma/client'
 interface ICreateProvider extends Omit<Provider, 'id' | 'active'> {}
 
 export const createProvider = async (data: ICreateProvider) => {
-  const createProvider = async () =>
-    await prisma.provider.create({
+  const createProvider = async () => {
+    throw new Error('Not implemented')
+    return await prisma.provider.create({
       data,
     })
+  }
 
   return await handleAction(createProvider, '[CREATE_PROVIDER]', {
     action: ACTIONS.CREATE,
