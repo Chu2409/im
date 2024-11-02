@@ -3,6 +3,7 @@ import { checkExpirations } from '@/core/alerts/actions/check-expirations'
 import { checkLowStock } from '@/core/alerts/actions/check-low-stock'
 import { updateExpirationAlerts } from '@/core/alerts/actions/update-expiration-alerts'
 import { updateStockAlerts } from '@/core/alerts/actions/update-stock-alerts'
+import * as Sentry from '@sentry/nextjs'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -15,8 +16,6 @@ export async function GET(request: NextRequest) {
         status: 401,
       })
     }
-
-    console.log('Iniciando verificación de inventario')
 
     const [
       expirationAlerts,
@@ -42,7 +41,11 @@ export async function GET(request: NextRequest) {
       success: true,
     })
   } catch (error) {
-    console.error('Error en cron job:', error)
+    Sentry.captureMessage('Error in check-inventory cron', {
+      extra: {
+        error,
+      },
+    })
     return NextResponse.json(
       { error: 'Internal Server Error' },
       { status: 500 },
