@@ -8,13 +8,11 @@ Sentry.init({
     if (event.exception && event.exception.values) {
       event.exception.values.forEach((exception) => {
         if (exception.stacktrace) {
-          // Mantener solo los frames más relevantes (por ejemplo, los primeros 5)
           if (exception.stacktrace.frames) {
             exception.stacktrace.frames = exception.stacktrace.frames
-              .slice(-5) // Mantener solo los últimos 5 frames
+              .slice(-5)
               .filter(
                 (frame) =>
-                  // Filtrar frames internos de Next.js y node_modules
                   !frame.filename?.includes('node_modules') &&
                   !frame.filename?.includes('webpack-internal') &&
                   !frame.filename?.includes('next/dist'),

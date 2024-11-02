@@ -1,19 +1,15 @@
 'use server'
 
+import { handleAction } from '@/core/shared/utils/action-handler'
 import prisma from '@/core/shared/utils/prisma'
 
 export const getUserByDni = async (dni: string) => {
-  try {
-    const user = await prisma.user.findUnique({
+  const getUserByDni = async () =>
+    await prisma.user.findUnique({
       where: {
         dni,
       },
     })
 
-    return user
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    console.log('[GET_USER_BY_DNI]', error.message)
-    return null
-  }
+  return await handleAction(getUserByDni, '[GET_USER_BY_DNI]')
 }

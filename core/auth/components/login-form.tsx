@@ -64,11 +64,10 @@ export const LoginForm = () => {
 
       if (res?.error) throw new Error(res?.error)
 
-      const user = await getUserByDni(values.dni)
+      const { data: user } = await getUserByDni(values.dni)
 
       router.push('/inventory')
       router.refresh()
-      // toast.success(`Bienvenido de vuelta ${user?.firstName}!`)
       toast({
         variant: 'success',
         title: 'Ingreso exitoso',
