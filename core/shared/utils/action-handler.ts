@@ -43,16 +43,25 @@ export const handleAction = async <T>(
       errorDetails = { originalError: error }
     }
 
-    Sentry.withScope((scope) => {
-      scope.setLevel('error')
-      scope.setContext('action', context)
-      scope.setContext('error_details', errorDetails)
-      scope.setTag('path', path)
+    if (process.env.NODE_ENV === 'production') {
+      Sentry.withScope((scope) => {
+        scope.setLevel('error')
+        scope.setContext('action', context)
+        scope.setContext('error_details', errorDetails)
+        scope.setTag('path', path)
 
-      Sentry.captureException(
-        error instanceof Error ? error : new Error(errorMessage),
-      )
-    })
+        Sentry.captureException(
+          error instanceof Error ? error : new Error(errorMessage),
+        )
+      })
+    } else {
+      console.error('Server Action Error:', {
+        path,
+        errorMessage,
+        errorDetails,
+        context,
+      })
+    }
 
     return { error: errorMessage }
   }
