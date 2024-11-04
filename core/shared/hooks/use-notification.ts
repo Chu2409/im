@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
-import { ActionRes } from '../types'
 import { useRouter } from 'next/navigation'
+import { IActionRes } from '../types/actions'
 
 interface ToastOptions {
   variant: 'success' | 'destructive'
@@ -12,7 +12,11 @@ const useToastNotification = <T>(toast: (options: ToastOptions) => void) => {
   const router = useRouter()
 
   const showNotification = useCallback(
-    (toastData: ActionRes<T>, toastTitle: string, toastDescription: string) => {
+    (
+      toastData: IActionRes<T>,
+      toastTitle: string,
+      toastDescription: string,
+    ) => {
       const { data: success, error } = toastData
 
       if (error) {

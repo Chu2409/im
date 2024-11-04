@@ -1,6 +1,6 @@
 import { getProviders } from '@/core/providers/actions/get-providers'
 import { ProvidersClient } from '@/core/providers/components/client'
-import { IProviderPaginationParams } from '@/core/providers/types'
+import { IProviderPaginationParams } from '@/core/providers/types/pagination'
 import { ISearchParams } from '@/core/shared/types/pagination'
 
 export const revalidate = 0
@@ -11,8 +11,6 @@ const ProvidersPage = async ({
   const params = await searchParams
 
   const { data } = await getProviders(params)
-
-  // console.log(data?.metadata)
 
   return <ProvidersClient data={data} />
 }

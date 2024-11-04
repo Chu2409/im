@@ -1,6 +1,6 @@
 'use server'
 
-import { handleAction } from '@/core/shared/utils/action-handler'
+import { handleAction } from '@/core/shared/utils/actions-handlers'
 import prisma from '@/core/shared/utils/prisma'
 
 export const getProducts = async (includeInactive?: boolean) => {

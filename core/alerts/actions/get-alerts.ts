@@ -1,7 +1,7 @@
 'use server'
 
 import prisma from '@/core/shared/utils/prisma'
-import { handleAction } from '@/core/shared/utils/action-handler'
+import { handleAction } from '@/core/shared/utils/actions-handlers'
 
 export const getAlerts = async () => {
   const getAlerts = async () =>

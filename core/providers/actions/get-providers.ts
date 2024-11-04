@@ -1,15 +1,15 @@
 'use server'
 
-import { handlePaginatedAction } from '@/core/shared/utils/paginated-action-handler'
-import {
-  getPaginationParams,
-  getStatusWhereCap,
-  isValidField,
-  isValidSortOrder,
-} from '@/core/shared/utils/pagination'
+import { getPaginationParams } from '@/core/shared/utils/pagination'
 import prisma from '@/core/shared/utils/prisma'
 import { Prisma } from '@prisma/client'
-import { IProviderPaginationParams } from '../types'
+import { IProviderPaginationParams } from '../types/pagination'
+import { handlePaginatedAction } from '@/core/shared/utils/actions-handlers'
+import {
+  getStatusWhere,
+  isValidField,
+  isValidSortOrder,
+} from '@/core/shared/utils/action-validators'
 
 export const getProviders = async (params: IProviderPaginationParams) => {
   const { skip, page, size } = getPaginationParams(params)
@@ -18,14 +18,14 @@ export const getProviders = async (params: IProviderPaginationParams) => {
     ...(params.search
       ? { name: { contains: params.search, mode: 'insensitive' } }
       : {}),
-    ...getStatusWhereCap(params.status),
+    ...getStatusWhere(params.status),
   }
 
   const orderBy: Prisma.ProviderOrderByWithRelationInput =
     isValidField(params.sort, prisma.provider.fields) &&
     isValidSortOrder(params.order)
       ? {
-          [params.sort as string]: params.order.toLowerCase(),
+          [params.sort as string]: params.order!.toLowerCase(),
         }
       : {}
 

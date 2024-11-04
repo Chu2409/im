@@ -1,15 +1,17 @@
 /* eslint-disable no-console */
-import { ActionRes, ILog } from '../types'
-import { IPaginatedRes } from '../types/pagination'
-import { getEcuadorTimestamp } from './date-helpers'
-import { handleLog } from './log-handler'
 import * as Sentry from '@sentry/nextjs'
+import { getEcuadorTimestamp } from './utils'
+import { IPaginatedRes } from '../types/pagination'
+import { IActionRes, ILog } from '../types/actions'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/core/auth/consts/auth-options'
+import prisma from './prisma'
 
-export const handlePaginatedAction = async <T>(
-  action: () => Promise<IPaginatedRes<T>>,
+export const handleAction = async <T>(
+  action: () => Promise<T>,
   path: string,
   log?: ILog,
-): Promise<ActionRes<IPaginatedRes<T>>> => {
+): Promise<IActionRes<T>> => {
   try {
     const data = await action()
 
@@ -66,4 +68,30 @@ export const handlePaginatedAction = async <T>(
 
     return { error: errorMessage }
   }
+}
+
+export const handlePaginatedAction = async <T>(
+  action: () => Promise<IPaginatedRes<T>>,
+  path: string,
+  log?: ILog,
+): Promise<IActionRes<IPaginatedRes<T>>> => {
+  return handleAction(action, path, log)
+}
+
+const handleLog = async ({ entityId, table, action, content }: ILog) => {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    throw new Error('No autorizado')
+  }
+
+  await prisma.log.create({
+    data: {
+      user: session.user!.name!,
+      entityId,
+      table: table.name,
+      action: action.name,
+      content: JSON.stringify(content),
+    },
+  })
 }

@@ -1,13 +1,12 @@
+export interface ISearchParams<T> {
+  searchParams: Promise<T>
+}
 export interface IPaginationParams {
   page?: string
   size?: string
   search?: string
   sort?: string
   order?: string
-}
-
-export interface ISearchParams<T> {
-  searchParams: Promise<T>
 }
 
 export interface IMetadata {

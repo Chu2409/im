@@ -2,7 +2,7 @@
 
 import prisma from '@/core/shared/utils/prisma'
 import { IUpsertLotLocationBulkProps } from '../types'
-import { handleAction } from '@/core/shared/utils/action-handler'
+import { handleAction } from '@/core/shared/utils/actions-handlers'
 import { ACTIONS } from '@/core/shared/data/actions'
 import { TABLES } from '@/core/shared/data/tables'
 
