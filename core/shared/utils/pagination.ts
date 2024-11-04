@@ -27,6 +27,28 @@ export const formUrlQuery = ({
 }) => {
   const currentUrl = qs.parse(params.toString())
 
+  currentUrl[key] = value
+
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true },
+  )
+}
+
+export const formUrlArrayQuery = ({
+  params,
+  key,
+  value,
+}: {
+  params: ReadonlyURLSearchParams
+  key: string
+  value: string
+}) => {
+  const currentUrl = qs.parse(params.toString())
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   currentUrl[key] = currentUrl[key] ? Array.of(currentUrl[key], value) : value
@@ -40,29 +62,29 @@ export const formUrlQuery = ({
   )
 }
 
-// export function removeKeysFromQuery({
-//   params,
-//   keysToRemove,
-// }: {
-//   params: ReadonlyURLSearchParams
-//   keysToRemove: string[]
-// }) {
-//   const currentUrl = qs.parse(params.toString())
+export const removeKeysFromQuery = ({
+  params,
+  keysToRemove,
+}: {
+  params: ReadonlyURLSearchParams
+  keysToRemove: string[]
+}) => {
+  const currentUrl = qs.parse(params.toString())
 
-//   keysToRemove.forEach((key) => {
-//     delete currentUrl[key]
-//   })
+  keysToRemove.forEach((key) => {
+    delete currentUrl[key]
+  })
 
-//   return qs.stringifyUrl(
-//     {
-//       url: window.location.pathname,
-//       query: currentUrl,
-//     },
-//     { skipNull: true },
-//   )
-// }
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true },
+  )
+}
 
-export const removeValueFromQuery = ({
+export const removeValueFromArrayQuery = ({
   params,
   keyToRemove,
   valueToRemove,

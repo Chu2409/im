@@ -20,8 +20,8 @@ import { Separator } from '@/core/shared/ui/separator'
 import { STATUSES, getEstatusById } from '@/core/shared/data/statuses'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
-  formUrlQuery,
-  removeValueFromQuery,
+  formUrlArrayQuery,
+  removeValueFromArrayQuery,
 } from '@/core/shared/utils/pagination'
 
 export const DataTableStatusFilter = () => {
@@ -36,13 +36,13 @@ export const DataTableStatusFilter = () => {
   const handleChange = (value: number, isSelected: boolean) => {
     let url
     if (isSelected)
-      url = removeValueFromQuery({
+      url = removeValueFromArrayQuery({
         params: searchParams,
         keyToRemove: 'status',
         valueToRemove: value.toString(),
       })
     else
-      url = formUrlQuery({
+      url = formUrlArrayQuery({
         params: searchParams,
         key: 'status',
         value: value.toString(),
