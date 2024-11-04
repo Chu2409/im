@@ -14,7 +14,7 @@ const ProvidersPage = async ({
 
   // console.log(data?.metadata)
 
-  return <ProvidersClient providers={data?.data || []} />
+  return <ProvidersClient data={data} />
 }
 
 export default ProvidersPage

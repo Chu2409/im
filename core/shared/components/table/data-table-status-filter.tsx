@@ -18,7 +18,7 @@ import {
   PopoverTrigger,
 } from '@/core/shared/ui/popover'
 import { Separator } from '@/core/shared/ui/separator'
-import { ESTATUSES } from '../../data/status-options'
+import { STATUSES } from '../../data/statuses'
 import { useEffect } from 'react'
 
 interface DataTableStatusFilterProps<TData, TValue> {
@@ -52,7 +52,7 @@ export function DataTableStatusFilter<TData, TValue>({
               </Badge>
 
               <div className='hidden space-x-1 lg:flex'>
-                {ESTATUSES
+                {STATUSES
                   .filter((option) => selectedValues.has(option.value))
                   .map((option) => (
                     <Badge
@@ -73,7 +73,7 @@ export function DataTableStatusFilter<TData, TValue>({
         <Command>
           <CommandList>
             <CommandGroup>
-              {ESTATUSES.map((option) => {
+              {STATUSES.map((option) => {
                 const isSelected = selectedValues.has(option.value)
 
                 return (

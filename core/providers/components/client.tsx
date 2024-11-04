@@ -1,13 +1,18 @@
 'use client'
 
 import { Header } from '@/core/shared/components/head/header'
-import { DataTable } from '@/core/shared/components/table/data-table'
+import { DataTable } from '@/core/shared/components/table/test/data-table'
 import { Provider } from '@prisma/client'
 import { providersColumns } from './columns'
 import { ProviderModal } from './modal'
 import { useProviderModal } from '../hooks/use-provider-modal'
+import { IPaginatedRes } from '@/core/shared/types/pagination'
 
-export const ProvidersClient = ({ providers }: { providers: Provider[] }) => {
+export const ProvidersClient = ({
+  data,
+}: {
+  data: IPaginatedRes<Provider> | undefined
+}) => {
   const onOpen = useProviderModal((state) => state.onOpen)
 
   return (
@@ -23,7 +28,7 @@ export const ProvidersClient = ({ providers }: { providers: Provider[] }) => {
 
       <DataTable
         statusColumn
-        data={providers}
+        data={data}
         columns={providersColumns}
         inputFilterKey='name'
       />

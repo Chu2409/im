@@ -17,7 +17,7 @@ import {
   PopoverTrigger,
 } from '@/core/shared/ui/popover'
 import { Separator } from '@/core/shared/ui/separator'
-import { ESTATUSES, getEstatusById } from '@/core/shared/data/status-options'
+import { STATUSES, getEstatusById } from '@/core/shared/data/statuses'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
   formUrlQueryArray,
@@ -69,7 +69,7 @@ export const DataTableStatusFilter = () => {
               </Badge>
 
               <div className='hidden space-x-1 lg:flex'>
-                {Object.values(ESTATUSES)
+                {Object.values(STATUSES)
                   .filter((option) => selected.includes(option.id))
                   .map((option) => (
                     <Badge
@@ -90,7 +90,7 @@ export const DataTableStatusFilter = () => {
         <Command>
           <CommandList>
             <CommandGroup>
-              {Object.values(ESTATUSES).map((option) => {
+              {Object.values(STATUSES).map((option) => {
                 const isSelected = selected.includes(option.id)
 
                 return (

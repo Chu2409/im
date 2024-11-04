@@ -1,8 +1,9 @@
 'use server'
 
-import { handleAction } from '@/core/shared/utils/action-handler'
+import { handlePaginatedAction } from '@/core/shared/utils/paginated-action-handler'
 import {
   getPaginationParams,
+  getStatusWhereCap,
   isValidField,
   isValidSortOrder,
 } from '@/core/shared/utils/pagination'
@@ -11,13 +12,13 @@ import { Prisma } from '@prisma/client'
 import { IProviderPaginationParams } from '../types'
 
 export const getProviders = async (params: IProviderPaginationParams) => {
-  const { skip, page, limit } = getPaginationParams(params)
+  const { skip, page, size } = getPaginationParams(params)
 
   const where: Prisma.ProviderWhereInput = {
     ...(params.search
       ? { name: { contains: params.search, mode: 'insensitive' } }
       : {}),
-    ...(params.active ? { active: params.active === 'true' } : {}),
+    ...getStatusWhereCap(params.status),
   }
 
   const orderBy: Prisma.ProviderOrderByWithRelationInput =
@@ -34,17 +35,17 @@ export const getProviders = async (params: IProviderPaginationParams) => {
     const providers = await prisma.provider.findMany({
       where,
       skip,
-      take: limit,
+      take: size,
       orderBy,
     })
 
-    const totalPages = Math.ceil(total / limit)
+    const totalPages = Math.ceil(total / size)
 
     return {
       data: providers,
       metadata: {
         total,
-        limit,
+        size,
         currentPage: page,
         totalPages,
         hasNextPage: page < totalPages,
@@ -53,5 +54,5 @@ export const getProviders = async (params: IProviderPaginationParams) => {
     }
   }
 
-  return await handleAction(getProviders, '[GET_PROVIDERS]')
+  return await handlePaginatedAction(getProviders, '[GET_PROVIDERS]')
 }
