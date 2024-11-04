@@ -9,7 +9,7 @@ import { Input } from '@/core/shared/ui/input'
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
 import { IFilter } from './types'
 import { DataTableViewOptions } from './data-table-view-options'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { ChangeEvent } from 'react'
 import { formUrlQuery } from '@/core/shared/utils/pagination'
 import debounce from 'debounce'
@@ -34,6 +34,7 @@ export function DataTableToolbar<TData>({
 
   const router = useRouter()
   const searchParams = useSearchParams()
+  const pathName = usePathname()
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -51,7 +52,7 @@ export function DataTableToolbar<TData>({
   }, 500)
 
   const handleClearFilters = () => {
-    router.push(window.location.pathname, { scroll: false })
+    router.push(pathName, { scroll: false })
   }
 
   return (

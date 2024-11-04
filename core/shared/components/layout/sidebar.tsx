@@ -30,7 +30,8 @@ export const Sidebar = ({
                 href={route.href}
                 className={cn(
                   'flex items-center gap-4 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
-                  pathname === route.href && 'bg-muted text-primary',
+                  route.href.split('?')[0] === pathname &&
+                    'bg-muted text-primary',
                 )}
               >
                 <icon.type {...icon.props} className='h-5 w-5' />

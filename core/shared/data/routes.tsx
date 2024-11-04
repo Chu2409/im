@@ -30,7 +30,7 @@ export const routes: IRoute[] = [
     icon: <Tags />,
   },
   {
-    href: '/providers',
+    href: '/providers?status=1',
     label: 'Proveedores',
     icon: <Truck />,
   },
