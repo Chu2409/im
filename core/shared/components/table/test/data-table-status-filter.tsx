@@ -1,7 +1,6 @@
 'use client'
 
 import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons'
-import { Column } from '@tanstack/react-table'
 
 import { cn } from '@/core/shared/utils/utils'
 import { Badge } from '@/core/shared/ui/badge'
@@ -18,21 +17,39 @@ import {
   PopoverTrigger,
 } from '@/core/shared/ui/popover'
 import { Separator } from '@/core/shared/ui/separator'
-import { ESTATUSES } from '../../data/status-options'
-import { useEffect } from 'react'
+import { ESTATUSES, getEstatusById } from '@/core/shared/data/status-options'
+import { useRouter, useSearchParams } from 'next/navigation'
+import {
+  formUrlQueryArray,
+  removeKeyFromArrayQuery,
+} from '@/core/shared/utils/pagination'
 
-interface DataTableStatusFilterProps<TData, TValue> {
-  column: Column<TData, TValue>
-}
+export const DataTableStatusFilter = () => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const status = searchParams.getAll('status')
 
-export function DataTableStatusFilter<TData, TValue>({
-  column,
-}: DataTableStatusFilterProps<TData, TValue>) {
-  const selectedValues = new Set(column?.getFilterValue() as number[])
+  const selected = status
+    .map((status) => getEstatusById(Number(status))?.id)
+    .filter((status) => status != null)
 
-  useEffect(() => {
-    column.setFilterValue([1])
-  }, [column])
+  const handleChange = (value: number, isSelected: boolean) => {
+    let url
+    if (isSelected)
+      url = removeKeyFromArrayQuery({
+        params: searchParams,
+        keyToRemove: 'status',
+        valueToRemove: value.toString(),
+      })
+    else
+      url = formUrlQueryArray({
+        params: searchParams,
+        key: 'status',
+        value: value.toString(),
+      })
+
+    router.push(url, { scroll: false })
+  }
 
   return (
     <Popover>
@@ -40,7 +57,7 @@ export function DataTableStatusFilter<TData, TValue>({
         <Button variant='outline' size='sm' className='h-8'>
           <PlusCircledIcon className='mr-2 h-4 w-4' />
           Estado
-          {selectedValues?.size > 0 && (
+          {selected.length > 0 && (
             <>
               <Separator orientation='vertical' className='mx-2 h-4' />
 
@@ -48,16 +65,16 @@ export function DataTableStatusFilter<TData, TValue>({
                 variant='secondary'
                 className='rounded-sm px-1 font-normal lg:hidden'
               >
-                {selectedValues.size}
+                {selected.length}
               </Badge>
 
               <div className='hidden space-x-1 lg:flex'>
-                {ESTATUSES
-                  .filter((option) => selectedValues.has(option.value))
+                {Object.values(ESTATUSES)
+                  .filter((option) => selected.includes(option.id))
                   .map((option) => (
                     <Badge
                       variant='secondary'
-                      key={option.label}
+                      key={option.id}
                       className='rounded-sm px-1 font-normal'
                     >
                       {option.label}
@@ -73,21 +90,13 @@ export function DataTableStatusFilter<TData, TValue>({
         <Command>
           <CommandList>
             <CommandGroup>
-              {ESTATUSES.map((option) => {
-                const isSelected = selectedValues.has(option.value)
+              {Object.values(ESTATUSES).map((option) => {
+                const isSelected = selected.includes(option.id)
 
                 return (
                   <CommandItem
                     key={option.label}
-                    onSelect={() => {
-                      if (isSelected) selectedValues.delete(option.value)
-                      else selectedValues.add(option.value)
-
-                      const filterValues = Array.from(selectedValues)
-                      column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined,
-                      )
-                    }}
+                    onSelect={() => handleChange(option.id, isSelected)}
                     className='cursor-pointer capitalize'
                   >
                     <div

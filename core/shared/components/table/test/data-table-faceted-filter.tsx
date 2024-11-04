@@ -1,5 +1,3 @@
-'use client'
-
 import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons'
 import { Column } from '@tanstack/react-table'
 
@@ -8,9 +6,12 @@ import { Badge } from '@/core/shared/ui/badge'
 import { Button } from '@/core/shared/ui/button'
 import {
   Command,
+  CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
   CommandList,
+  CommandSeparator,
 } from '@/core/shared/ui/command'
 import {
   Popover,
@@ -18,28 +19,29 @@ import {
   PopoverTrigger,
 } from '@/core/shared/ui/popover'
 import { Separator } from '@/core/shared/ui/separator'
-import { ESTATUSES } from '../../data/status-options'
-import { useEffect } from 'react'
+import { IOption } from '@/core/shared/types'
 
-interface DataTableStatusFilterProps<TData, TValue> {
-  column: Column<TData, TValue>
+interface DataTableFacetedFilterProps<TData, TValue> {
+  column?: Column<TData, TValue>
+  title?: string
+  options: IOption<number>[]
 }
 
-export function DataTableStatusFilter<TData, TValue>({
+export function DataTableFacetedFilter<TData, TValue>({
   column,
-}: DataTableStatusFilterProps<TData, TValue>) {
+  title,
+  options,
+}: DataTableFacetedFilterProps<TData, TValue>) {
   const selectedValues = new Set(column?.getFilterValue() as number[])
-
-  useEffect(() => {
-    column.setFilterValue([1])
-  }, [column])
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant='outline' size='sm' className='h-8'>
           <PlusCircledIcon className='mr-2 h-4 w-4' />
-          Estado
+
+          {title}
+
           {selectedValues?.size > 0 && (
             <>
               <Separator orientation='vertical' className='mx-2 h-4' />
@@ -52,17 +54,26 @@ export function DataTableStatusFilter<TData, TValue>({
               </Badge>
 
               <div className='hidden space-x-1 lg:flex'>
-                {ESTATUSES
-                  .filter((option) => selectedValues.has(option.value))
-                  .map((option) => (
-                    <Badge
-                      variant='secondary'
-                      key={option.label}
-                      className='rounded-sm px-1 font-normal'
-                    >
-                      {option.label}
-                    </Badge>
-                  ))}
+                {selectedValues.size > 2 ? (
+                  <Badge
+                    variant='secondary'
+                    className='rounded-sm px-1 font-normal'
+                  >
+                    {selectedValues.size} seleccionados
+                  </Badge>
+                ) : (
+                  options
+                    .filter((option) => selectedValues.has(option.value))
+                    .map((option) => (
+                      <Badge
+                        variant='secondary'
+                        key={option.value}
+                        className='rounded-sm px-1 font-normal'
+                      >
+                        {option.label}
+                      </Badge>
+                    ))
+                )}
               </div>
             </>
           )}
@@ -71,14 +82,18 @@ export function DataTableStatusFilter<TData, TValue>({
 
       <PopoverContent className='w-[180px] p-0' align='start'>
         <Command>
+          {options.length > 10 && <CommandInput placeholder={title} />}
+
           <CommandList>
+            <CommandEmpty>No hay opciones disponibles</CommandEmpty>
+
             <CommandGroup>
-              {ESTATUSES.map((option) => {
+              {options.map((option) => {
                 const isSelected = selectedValues.has(option.value)
 
                 return (
                   <CommandItem
-                    key={option.label}
+                    key={option.value}
                     onSelect={() => {
                       if (isSelected) selectedValues.delete(option.value)
                       else selectedValues.add(option.value)
@@ -106,6 +121,21 @@ export function DataTableStatusFilter<TData, TValue>({
                 )
               })}
             </CommandGroup>
+
+            {selectedValues.size > 0 && (
+              <>
+                <CommandSeparator />
+
+                <CommandGroup>
+                  <CommandItem
+                    onSelect={() => column?.setFilterValue(undefined)}
+                    className='justify-center text-center cursor-pointer'
+                  >
+                    Limpiar filtro
+                  </CommandItem>
+                </CommandGroup>
+              </>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>
