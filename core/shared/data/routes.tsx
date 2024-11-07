@@ -20,7 +20,7 @@ export const routes: IRoute[] = [
     icon: <FileText />,
   },
   {
-    href: '/alerts',
+    href: '/alerts?status=0',
     label: 'Alertas',
     icon: <CircleAlert />,
   },

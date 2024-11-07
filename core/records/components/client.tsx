@@ -2,19 +2,20 @@
 
 import { Header } from '@/core/shared/components/head/header'
 import { recordsColumns } from './columns'
-import { DataTable } from '@/core/shared/components/table/data-table'
+import { DataTable } from '@/core/shared/components/table/test/data-table'
 import { IRecordWithItems } from '../types'
 import { useRecord } from '../hooks/use-record'
 import { RecordModal } from './modal'
 import { useRecordModal } from '../hooks/use-record-modal'
 import { ItemsClient } from '@/core/items/components/client'
 import { IFullLotLocation } from '@/core/lots/types'
+import { IPaginatedRes } from '@/core/shared/types/pagination'
 
 export const RecordsClient = ({
-  records,
+  data,
   lotProducts,
 }: {
-  records: IRecordWithItems[]
+  data: IPaginatedRes<IRecordWithItems> | undefined
   lotProducts: IFullLotLocation[]
 }) => {
   const currentRecord = useRecord((state) => state.record)
@@ -44,10 +45,9 @@ export const RecordsClient = ({
           </p>
 
           <DataTable
-            data={records}
+            data={data}
             columns={recordsColumns}
-            statusColumn={false}
-            viewOptions={false}
+            enableViewOptions={false}
           />
         </div>
 
