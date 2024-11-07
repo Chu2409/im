@@ -1,7 +1,7 @@
 'use client'
 
 import { Header } from '@/core/shared/components/head/header'
-import { DataTable } from '@/core/shared/components/table/test/data-table'
+import { DataTable } from '@/core/shared/components/table/paginated/data-table'
 import { Location } from '@prisma/client'
 import { locationColumns } from './columns'
 import { useLocationModal } from '../hooks/use-location-modal'

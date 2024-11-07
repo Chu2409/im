@@ -1,7 +1,7 @@
 'use client'
 
 import { Header } from '@/core/shared/components/head/header'
-import { DataTable } from '@/core/shared/components/table/test/data-table'
+import { DataTable } from '@/core/shared/components/table/paginated/data-table'
 import { useProductModal } from '../hooks/use-product-modal'
 import { productsColumns } from './columns'
 import { ProductModal } from './modal'

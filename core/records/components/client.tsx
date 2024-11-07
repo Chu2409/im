@@ -2,7 +2,7 @@
 
 import { Header } from '@/core/shared/components/head/header'
 import { recordsColumns } from './columns'
-import { DataTable } from '@/core/shared/components/table/test/data-table'
+import { DataTable } from '@/core/shared/components/table/paginated/data-table'
 import { IRecordWithItems } from '../types'
 import { useRecord } from '../hooks/use-record'
 import { RecordModal } from './modal'

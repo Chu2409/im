@@ -1,6 +1,6 @@
 'use client'
 
-import { DataTableColumnHeader } from '@/core/shared/components/table/test/data-table-column-header'
+import { DataTableColumnHeader } from '@/core/shared/components/table/paginated/data-table-column-header'
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { ColumnDef } from '@tanstack/react-table'
 import { useProductModal } from '../hooks/use-product-modal'
