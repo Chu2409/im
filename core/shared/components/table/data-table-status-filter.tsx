@@ -52,17 +52,17 @@ export function DataTableStatusFilter<TData, TValue>({
               </Badge>
 
               <div className='hidden space-x-1 lg:flex'>
-                {STATUSES
-                  .filter((option) => selectedValues.has(option.value))
-                  .map((option) => (
-                    <Badge
-                      variant='secondary'
-                      key={option.label}
-                      className='rounded-sm px-1 font-normal'
-                    >
-                      {option.label}
-                    </Badge>
-                  ))}
+                {STATUSES.filter((option) =>
+                  selectedValues.has(option.value),
+                ).map((option) => (
+                  <Badge
+                    variant='secondary'
+                    key={option.label}
+                    className='rounded-sm px-1 font-normal'
+                  >
+                    {option.label}
+                  </Badge>
+                ))}
               </div>
             </>
           )}

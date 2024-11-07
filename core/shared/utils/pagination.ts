@@ -38,6 +38,31 @@ export const formUrlQuery = ({
   )
 }
 
+export const formUrlQueryFromArray = ({
+  params,
+  values,
+}: {
+  params: ReadonlyURLSearchParams
+  values: {
+    key: string
+    value: string
+  }[]
+}) => {
+  const currentUrl = qs.parse(params.toString())
+
+  values.forEach(({ key, value }) => {
+    currentUrl[key] = value
+  })
+
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true },
+  )
+}
+
 export const formUrlArrayQuery = ({
   params,
   key,

@@ -2,9 +2,7 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   CaretSortIcon,
-  EyeNoneIcon,
 } from '@radix-ui/react-icons'
-import { Column } from '@tanstack/react-table'
 
 import { cn } from '@/core/shared/utils/utils'
 import { Button } from '@/core/shared/ui/button'
@@ -12,26 +10,43 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/core/shared/ui/dropdown-menu'
 import { HTMLAttributes } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { formUrlQueryFromArray } from '@/core/shared/utils/pagination'
 
-interface DataTableColumnHeaderProps<TData, TValue>
-  extends HTMLAttributes<HTMLDivElement> {
-  column: Column<TData, TValue>
+interface DataTableColumnHeaderProps extends HTMLAttributes<HTMLDivElement> {
+  sort: string
   title: string
-  toggleVisibility?: boolean
 }
 
-export function DataTableColumnHeader<TData, TValue>({
-  column,
+export function DataTableColumnHeader({
+  sort,
   title,
   className,
-  toggleVisibility,
-}: DataTableColumnHeaderProps<TData, TValue>) {
-  if (!column.getCanSort()) {
-    return <div className={cn(className)}>{title}</div>
+}: DataTableColumnHeaderProps) {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
+  const order = searchParams.get('order')
+
+  const handleSort = (order: string) => {
+    const url = formUrlQueryFromArray({
+      params: searchParams,
+      values: [
+        {
+          key: 'sort',
+          value: sort,
+        },
+        {
+          key: 'order',
+          value: order,
+        },
+      ],
+    })
+
+    router.push(url, { scroll: false })
   }
 
   return (
@@ -45,9 +60,9 @@ export function DataTableColumnHeader<TData, TValue>({
           >
             <span className='text-sm'>{title}</span>
 
-            {column.getIsSorted() === 'desc' ? (
+            {order === 'desc' ? (
               <ArrowDownIcon className='ml-2 h-4 w-4' />
-            ) : column.getIsSorted() === 'asc' ? (
+            ) : order === 'asc' ? (
               <ArrowUpIcon className='ml-2 h-4 w-4' />
             ) : (
               <CaretSortIcon className='ml-2 h-4 w-4' />
@@ -57,7 +72,7 @@ export function DataTableColumnHeader<TData, TValue>({
 
         <DropdownMenuContent align='start'>
           <DropdownMenuItem
-            onClick={() => column.toggleSorting(false)}
+            onClick={() => handleSort('asc')}
             className='cursor-pointer'
           >
             <ArrowUpIcon className='mr-2 h-3.5 w-3.5 text-muted-foreground/70' />
@@ -65,26 +80,12 @@ export function DataTableColumnHeader<TData, TValue>({
           </DropdownMenuItem>
 
           <DropdownMenuItem
-            onClick={() => column.toggleSorting(true)}
+            onClick={() => handleSort('desc')}
             className='cursor-pointer'
           >
             <ArrowDownIcon className='mr-2 h-3.5 w-3.5 text-muted-foreground/70' />
             Desc
           </DropdownMenuItem>
-
-          {toggleVisibility && (
-            <>
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem
-                onClick={() => column.toggleVisibility(false)}
-                className='cursor-pointer'
-              >
-                <EyeNoneIcon className='mr-2 h-3.5 w-3.5 text-muted-foreground/70' />
-                Hide
-              </DropdownMenuItem>
-            </>
-          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
