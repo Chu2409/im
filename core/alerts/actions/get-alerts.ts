@@ -1,7 +1,10 @@
 'use server'
 
 import prisma from '@/core/shared/utils/prisma'
-import { handleAction } from '@/core/shared/utils/actions-handlers'
+import {
+  handleAction,
+  handlePaginatedAction,
+} from '@/core/shared/utils/actions-handlers'
 import { IAlertPaginationParams } from '../types/pagination'
 import { getPaginationParams } from '@/core/shared/utils/pagination'
 import { Prisma } from '@prisma/client'
@@ -118,5 +121,5 @@ export const getAlerts = async (params: IAlertPaginationParams) => {
     }
   }
 
-  return await handleAction(getAlerts, '[GET_ALERTS]')
+  return await handlePaginatedAction(getAlerts, '[GET_ALERTS]')
 }

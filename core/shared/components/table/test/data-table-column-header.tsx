@@ -30,6 +30,7 @@ export function DataTableColumnHeader({
   const router = useRouter()
 
   const order = searchParams.get('order')
+  const sortParam = searchParams.get('sort')
 
   const handleSort = (order: string) => {
     const url = formUrlQueryFromArray({
@@ -60,9 +61,9 @@ export function DataTableColumnHeader({
           >
             <span className='text-sm'>{title}</span>
 
-            {order === 'desc' ? (
+            {order === 'desc' && sortParam === sort ? (
               <ArrowDownIcon className='ml-2 h-4 w-4' />
-            ) : order === 'asc' ? (
+            ) : order === 'asc' && sortParam === sort ? (
               <ArrowUpIcon className='ml-2 h-4 w-4' />
             ) : (
               <CaretSortIcon className='ml-2 h-4 w-4' />

@@ -6,7 +6,7 @@ import { getCategoryByName } from '@/core/products/data/categories'
 import { Badge } from '@/core/shared/ui/badge'
 import { formatDate } from '@/core/shared/utils/utils'
 import { getLaboratoryByName } from '@/core/locations/data/labobratories'
-import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
+import { DataTableColumnHeader } from '@/core/shared/components/table/test/data-table-column-header'
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions-delete'
 import { useLotModal } from '../hooks/use-lot-modal'
 import { deleteLot } from '../actions/delete-lot'
@@ -42,20 +42,11 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
         </div>
       )
     },
-    filterFn: (row, id, filterValue) =>
-      row.original.product.name
-        .toLowerCase()
-        .trim()
-        .includes(filterValue.toLowerCase().trim()),
   },
   {
     accessorKey: 'category',
     meta: 'Categoría',
     header: '',
-    filterFn: (row, id, filterValue) => {
-      const category = getCategoryByName(row.original.product.category)
-      return filterValue.includes(category?.id)
-    },
   },
   {
     accessorKey: 'quantity',
@@ -75,9 +66,7 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
   {
     accessorKey: 'orderDate',
     meta: 'Orden',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Orden' toggleVisibility />
-    ),
+    header: () => <DataTableColumnHeader sort='orderDate' title='Orden' />,
     sortingFn: (rowA, rowB) =>
       new Date(rowA.original.orderDate).getTime() -
       new Date(rowB.original.orderDate).getTime(),
@@ -88,16 +77,9 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
   {
     accessorKey: 'expiration',
     meta: 'Vencimiento',
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title='Vencimiento'
-        toggleVisibility
-      />
+    header: () => (
+      <DataTableColumnHeader sort='expirationDate' title='Vencimiento' />
     ),
-    sortingFn: (rowA, rowB) =>
-      new Date(rowA.original.expirationDate ?? 0).getTime() -
-      new Date(rowB.original.expirationDate ?? 0).getTime(),
     cell: ({ row }) => (
       <span className='capitalize'>
         {row.original.expirationDate
