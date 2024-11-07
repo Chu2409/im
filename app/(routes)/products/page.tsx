@@ -1,12 +1,18 @@
 import { getProducts } from '@/core/products/actions/get-products'
 import { ProductsClient } from '@/core/products/components/client'
+import { IProductPaginationParams } from '@/core/products/types/pagination'
+import { ISearchParams } from '@/core/shared/types/pagination'
 
 export const revalidate = 0
 
-const ProductsPage = async () => {
-  const { data: products = [] } = await getProducts(true)
+const ProductsPage = async ({
+  searchParams,
+}: ISearchParams<IProductPaginationParams>) => {
+  const params = await searchParams
 
-  return <ProductsClient products={products} />
+  const { data } = await getProducts(params)
+
+  return <ProductsClient data={data} />
 }
 
 export default ProductsPage

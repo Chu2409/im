@@ -25,7 +25,7 @@ export const routes: IRoute[] = [
     icon: <CircleAlert />,
   },
   {
-    href: '/products',
+    href: '/products?status=1',
     label: 'Productos',
     icon: <Tags />,
   },

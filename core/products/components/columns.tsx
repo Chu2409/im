@@ -1,6 +1,6 @@
 'use client'
 
-import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
+import { DataTableColumnHeader } from '@/core/shared/components/table/test/data-table-column-header'
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { ColumnDef } from '@tanstack/react-table'
 import { useProductModal } from '../hooks/use-product-modal'
@@ -20,30 +20,18 @@ export const productsColumns: ColumnDef<Product>[] = [
   {
     accessorKey: 'name',
     meta: 'Nombre',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Nombre' />
-    ),
+    header: () => <DataTableColumnHeader title='Nombre' sort='name' />,
   },
   {
     accessorKey: 'status',
     meta: 'Estado',
     header: '',
     cell: ({ row }) => !row.original.active && <FlagIndicator />,
-    filterFn: (row, id, filterValue) => {
-      const value = row.original.active ? 1 : 0
-      return filterValue.includes(value)
-    },
   },
   {
     accessorKey: 'category',
     meta: 'Categoría',
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title='Categoría'
-        toggleVisibility
-      />
-    ),
+    header: () => <DataTableColumnHeader title='Categoría' sort='category' />,
     filterFn: (row, id, filterValue) => {
       const category = getCategoryByName(row.original.category)
       return filterValue.includes(category?.id)

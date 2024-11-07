@@ -1,6 +1,6 @@
 'use server'
 
-import { handleAction } from '@/core/shared/utils/actions-handlers'
+import { handlePaginatedAction } from '@/core/shared/utils/actions-handlers'
 import prisma from '@/core/shared/utils/prisma'
 import { ILocationPaginationParams } from '../types/pagination'
 import { getPaginationParams } from '@/core/shared/utils/pagination'
@@ -63,5 +63,5 @@ export const getLocations = async (params: ILocationPaginationParams) => {
     }
   }
 
-  return await handleAction(getLocations, '[GET_LOCATIONS]')
+  return await handlePaginatedAction(getLocations, '[GET_LOCATIONS]')
 }

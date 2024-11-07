@@ -7,12 +7,11 @@ export const CATEGORIES = {
   MATERIALS: { id: 4, name: 'Materiales', color: '#967C57' },
 } as const
 
-type CategoryKey = keyof typeof CATEGORIES
-
-export const getCategoryInfo = (key: CategoryKey): IConstant => CATEGORIES[key]
-
 export const getCategoryByName = (name: string): IConstant | undefined => {
   return Object.values(CATEGORIES).find(
     (category) => category.name.toLowerCase() === name.toLowerCase(),
   )
 }
+
+export const getCategoryById = (id: number): IConstant | undefined =>
+  Object.values(CATEGORIES).find((category) => category.id === id)
