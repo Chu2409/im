@@ -1,10 +1,7 @@
 'use server'
 
 import prisma from '@/core/shared/utils/prisma'
-import {
-  handleAction,
-  handlePaginatedAction,
-} from '@/core/shared/utils/actions-handlers'
+import { handlePaginatedAction } from '@/core/shared/utils/actions-handlers'
 import { IAlertPaginationParams } from '../types/pagination'
 import { getPaginationParams } from '@/core/shared/utils/pagination'
 import { Prisma } from '@prisma/client'

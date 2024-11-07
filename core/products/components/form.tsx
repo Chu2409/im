@@ -126,7 +126,7 @@ export const ProductForm = ({
                 <FormControl>
                   <Combobox<string>
                     options={Object.entries(CATEGORIES).map(([, value]) => ({
-                      value: value.name,
+                      id: value.name,
                       label: value.name,
                     }))}
                     value={field.value}

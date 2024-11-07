@@ -123,7 +123,7 @@ export const LocationForm = ({
                 <FormControl>
                   <Combobox<string>
                     options={Object.entries(LABORATORIES).map(([, value]) => ({
-                      value: value.name,
+                      id: value.name,
                       label: value.name,
                     }))}
                     value={field.value}

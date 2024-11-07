@@ -146,7 +146,7 @@ export const LotForm = ({
                 <FormControl>
                   <Combobox<number>
                     options={products.map((product) => ({
-                      value: product.id,
+                      id: product.id,
                       label: product.name,
                     }))}
                     value={field.value}
@@ -235,7 +235,7 @@ export const LotForm = ({
                 <FormControl>
                   <Combobox<number>
                     options={providers.map((provider) => ({
-                      value: provider.id,
+                      id: provider.id,
                       label: provider.name,
                     }))}
                     value={field.value || undefined}
@@ -319,7 +319,7 @@ export const LotForm = ({
                   (lotLocation) => lotLocation.location.id,
                 )}
                 options={locations.map((location) => ({
-                  value: location.id,
+                  id: location.id,
                   label: `${location.name} - ${location.code} (${location.laboratory})`,
                 }))}
                 onAdd={(locationId) => {
