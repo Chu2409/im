@@ -44,32 +44,17 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
         </div>
       )
     },
-    filterFn: (row, id, filterValue) =>
-      row.original.lotLocation.lot.product.name
-        .toLowerCase()
-        .trim()
-        .includes(filterValue.toLowerCase().trim()),
   },
   {
     accessorKey: 'status',
     meta: 'Estado',
     header: '',
     cell: ({ row }) => !row.original.resolved && <FlagIndicator />,
-    filterFn: (row, id, filterValue) => {
-      const value = row.original.resolved ? 0 : 1
-      return filterValue.includes(value)
-    },
   },
   {
     accessorKey: 'category',
     meta: 'Categoría',
     header: '',
-    filterFn: (row, id, filterValue) => {
-      const category = getCategoryByName(
-        row.original.lotLocation.lot.product.category,
-      )
-      return filterValue.includes(category?.id)
-    },
   },
   {
     accessorKey: 'severity',
@@ -89,10 +74,6 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
           {severity?.name}
         </Badge>
       )
-    },
-    filterFn: (row, id, filterValue) => {
-      const severity = getSeverityByName(row.original.severity)
-      return filterValue.includes(severity?.id)
     },
   },
   {
@@ -114,10 +95,6 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
         </Badge>
       )
     },
-    filterFn: (row, id, filterValue) => {
-      const type = getTypeByName(row.original.type)
-      return filterValue.includes(type?.id)
-    },
   },
   {
     accessorKey: 'stock',
@@ -127,9 +104,6 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
   {
     accessorKey: 'expiration',
     header: 'Vencimiento',
-    sortingFn: (rowA, rowB) =>
-      new Date(rowA.original.lotLocation.lot.expirationDate ?? 0).getTime() -
-      new Date(rowB.original.lotLocation.lot.expirationDate ?? 0).getTime(),
     cell: ({ row }) => (
       <span className='capitalize'>
         {row.original.lotLocation.lot.expirationDate

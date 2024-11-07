@@ -10,3 +10,7 @@ export const getTypeByName = (name: string): IConstant | undefined => {
     (type) => type.name.toLowerCase() === name.toLowerCase(),
   )
 }
+
+export const getTypeById = (id: number): IConstant | undefined => {
+  return Object.values(TYPES).find((type) => type.id === id)
+}

@@ -27,6 +27,7 @@ interface DataTableProps<TData, TValue> {
   inputFilterKey?: string
   filters?: IFilter[]
   enableViewOptions?: boolean
+  enableStatusFilter?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -35,6 +36,7 @@ export function DataTable<TData, TValue>({
   inputFilterKey,
   filters,
   enableViewOptions = true,
+  enableStatusFilter = true,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data: data?.data || [],
@@ -54,6 +56,7 @@ export function DataTable<TData, TValue>({
         filters={filters}
         inputFilterKey={inputFilterKey}
         enableViewOptions={enableViewOptions}
+        enableStatusFilter={enableStatusFilter}
       />
 
       <div className='rounded-md border'>

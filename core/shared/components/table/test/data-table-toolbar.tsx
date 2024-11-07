@@ -20,6 +20,7 @@ interface DataTableToolbarProps<TData> {
   filters?: IFilter[]
   inputFilterKey?: string
   enableViewOptions: boolean
+  enableStatusFilter: boolean
 }
 
 export function DataTableToolbar<TData>({
@@ -27,6 +28,7 @@ export function DataTableToolbar<TData>({
   filters,
   inputFilterKey,
   enableViewOptions,
+  enableStatusFilter,
 }: DataTableToolbarProps<TData>) {
   const inputColumn = inputFilterKey ? table.getColumn(inputFilterKey) : null
 
@@ -80,7 +82,9 @@ export function DataTableToolbar<TData>({
             )
           })}
 
-          {table.getColumn('status') && <DataTableStatusFilter />}
+          {enableStatusFilter && table.getColumn('status') && (
+            <DataTableStatusFilter />
+          )}
 
           {searchParams.size > 0 && (
             <Button

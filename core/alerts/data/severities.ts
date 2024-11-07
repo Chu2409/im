@@ -11,3 +11,7 @@ export const getSeverityByName = (name: string): IConstant | undefined => {
     (type) => type.name.toLowerCase() === name.toLowerCase(),
   )
 }
+
+export const getSeverityById = (id: number): IConstant | undefined => {
+  return Object.values(SEVERITIES).find((type) => type.id === id)
+}

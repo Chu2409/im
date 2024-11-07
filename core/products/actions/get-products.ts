@@ -23,7 +23,14 @@ export const getProducts = async (params: IProductPaginationParams) => {
     ...(params.category
       ? {
           category: {
-            contains: getCategoryById(Number(params.category))?.name,
+            in:
+              typeof params.category === 'string'
+                ? [getCategoryById(Number(params.category))?.name].filter(
+                    (cat) => cat != null,
+                  )
+                : params.category
+                    .map((category) => getCategoryById(Number(category))?.name)
+                    .filter((cat) => cat != null),
             mode: 'insensitive',
           },
         }
