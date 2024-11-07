@@ -1,5 +1,4 @@
 import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons'
-import { Column } from '@tanstack/react-table'
 
 import { cn } from '@/core/shared/utils/utils'
 import { Badge } from '@/core/shared/ui/badge'
@@ -11,7 +10,6 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
 } from '@/core/shared/ui/command'
 import {
   Popover,
@@ -19,20 +17,51 @@ import {
   PopoverTrigger,
 } from '@/core/shared/ui/popover'
 import { Separator } from '@/core/shared/ui/separator'
-import { IOption } from '@/core/shared/types'
+import { IConstant, IOption } from '@/core/shared/types'
+import { useRouter, useSearchParams } from 'next/navigation'
+import {
+  formUrlArrayQuery,
+  removeValueFromArrayQuery,
+} from '@/core/shared/utils/pagination'
 
-interface DataTableFacetedFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>
+interface DataTableFacetedFilterProps {
+  paramKey: string
   title?: string
   options: IOption<number>[]
+  getById: (id: number) => IConstant | undefined
 }
 
-export function DataTableFacetedFilter<TData, TValue>({
-  column,
+export function DataTableFacetedFilter({
+  paramKey,
   title,
   options,
-}: DataTableFacetedFilterProps<TData, TValue>) {
-  const selectedValues = new Set(column?.getFilterValue() as number[])
+  getById,
+}: DataTableFacetedFilterProps) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const status = searchParams.getAll(paramKey)
+
+  const selected = status
+    .map((status) => getById(Number(status))?.id)
+    .filter((status) => status != null)
+
+  const handleChange = (value: number, isSelected: boolean) => {
+    let url
+    if (isSelected)
+      url = removeValueFromArrayQuery({
+        params: searchParams,
+        keyToRemove: paramKey,
+        valueToRemove: value.toString(),
+      })
+    else
+      url = formUrlArrayQuery({
+        params: searchParams,
+        key: paramKey,
+        value: value.toString(),
+      })
+
+    router.push(url, { scroll: false })
+  }
 
   return (
     <Popover>
@@ -42,7 +71,7 @@ export function DataTableFacetedFilter<TData, TValue>({
 
           {title}
 
-          {selectedValues?.size > 0 && (
+          {selected?.length > 0 && (
             <>
               <Separator orientation='vertical' className='mx-2 h-4' />
 
@@ -50,24 +79,24 @@ export function DataTableFacetedFilter<TData, TValue>({
                 variant='secondary'
                 className='rounded-sm px-1 font-normal lg:hidden'
               >
-                {selectedValues.size}
+                {selected.length}
               </Badge>
 
               <div className='hidden space-x-1 lg:flex'>
-                {selectedValues.size > 2 ? (
+                {selected.length > 2 ? (
                   <Badge
                     variant='secondary'
                     className='rounded-sm px-1 font-normal'
                   >
-                    {selectedValues.size} seleccionados
+                    {selected.length} seleccionados
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.has(option.value))
+                    .filter((option) => selected.includes(option.id))
                     .map((option) => (
                       <Badge
                         variant='secondary'
-                        key={option.value}
+                        key={option.id}
                         className='rounded-sm px-1 font-normal'
                       >
                         {option.label}
@@ -89,20 +118,12 @@ export function DataTableFacetedFilter<TData, TValue>({
 
             <CommandGroup>
               {options.map((option) => {
-                const isSelected = selectedValues.has(option.value)
+                const isSelected = selected.includes(option.id)
 
                 return (
                   <CommandItem
-                    key={option.value}
-                    onSelect={() => {
-                      if (isSelected) selectedValues.delete(option.value)
-                      else selectedValues.add(option.value)
-
-                      const filterValues = Array.from(selectedValues)
-                      column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined,
-                      )
-                    }}
+                    key={option.id}
+                    onSelect={() => handleChange(option.id, isSelected)}
                     className='cursor-pointer capitalize'
                   >
                     <div
@@ -121,21 +142,6 @@ export function DataTableFacetedFilter<TData, TValue>({
                 )
               })}
             </CommandGroup>
-
-            {selectedValues.size > 0 && (
-              <>
-                <CommandSeparator />
-
-                <CommandGroup>
-                  <CommandItem
-                    onSelect={() => column?.setFilterValue(undefined)}
-                    className='justify-center text-center cursor-pointer'
-                  >
-                    Limpiar filtro
-                  </CommandItem>
-                </CommandGroup>
-              </>
-            )}
           </CommandList>
         </Command>
       </PopoverContent>

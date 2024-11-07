@@ -35,7 +35,7 @@ export const routes: IRoute[] = [
     icon: <Truck />,
   },
   {
-    href: '/locations',
+    href: '/locations?status=1',
     label: 'Locaciones',
     icon: <MapPinHouse />,
   },

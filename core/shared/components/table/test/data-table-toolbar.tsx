@@ -68,16 +68,15 @@ export function DataTableToolbar<TData>({
           )}
 
           {filters?.map((filter) => {
-            const column = table.getColumn(filter.key)
-
             return (
               <DataTableFacetedFilter
                 key={filter.key}
-                column={column}
                 title={
-                  (column?.columnDef.meta as string) ||
-                  (column?.columnDef.header as string)
+                  (table.getColumn(filter.key)?.columnDef.meta as string) ||
+                  (table.getColumn(filter.key)?.columnDef.header as string)
                 }
+                getById={filter.getById}
+                paramKey={filter.key}
                 options={filter.values}
               />
             )

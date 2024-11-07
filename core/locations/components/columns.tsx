@@ -1,6 +1,6 @@
 'use client'
 
-import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
+import { DataTableColumnHeader } from '@/core/shared/components/table/test/data-table-column-header'
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { Location } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
@@ -26,10 +26,6 @@ export const locationColumns: ColumnDef<Location>[] = [
     meta: 'Estado',
     header: '',
     cell: ({ row }) => !row.original.active && <FlagIndicator />,
-    filterFn: (row, id, filterValue) => {
-      const value = row.original.active ? 1 : 0
-      return filterValue.includes(value)
-    },
   },
   {
     accessorKey: 'code',
@@ -37,13 +33,9 @@ export const locationColumns: ColumnDef<Location>[] = [
   },
   {
     accessorKey: 'laboratory',
-    filterFn: (row, id, filterValue) => {
-      const laboratory = getLaboratoryByName(row.original.laboratory)
-      return filterValue.includes(laboratory?.id)
-    },
     meta: 'Laboratorio',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Laboratorio' />
+    header: () => (
+      <DataTableColumnHeader sort='laboratory' title='Laboratorio' />
     ),
     cell: ({ row }) => {
       const laboratory = getLaboratoryByName(row.original.laboratory)

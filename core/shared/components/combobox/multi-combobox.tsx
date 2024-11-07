@@ -78,11 +78,11 @@ export const MultiCombobox: React.FC<MultiComboboxProps> = ({
 
             <CommandGroup>
               {options.map((option) => {
-                const isSelected = values.includes(option.value)
+                const isSelected = values.includes(option.id)
                 return (
                   <CommandItem
-                    key={`${option.value}`}
-                    onSelect={() => onAdd(option.value)}
+                    key={`${option.id}`}
+                    onSelect={() => onAdd(option.id)}
                     disabled={isSelected}
                     className='cursor-pointer capitalize w-full'
                   >

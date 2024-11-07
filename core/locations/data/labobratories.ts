@@ -10,3 +10,7 @@ export const getLaboratoryByName = (name: string): IConstant | undefined => {
     (lab) => lab.name.toLowerCase() === name.toLowerCase(),
   )
 }
+
+export const getLaboratoryById = (id: number): IConstant | undefined => {
+  return Object.values(LABORATORIES).find((lab) => lab.id === id)
+}

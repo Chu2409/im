@@ -52,17 +52,17 @@ export function DataTableStatusFilter<TData, TValue>({
               </Badge>
 
               <div className='hidden space-x-1 lg:flex'>
-                {STATUSES.filter((option) =>
-                  selectedValues.has(option.value),
-                ).map((option) => (
-                  <Badge
-                    variant='secondary'
-                    key={option.label}
-                    className='rounded-sm px-1 font-normal'
-                  >
-                    {option.label}
-                  </Badge>
-                ))}
+                {Object.values(STATUSES)
+                  .filter((option) => selectedValues.has(option.id))
+                  .map((option) => (
+                    <Badge
+                      variant='secondary'
+                      key={option.label}
+                      className='rounded-sm px-1 font-normal'
+                    >
+                      {option.label}
+                    </Badge>
+                  ))}
               </div>
             </>
           )}
@@ -73,15 +73,15 @@ export function DataTableStatusFilter<TData, TValue>({
         <Command>
           <CommandList>
             <CommandGroup>
-              {STATUSES.map((option) => {
-                const isSelected = selectedValues.has(option.value)
+              {Object.values(STATUSES).map((option) => {
+                const isSelected = selectedValues.has(option.id)
 
                 return (
                   <CommandItem
                     key={option.label}
                     onSelect={() => {
-                      if (isSelected) selectedValues.delete(option.value)
-                      else selectedValues.add(option.value)
+                      if (isSelected) selectedValues.delete(option.id)
+                      else selectedValues.add(option.id)
 
                       const filterValues = Array.from(selectedValues)
                       column?.setFilterValue(

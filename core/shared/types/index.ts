@@ -11,6 +11,6 @@ export interface IConstant {
 }
 
 export interface IOption<T> {
+  id: T
   label: string
-  value: T
 }
