@@ -26,12 +26,7 @@ export const ProvidersClient = ({
 
       <ProviderModal />
 
-      <DataTable
-        statusColumn
-        data={data}
-        columns={providersColumns}
-        inputFilterKey='name'
-      />
+      <DataTable data={data} columns={providersColumns} inputFilterKey='name' />
     </>
   )
 }

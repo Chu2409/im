@@ -25,10 +25,6 @@ export const providersColumns: ColumnDef<Provider>[] = [
     meta: 'Estado',
     header: '',
     cell: ({ row }) => !row.original.active && <FlagIndicator />,
-    filterFn: (row, id, filterValue) => {
-      const value = row.original.active ? 1 : 0
-      return filterValue.includes(value)
-    },
   },
   {
     accessorKey: 'contact',

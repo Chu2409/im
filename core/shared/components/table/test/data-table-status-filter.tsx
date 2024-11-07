@@ -95,7 +95,7 @@ export const DataTableStatusFilter = () => {
 
                 return (
                   <CommandItem
-                    key={option.label}
+                    key={option.id}
                     onSelect={() => handleChange(option.id, isSelected)}
                     className='cursor-pointer capitalize'
                   >

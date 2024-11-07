@@ -43,7 +43,6 @@ export const LocationsClient = ({
         columns={locationColumns}
         inputFilterKey='name'
         filters={filters}
-        statusColumn
       />
     </>
   )

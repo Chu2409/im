@@ -11,17 +11,12 @@ import {
 import { IMetadata } from '@/core/shared/types/pagination'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { formUrlQuery } from '@/core/shared/utils/pagination'
-import { Table } from '@tanstack/react-table'
 
-interface DataTablePaginationProps<TData> {
+interface DataTablePaginationProps {
   metadata: IMetadata | undefined
-  table: Table<TData>
 }
 
-export function DataTablePagination<TData>({
-  table,
-  metadata,
-}: DataTablePaginationProps<TData>) {
+export function DataTablePagination({ metadata }: DataTablePaginationProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -53,7 +48,6 @@ export function DataTablePagination<TData>({
         <Select
           value={`${metadata?.size}`}
           onValueChange={(value) => {
-            table.setPageSize(Number(value))
             handlePageSize(Number(value))
           }}
         >
@@ -85,6 +79,7 @@ export function DataTablePagination<TData>({
           <span className='sr-only'>Ir a la anterior página</span>
           <ChevronLeftIcon className='h-4 w-4' />
         </Button>
+
         <Button
           variant='outline'
           className='h-8 w-8 p-0'

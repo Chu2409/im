@@ -17,18 +17,16 @@ import { DataTableStatusFilter } from './data-table-status-filter'
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
-  inputFilterKey?: string
   filters?: IFilter[]
-  statusColumn: boolean
-  viewOptions: boolean
+  inputFilterKey?: string
+  enableViewOptions: boolean
 }
 
 export function DataTableToolbar<TData>({
   table,
-  inputFilterKey,
   filters,
-  statusColumn,
-  viewOptions,
+  inputFilterKey,
+  enableViewOptions,
 }: DataTableToolbarProps<TData>) {
   const inputColumn = inputFilterKey ? table.getColumn(inputFilterKey) : null
 
@@ -82,7 +80,7 @@ export function DataTableToolbar<TData>({
             )
           })}
 
-          {statusColumn && <DataTableStatusFilter />}
+          {table.getColumn('status') && <DataTableStatusFilter />}
 
           {searchParams.size > 0 && (
             <Button
@@ -97,7 +95,7 @@ export function DataTableToolbar<TData>({
         </div>
       )}
 
-      {viewOptions && table.getAllColumns().length > 2 && (
+      {enableViewOptions && table.getAllColumns().length > 2 && (
         <DataTableViewOptions table={table} />
       )}
     </div>
