@@ -1,7 +1,7 @@
 import prisma from '@/core/shared/utils/prisma'
-import { EXP_DAYS_LIMITS } from '../data/limits'
-import { addDays, calculateSeverity, getDaysDifference } from '../utils'
-import { TYPES } from '../data/types'
+import { EXP_DAYS_LIMITS } from '../../data/limits'
+import { addDays, calculateSeverity, getDaysDifference } from '../../utils'
+import { TYPES } from '../../data/types'
 
 export const checkExpirations = async () => {
   const today = new Date()

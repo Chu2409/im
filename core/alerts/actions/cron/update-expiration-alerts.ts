@@ -1,6 +1,6 @@
 import prisma from '@/core/shared/utils/prisma'
-import { TYPES } from '../data/types'
-import { calculateSeverity, getDaysDifference } from '../utils'
+import { TYPES } from '../../data/types'
+import { calculateSeverity, getDaysDifference } from '../../utils'
 
 export const updateExpirationAlerts = async () => {
   const today = new Date()

@@ -1,7 +1,7 @@
 import prisma from '@/core/shared/utils/prisma'
-import { RESTOCK_LIMITS } from '../data/limits'
-import { TYPES } from '../data/types'
-import { calculateSeverity } from '../utils'
+import { RESTOCK_LIMITS } from '../../data/limits'
+import { TYPES } from '../../data/types'
+import { calculateSeverity } from '../../utils'
 
 export const checkLowStock = async () => {
   const lowStockProducts = await prisma.lotLocation.findMany({

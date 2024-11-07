@@ -1,7 +1,7 @@
 import prisma from '@/core/shared/utils/prisma'
-import { TYPES } from '../data/types'
-import { RESTOCK_LIMITS } from '../data/limits'
-import { calculateSeverity } from '../utils'
+import { TYPES } from '../../data/types'
+import { RESTOCK_LIMITS } from '../../data/limits'
+import { calculateSeverity } from '../../utils'
 
 export const updateStockAlerts = async () => {
   const activeStockAlerts = await prisma.alert.findMany({
