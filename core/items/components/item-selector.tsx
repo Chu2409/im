@@ -1,41 +1,70 @@
 'use client'
 
+import { getLotProductsToRecord } from '@/core/lots/actions/get-lot-products-to-record'
 import { IFullLotLocation } from '@/core/lots/types'
 import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from '@/core/shared/ui/command'
+import { Input } from '@/core/shared/ui/input'
 import { Label } from '@/core/shared/ui/label'
+import debounce from 'just-debounce-it'
+import { useCallback, useEffect, useState } from 'react'
 
 export const ItemSelector = ({
-  lotLocations,
   onAdd,
   values,
 }: {
-  lotLocations: IFullLotLocation[]
-  onAdd: (id: number) => void
-  values: string[]
+  onAdd: (lotLocation: IFullLotLocation | undefined) => void
+  values: number[]
 }) => {
+  const [lotLocations, setLotLocations] = useState<IFullLotLocation[]>([])
+  const [inputValue, setInputValue] = useState<string>('')
+  const [searchValue, setSearchValue] = useState<string>(inputValue)
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    setInputValue(value)
+    debouncedValue(value)
+  }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedValue = useCallback(
+    debounce((value: string) => {
+      setSearchValue(value)
+    }, 500),
+    [],
+  )
+
+  useEffect(() => {
+    if (searchValue === '') {
+      setLotLocations([])
+      return
+    }
+
+    const fetchData = async () => {
+      const { data = [] } = await getLotProductsToRecord(searchValue)
+
+      setLotLocations(data)
+    }
+
+    fetchData()
+  }, [searchValue])
+
   return (
     <>
       <Label>Inventario disponible</Label>
 
-      <Command
-        className='border shadow-md -pb-2'
-        filter={(value, search) => {
-          const name = value.split('@')[1]
-
-          if (name.toLowerCase().trim().includes(search.toLowerCase().trim()))
-            return 1
-
-          return 0
-        }}
-      >
-        <CommandInput placeholder='Buscar producto...' />
+      <Command className='border shadow-md -pb-2'>
+        <Input
+          placeholder='Ingrese el nombre del producto o la locación...'
+          className='mb-1'
+          onChange={handleChange}
+          value={inputValue}
+        />
 
         <CommandList>
           <CommandEmpty>Producto no encontrado</CommandEmpty>
@@ -56,14 +85,14 @@ export const ItemSelector = ({
             {lotLocations.map((lotLocation) => (
               <CommandItem
                 key={lotLocation.id}
-                value={`${lotLocation.id}@${lotLocation.lot.product.name}`}
+                value={`${lotLocation.id}`}
                 onSelect={() => {
-                  onAdd(lotLocation.id)
+                  onAdd(
+                    lotLocations.find((lotLoc) => lotLoc.id === lotLocation.id),
+                  )
                 }}
                 className='cursor-pointer gap-2 grid grid-cols-5 text-center'
-                disabled={values.includes(
-                  `${lotLocation.id}@${lotLocation.lot.product.name}`,
-                )}
+                disabled={values.includes(lotLocation.id)}
               >
                 <span>{lotLocation.lotId}</span>
 

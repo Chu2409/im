@@ -4,7 +4,7 @@ import prisma from '@/core/shared/utils/prisma'
 import { CATEGORIES } from '../../products/data/categories'
 import { handleAction } from '@/core/shared/utils/actions-handlers'
 
-export const getLotProductsToRecord = async () => {
+export const getLotProductsToRecord = async (search: string) => {
   const getLotProductsToRecord = async () =>
     await prisma.lotLocation.findMany({
       where: {
@@ -16,6 +16,26 @@ export const getLotProductsToRecord = async () => {
             active: true,
           },
         },
+        OR: [
+          {
+            lot: {
+              product: {
+                name: {
+                  contains: search,
+                  mode: 'insensitive',
+                },
+              },
+            },
+          },
+          {
+            location: {
+              laboratory: {
+                contains: search,
+                mode: 'insensitive',
+              },
+            },
+          },
+        ],
         stock: { gt: 0 },
       },
       include: {
@@ -26,6 +46,7 @@ export const getLotProductsToRecord = async () => {
         },
         location: true,
       },
+      take: 30,
     })
 
   return await handleAction(

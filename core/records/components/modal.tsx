@@ -2,13 +2,8 @@ import { Modal } from '@/core/shared/components/modal/modal'
 import { useRecordModal } from '../hooks/use-record-modal'
 import { useRecord } from '../hooks/use-record'
 import { RecordForm } from './form'
-import { IFullLotLocation } from '@/core/lots/types'
 
-export const RecordModal = ({
-  lotProducts,
-}: {
-  lotProducts: IFullLotLocation[]
-}) => {
+export const RecordModal = () => {
   const initialData = useRecord((state) => state.record)
   const isOpen = useRecordModal((state) => state.isOpen)
   const onClose = useRecordModal((state) => state.onClose)
@@ -22,11 +17,7 @@ export const RecordModal = ({
       isOpen={isOpen}
       onClose={onClose}
     >
-      <RecordForm
-        initialData={initialData}
-        lotProducts={lotProducts}
-        onModalClose={onClose}
-      />
+      <RecordForm initialData={initialData} onModalClose={onClose} />
     </Modal>
   )
 }

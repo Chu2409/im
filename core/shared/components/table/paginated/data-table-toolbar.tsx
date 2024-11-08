@@ -9,9 +9,9 @@ import { Input } from '@/core/shared/ui/input'
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
 import { DataTableViewOptions } from '../data-table-view-options'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useCallback, useState } from 'react'
 import { formUrlQuery } from '@/core/shared/utils/pagination'
-import debounce from 'debounce'
+import debounce from 'just-debounce-it'
 import { DataTableStatusFilter } from './data-table-status-filter'
 import { IDatTablePaginatedFilter } from '@/core/shared/types'
 
@@ -36,22 +36,32 @@ export function DataTableToolbar<TData>({
   const searchParams = useSearchParams()
   const pathName = usePathname()
 
+  const [inputValue, setInputValue] = useState<string>(
+    () => searchParams.get('search') || '',
+  )
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
+    setInputValue(value)
     applyFilter(value)
   }
 
-  const applyFilter = debounce((value: string) => {
-    const url = formUrlQuery({
-      params: searchParams,
-      key: 'search',
-      value,
-    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const applyFilter = useCallback(
+    debounce((value: string) => {
+      const url = formUrlQuery({
+        params: searchParams,
+        key: 'search',
+        value,
+      })
 
-    router.push(url, { scroll: false })
-  }, 500)
+      router.push(url, { scroll: false })
+    }, 500),
+    [],
+  )
 
   const handleClearFilters = () => {
+    setInputValue('')
     router.push(pathName, { scroll: false })
   }
 
@@ -63,6 +73,7 @@ export function DataTableToolbar<TData>({
             <Input
               placeholder={`Filtrar por ${((inputColumn.columnDef.meta as string) || (inputColumn.columnDef.header as string)).toLowerCase()}...`}
               onChange={handleChange}
+              value={inputValue}
               className='h-8 w-[200px] lg:w-[250px] '
             />
           )}

@@ -19,7 +19,6 @@ import { ItemSelector } from '@/core/items/components/item-selector'
 import { createRecordWithItems } from '../actions/create-record-with-items'
 import { updateRecordWithItems } from '../actions/update-record-with-items'
 import { IEditableRowItem } from '@/core/items/types'
-import { IFullLotLocation } from '@/core/lots/types'
 import { DatePicker } from '@/core/shared/components/date-picker'
 import useFormSubmit from '@/core/shared/hooks/use-form-submit'
 import { Record } from '@prisma/client'
@@ -33,11 +32,9 @@ type formType = z.infer<typeof formSchema>
 
 export const RecordForm = ({
   initialData,
-  lotProducts,
   onModalClose,
 }: {
   initialData?: IRecordWithItems
-  lotProducts: IFullLotLocation[]
   onModalClose: () => void
 }) => {
   const form = useForm<formType>({
@@ -144,12 +141,7 @@ export const RecordForm = ({
             />
 
             <ItemSelector
-              lotLocations={lotProducts}
-              onAdd={(id) => {
-                const lotLocation = lotProducts.find(
-                  (lotLocation) => lotLocation.id === id,
-                )
-
+              onAdd={(lotLocation) => {
                 if (lotLocation) {
                   const updatedItemsTable = itemsTable.concat({
                     lotLocation: {
@@ -167,10 +159,7 @@ export const RecordForm = ({
                   setItemsTable(updatedItemsTable)
                 }
               }}
-              values={itemsTable.map(
-                (item) =>
-                  `${item.lotLocation.id}@${item.lotLocation.productName}`,
-              )}
+              values={itemsTable.map((item) => item.lotLocation.id)}
             />
           </div>
 

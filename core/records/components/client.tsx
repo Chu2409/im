@@ -8,15 +8,12 @@ import { useRecord } from '../hooks/use-record'
 import { RecordModal } from './modal'
 import { useRecordModal } from '../hooks/use-record-modal'
 import { ItemsClient } from '@/core/items/components/client'
-import { IFullLotLocation } from '@/core/lots/types'
 import { IPaginatedRes } from '@/core/shared/types/pagination'
 
 export const RecordsClient = ({
   data,
-  lotProducts,
 }: {
   data: IPaginatedRes<IRecordWithItems> | undefined
-  lotProducts: IFullLotLocation[]
 }) => {
   const currentRecord = useRecord((state) => state.record)
   const setRecord = useRecord((state) => state.setRecord)
@@ -36,7 +33,7 @@ export const RecordsClient = ({
         onButtonClick={handleClick}
       />
 
-      <RecordModal lotProducts={lotProducts} />
+      <RecordModal />
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
         <div className='order-2 lg:order-1'>
