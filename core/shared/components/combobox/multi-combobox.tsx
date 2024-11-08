@@ -22,7 +22,7 @@ import { IOption } from '../../types'
 interface MultiComboboxProps {
   title: string
   values: number[]
-  options: IOption<number>[]
+  options: IOption[]
   onAdd: (value: number) => void
   disabled?: boolean
 }

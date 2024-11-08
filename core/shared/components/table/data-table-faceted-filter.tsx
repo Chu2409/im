@@ -24,7 +24,7 @@ import { IOption } from '../../types'
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>
   title?: string
-  options: IOption<number>[]
+  options: IOption[]
 }
 
 export function DataTableFacetedFilter<TData, TValue>({

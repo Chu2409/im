@@ -4,13 +4,11 @@ export interface IRoute {
   icon: React.ReactElement
 }
 
-export interface IConstant {
+export interface IOption {
   id: number
-  name: string
-  color: string
+  label: string
 }
 
-export interface IOption<T> {
-  id: T
-  label: string
+export interface IConstant extends IOption {
+  color: string
 }

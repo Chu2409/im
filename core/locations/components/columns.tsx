@@ -7,8 +7,8 @@ import { ColumnDef } from '@tanstack/react-table'
 import { toggleLocationStatus } from '../actions/toggle-location-status'
 import { useLocationModal } from '../hooks/use-location-modal'
 import { Badge } from '@/core/shared/ui/badge'
-import { getLaboratoryByName } from '../data/labobratories'
 import { FlagIndicator } from '@/core/shared/components/flag-indicator'
+import { getLaboratoryConstByLabel } from '../data/labobratories'
 
 export const locationColumns: ColumnDef<Location>[] = [
   {
@@ -38,7 +38,7 @@ export const locationColumns: ColumnDef<Location>[] = [
       <DataTableColumnHeader sort='laboratory' title='Laboratorio' />
     ),
     cell: ({ row }) => {
-      const laboratory = getLaboratoryByName(row.original.laboratory)
+      const laboratory = getLaboratoryConstByLabel(row.original.laboratory)
 
       return (
         <Badge
@@ -49,7 +49,7 @@ export const locationColumns: ColumnDef<Location>[] = [
             border: laboratory?.color,
           }}
         >
-          {laboratory?.name}
+          {laboratory?.label}
         </Badge>
       )
     },

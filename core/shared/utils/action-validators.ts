@@ -49,15 +49,15 @@ export const getResolvedWhere = (status?: string | string[]) => {
   }
 }
 
-export const getConstantsNames = (
+export const getConstantsLabels = (
   getById: (id: number) => IConstant | undefined,
   constants?: string | string[],
 ): string | string[] | undefined => {
   if (constants) {
     return typeof constants === 'string'
-      ? getById(Number(constants))?.name
+      ? getById(Number(constants))?.label
       : constants
-          .map((constant) => getById(Number(constant))?.name)
+          .map((constant) => getById(Number(constant))?.label)
           .filter((constant) => constant != null)
   }
 }

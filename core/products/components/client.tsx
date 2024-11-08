@@ -5,20 +5,9 @@ import { DataTable } from '@/core/shared/components/table/paginated/data-table'
 import { useProductModal } from '../hooks/use-product-modal'
 import { productsColumns } from './columns'
 import { ProductModal } from './modal'
-import { CATEGORIES, getCategoryById } from '../data/categories'
 import { Product } from '@prisma/client'
 import { IPaginatedRes } from '@/core/shared/types/pagination'
-
-const filters = [
-  {
-    key: 'category',
-    values: Object.values(CATEGORIES).map((category) => ({
-      id: category.id,
-      label: category.name,
-    })),
-    getById: getCategoryById,
-  },
-]
+import { productFilters } from '../data/filters'
 
 export const ProductsClient = ({
   data,
@@ -42,7 +31,7 @@ export const ProductsClient = ({
         data={data}
         columns={productsColumns}
         inputFilterKey='name'
-        filters={filters}
+        filters={productFilters}
       />
     </>
   )

@@ -10,7 +10,7 @@ import { getPaginationParams } from '@/core/shared/utils/pagination'
 import prisma from '@/core/shared/utils/prisma'
 import { Prisma } from '@prisma/client'
 import { IProductPaginationParams } from '../types/pagination'
-import { getCategoryById } from '../data/categories'
+import { getCategoryConstById } from '../data/categories'
 
 export const getProducts = async (params: IProductPaginationParams) => {
   const { skip, page, size } = getPaginationParams(params)
@@ -25,11 +25,14 @@ export const getProducts = async (params: IProductPaginationParams) => {
           category: {
             in:
               typeof params.category === 'string'
-                ? [getCategoryById(Number(params.category))?.name].filter(
+                ? [getCategoryConstById(Number(params.category))?.label].filter(
                     (cat) => cat != null,
                   )
                 : params.category
-                    .map((category) => getCategoryById(Number(category))?.name)
+                    .map(
+                      (category) =>
+                        getCategoryConstById(Number(category))?.label,
+                    )
                     .filter((cat) => cat != null),
             mode: 'insensitive',
           },

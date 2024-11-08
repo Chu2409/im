@@ -7,7 +7,7 @@ export const updateExpirationAlerts = async () => {
 
   const activeExpirationAlerts = await prisma.alert.findMany({
     where: {
-      type: TYPES.EXPIRATION.name,
+      type: TYPES.EXPIRATION.label,
       resolved: false,
       lotLocation: {
         lot: {
@@ -38,10 +38,10 @@ export const updateExpirationAlerts = async () => {
       )
       const newSeverity = calculateSeverity(TYPES.EXPIRATION, daysToExp)
 
-      if (newSeverity.name !== alert.severity) {
+      if (newSeverity.label !== alert.severity) {
         return prisma.alert.update({
           where: { id: alert.id },
-          data: { severity: newSeverity.name },
+          data: { severity: newSeverity.label },
         })
       }
 

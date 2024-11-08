@@ -144,7 +144,7 @@ export const LotForm = ({
                 <FormLabel>Producto</FormLabel>
 
                 <FormControl>
-                  <Combobox<number>
+                  <Combobox
                     options={products.map((product) => ({
                       id: product.id,
                       label: product.name,
@@ -233,7 +233,7 @@ export const LotForm = ({
                 <FormLabel>Proveedor</FormLabel>
 
                 <FormControl>
-                  <Combobox<number>
+                  <Combobox
                     options={providers.map((provider) => ({
                       id: provider.id,
                       label: provider.name,

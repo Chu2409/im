@@ -13,7 +13,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/core/shared/ui/input'
 import { Button } from '@/core/shared/ui/button'
-import { CATEGORIES } from '../data/categories'
+import { CATEGORIES_OPTIONS } from '../data/categories'
 import { Product } from '@prisma/client'
 import { createProduct } from '../actions/create-product'
 import { updateProduct } from '../actions/update-product'
@@ -124,12 +124,9 @@ export const ProductForm = ({
               <FormItem>
                 <FormLabel>Categoría</FormLabel>
                 <FormControl>
-                  <Combobox<string>
-                    options={Object.entries(CATEGORIES).map(([, value]) => ({
-                      id: value.name,
-                      label: value.name,
-                    }))}
-                    value={field.value}
+                  <Combobox
+                    options={CATEGORIES_OPTIONS}
+                    value={Number(field.value)}
                     selectMessage='Selecciona una categoría'
                     // eslint-disable-next-line react/jsx-handler-names
                     onChange={field.onChange}

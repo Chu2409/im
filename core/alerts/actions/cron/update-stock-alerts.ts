@@ -6,7 +6,7 @@ import { calculateSeverity } from '../../utils'
 export const updateStockAlerts = async () => {
   const activeStockAlerts = await prisma.alert.findMany({
     where: {
-      type: TYPES.RESTOCK.name,
+      type: TYPES.RESTOCK.label,
       resolved: false,
     },
     include: {
@@ -31,10 +31,10 @@ export const updateStockAlerts = async () => {
 
       const newSeverity = calculateSeverity(TYPES.RESTOCK, currentStock)
 
-      if (newSeverity.name !== alert.severity) {
+      if (newSeverity.label !== alert.severity) {
         return prisma.alert.update({
           where: { id: alert.id },
-          data: { severity: newSeverity.name },
+          data: { severity: newSeverity.label },
         })
       }
 

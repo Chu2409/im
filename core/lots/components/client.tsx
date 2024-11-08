@@ -5,21 +5,10 @@ import { DataTable } from '@/core/shared/components/table/paginated/data-table'
 import { useLotModal } from '../hooks/use-lot-modal'
 import { IFullLot } from '../types'
 import { lotColumns } from './columns'
-import { CATEGORIES, getCategoryById } from '@/core/products/data/categories'
 import { LotModal } from './modal'
 import { Location, Product, Provider } from '@prisma/client'
 import { IPaginatedRes } from '@/core/shared/types/pagination'
-
-const filters = [
-  {
-    key: 'category',
-    values: Object.values(CATEGORIES).map((category) => ({
-      id: category.id,
-      label: category.name,
-    })),
-    getById: getCategoryById,
-  },
-]
+import { lotFilters } from '../data/filters'
 
 export const LotsClient = ({
   data,
@@ -52,7 +41,7 @@ export const LotsClient = ({
       <DataTable
         inputFilterKey='product'
         data={data}
-        filters={filters}
+        filters={lotFilters}
         columns={lotColumns}
         enableStatusFilter={false}
       />

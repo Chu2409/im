@@ -6,19 +6,8 @@ import { Location } from '@prisma/client'
 import { locationColumns } from './columns'
 import { useLocationModal } from '../hooks/use-location-modal'
 import { LocationModal } from './modal'
-import { getLaboratoryById, LABORATORIES } from '../data/labobratories'
 import { IPaginatedRes } from '@/core/shared/types/pagination'
-
-const filters = [
-  {
-    key: 'laboratory',
-    values: Object.values(LABORATORIES).map((laboratory) => ({
-      id: laboratory.id,
-      label: laboratory.name,
-    })),
-    getById: getLaboratoryById,
-  },
-]
+import { locationFilters } from '../data/filters'
 
 export const LocationsClient = ({
   data,
@@ -42,7 +31,7 @@ export const LocationsClient = ({
         data={data}
         columns={locationColumns}
         inputFilterKey='name'
-        filters={filters}
+        filters={locationFilters}
       />
     </>
   )

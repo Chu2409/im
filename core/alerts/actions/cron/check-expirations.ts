@@ -19,7 +19,7 @@ export const checkExpirations = async () => {
       NOT: {
         alerts: {
           some: {
-            type: TYPES.EXPIRATION.name,
+            type: TYPES.EXPIRATION.label,
           },
         },
       },
@@ -41,9 +41,9 @@ export const checkExpirations = async () => {
 
       return prisma.alert.create({
         data: {
-          type: TYPES.EXPIRATION.name,
+          type: TYPES.EXPIRATION.label,
           lotLocationId: id,
-          severity: severity.name,
+          severity: severity.label,
         },
       })
     }),

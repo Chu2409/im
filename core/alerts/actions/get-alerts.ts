@@ -6,21 +6,21 @@ import { IAlertPaginationParams } from '../types/pagination'
 import { getPaginationParams } from '@/core/shared/utils/pagination'
 import { Prisma } from '@prisma/client'
 import {
-  getConstantsNames,
+  getConstantsLabels,
   getResolvedWhere,
   isValidField,
   isValidSortOrder,
 } from '@/core/shared/utils/action-validators'
-import { getCategoryById } from '@/core/products/data/categories'
-import { getSeverityById } from '../data/severities'
-import { getTypeById } from '../data/types'
+import { getCategoryConstById } from '@/core/products/data/categories'
+import { getSeverityConstById } from '../data/severities'
+import { getTypeConstById } from '../data/types'
 
 export const getAlerts = async (params: IAlertPaginationParams) => {
   const { skip, page, size } = getPaginationParams(params)
 
-  const categories = getConstantsNames(getCategoryById, params.category)
-  const severities = getConstantsNames(getSeverityById, params.severity)
-  const types = getConstantsNames(getTypeById, params.type)
+  const categories = getConstantsLabels(getCategoryConstById, params.category)
+  const severities = getConstantsLabels(getSeverityConstById, params.severity)
+  const types = getConstantsLabels(getTypeConstById, params.type)
 
   const where: Prisma.AlertWhereInput = {
     ...(params.search

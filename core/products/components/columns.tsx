@@ -5,7 +5,7 @@ import { DataTableRowActions } from '@/core/shared/components/table/data-table-r
 import { ColumnDef } from '@tanstack/react-table'
 import { useProductModal } from '../hooks/use-product-modal'
 import { Badge } from '@/core/shared/ui/badge'
-import { getCategoryByName } from '../data/categories'
+import { getCategoryConstByLabel } from '../data/categories'
 import { FlagIndicator } from '@/core/shared/components/flag-indicator'
 import { toggleProductStatus } from '../actions/toggle-product-status'
 import { Product } from '@prisma/client'
@@ -33,11 +33,11 @@ export const productsColumns: ColumnDef<Product>[] = [
     meta: 'Categoría',
     header: () => <DataTableColumnHeader title='Categoría' sort='category' />,
     filterFn: (row, id, filterValue) => {
-      const category = getCategoryByName(row.original.category)
+      const category = getCategoryConstByLabel(row.original.category)
       return filterValue.includes(category?.id)
     },
     cell: ({ row }) => {
-      const category = getCategoryByName(row.original.category)
+      const category = getCategoryConstByLabel(row.original.category)
 
       return (
         <Badge
@@ -48,7 +48,7 @@ export const productsColumns: ColumnDef<Product>[] = [
             border: category?.color,
           }}
         >
-          {category?.name}
+          {category?.label}
         </Badge>
       )
     },

@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/core/shared/ui/input'
 import { Button } from '@/core/shared/ui/button'
 import { Location } from '@prisma/client'
-import { LABORATORIES } from '../data/labobratories'
+import { LABORATORIES_OPTIONS } from '../data/labobratories'
 import { createLocation } from '../actions/create-location'
 import { updateLocation } from '../actions/update-location'
 import { Combobox } from '@/core/shared/components/combobox/combobox'
@@ -121,12 +121,9 @@ export const LocationForm = ({
               <FormItem>
                 <FormLabel>Laboratorio</FormLabel>
                 <FormControl>
-                  <Combobox<string>
-                    options={Object.entries(LABORATORIES).map(([, value]) => ({
-                      id: value.name,
-                      label: value.name,
-                    }))}
-                    value={field.value}
+                  <Combobox
+                    options={LABORATORIES_OPTIONS}
+                    value={Number(field.value)}
                     selectMessage='Selecciona un laboratorio'
                     // eslint-disable-next-line react/jsx-handler-names
                     onChange={field.onChange}

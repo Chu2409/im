@@ -17,7 +17,7 @@ import {
   PopoverTrigger,
 } from '@/core/shared/ui/popover'
 import { Separator } from '@/core/shared/ui/separator'
-import { IConstant, IOption } from '@/core/shared/types'
+import { IOption } from '@/core/shared/types'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
   formUrlArrayQuery,
@@ -27,8 +27,8 @@ import {
 interface DataTableFacetedFilterProps {
   paramKey: string
   title?: string
-  options: IOption<number>[]
-  getById: (id: number) => IConstant | undefined
+  options: IOption[]
+  getById: (id: number) => IOption | undefined
 }
 
 export function DataTableFacetedFilter({

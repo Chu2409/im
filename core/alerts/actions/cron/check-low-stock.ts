@@ -12,7 +12,7 @@ export const checkLowStock = async () => {
       NOT: {
         alerts: {
           some: {
-            type: TYPES.RESTOCK.name,
+            type: TYPES.RESTOCK.label,
           },
         },
       },
@@ -29,9 +29,9 @@ export const checkLowStock = async () => {
 
       return prisma.alert.create({
         data: {
-          type: TYPES.RESTOCK.name,
+          type: TYPES.RESTOCK.label,
           lotLocationId: id,
-          severity: severity.name,
+          severity: severity.label,
         },
       })
     }),

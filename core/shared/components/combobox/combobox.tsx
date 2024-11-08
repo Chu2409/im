@@ -20,23 +20,23 @@ import {
 import { IOption } from '../../types'
 import { useState } from 'react'
 
-interface ComboboxProps<T> {
-  options: IOption<T>[]
-  value?: T
+interface ComboboxProps {
+  options: IOption[]
+  value?: number
   selectMessage: string
-  onChange: (value?: T) => void
+  onChange: (value?: number) => void
   disabled?: boolean
   className?: string
 }
 
-export function Combobox<T>({
+export function Combobox({
   options,
   value,
   selectMessage,
   onChange,
   disabled,
   className,
-}: ComboboxProps<T>) {
+}: ComboboxProps) {
   const [open, setOpen] = useState(false)
 
   return (

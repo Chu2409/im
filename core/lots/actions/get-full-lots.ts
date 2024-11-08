@@ -5,17 +5,17 @@ import { handlePaginatedAction } from '@/core/shared/utils/actions-handlers'
 import { IInventoryPaginationParams } from '../types/pagination'
 import { getPaginationParams } from '@/core/shared/utils/pagination'
 import {
-  getConstantsNames,
+  getConstantsLabels,
   isValidField,
   isValidSortOrder,
 } from '@/core/shared/utils/action-validators'
-import { getCategoryById } from '@/core/products/data/categories'
+import { getCategoryConstById } from '@/core/products/data/categories'
 import { Prisma } from '@prisma/client'
 
 export const getFullLots = async (params: IInventoryPaginationParams) => {
   const { skip, page, size } = getPaginationParams(params)
 
-  const categories = getConstantsNames(getCategoryById, params.category)
+  const categories = getConstantsLabels(getCategoryConstById, params.category)
 
   const where: Prisma.LotWhereInput = {
     ...(params.search

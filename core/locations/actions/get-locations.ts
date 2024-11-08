@@ -6,17 +6,20 @@ import { ILocationPaginationParams } from '../types/pagination'
 import { getPaginationParams } from '@/core/shared/utils/pagination'
 import { Prisma } from '@prisma/client'
 import {
-  getConstantsNames,
+  getConstantsLabels,
   getStatusWhere,
   isValidField,
   isValidSortOrder,
 } from '@/core/shared/utils/action-validators'
-import { getLaboratoryById } from '../data/labobratories'
+import { getLaboratoryConstById } from '../data/labobratories'
 
 export const getLocations = async (params: ILocationPaginationParams) => {
   const { skip, page, size } = getPaginationParams(params)
 
-  const laboratories = getConstantsNames(getLaboratoryById, params.laboratory)
+  const laboratories = getConstantsLabels(
+    getLaboratoryConstById,
+    params.laboratory,
+  )
 
   const where: Prisma.LocationWhereInput = {
     ...(params.search

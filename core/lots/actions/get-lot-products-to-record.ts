@@ -11,7 +11,7 @@ export const getLotProductsToRecord = async () => {
         lot: {
           product: {
             category: {
-              in: [CATEGORIES.AGENTS.name, CATEGORIES.INPUTS.name],
+              in: [CATEGORIES.AGENTS.label, CATEGORIES.INPUTS.label],
             },
             active: true,
           },
