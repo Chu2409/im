@@ -1,14 +1,18 @@
-import { getLotProductsToRecord } from '@/core/lots/actions/get-lot-products-to-record'
 import { getRecordsWithItems } from '@/core/records/actions/get-records-with-items'
 import { RecordsClient } from '@/core/records/components/client'
+import { IRecordPaginationParams } from '@/core/records/types/pagination'
+import { ISearchParams } from '@/core/shared/types/pagination'
 
 export const revalidate = 0
 
-const RecordsPage = async () => {
-  const { data: records = [] } = await getRecordsWithItems()
-  const { data: lotProducts = [] } = await getLotProductsToRecord()
+const RecordsPage = async ({
+  searchParams,
+}: ISearchParams<IRecordPaginationParams>) => {
+  const params = await searchParams
 
-  return <RecordsClient records={records} lotProducts={lotProducts} />
+  const { data } = await getRecordsWithItems(params)
+
+  return <RecordsClient data={data} />
 }
 
 export default RecordsPage

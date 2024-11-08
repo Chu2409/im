@@ -2,15 +2,15 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { IFullAlert } from '../types'
-import { getCategoryByName } from '@/core/products/data/categories'
+import { getCategoryConstByLabel } from '@/core/products/data/categories'
 import { Badge } from '@/core/shared/ui/badge'
-import { getTypeByName } from '../data/types'
-import { getSeverityByName } from '../data/severities'
-import { getLaboratoryByName } from '@/core/locations/data/labobratories'
 import { formatDate } from '@/core/shared/utils/utils'
 import { DataTableRowActions } from './data-table-row-actions'
 import { toggleAlertResolved } from '../actions/toggle-alert-resolved'
 import { FlagIndicator } from '@/core/shared/components/flag-indicator'
+import { getSeverityConstByLabel } from '../data/severities'
+import { getTypeConstByLabel } from '../data/types'
+import { getLaboratoryConstByLabel } from '@/core/locations/data/labobratories'
 
 export const productsColumns: ColumnDef<IFullAlert>[] = [
   {
@@ -24,7 +24,7 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
     header: 'Producto',
     cell: ({ row }) => {
       const product = row.original.lotLocation.lot.product
-      const category = getCategoryByName(product.category)
+      const category = getCategoryConstByLabel(product.category)
 
       return (
         <div className='flex items-center gap-2'>
@@ -39,43 +39,28 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
               fontSize: '0.7rem',
             }}
           >
-            {category?.name}
+            {category?.label}
           </Badge>
         </div>
       )
     },
-    filterFn: (row, id, filterValue) =>
-      row.original.lotLocation.lot.product.name
-        .toLowerCase()
-        .trim()
-        .includes(filterValue.toLowerCase().trim()),
   },
   {
     accessorKey: 'status',
     meta: 'Estado',
     header: '',
     cell: ({ row }) => !row.original.resolved && <FlagIndicator />,
-    filterFn: (row, id, filterValue) => {
-      const value = row.original.resolved ? 0 : 1
-      return filterValue.includes(value)
-    },
   },
   {
     accessorKey: 'category',
     meta: 'Categoría',
     header: '',
-    filterFn: (row, id, filterValue) => {
-      const category = getCategoryByName(
-        row.original.lotLocation.lot.product.category,
-      )
-      return filterValue.includes(category?.id)
-    },
   },
   {
     accessorKey: 'severity',
     header: 'Severidad',
     cell: ({ row }) => {
-      const severity = getSeverityByName(row.original.severity)
+      const severity = getSeverityConstByLabel(row.original.severity)
 
       return (
         <Badge
@@ -86,20 +71,16 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
             border: severity?.color,
           }}
         >
-          {severity?.name}
+          {severity?.label}
         </Badge>
       )
-    },
-    filterFn: (row, id, filterValue) => {
-      const severity = getSeverityByName(row.original.severity)
-      return filterValue.includes(severity?.id)
     },
   },
   {
     accessorKey: 'type',
     header: 'Tipo',
     cell: ({ row }) => {
-      const type = getTypeByName(row.original.type)
+      const type = getTypeConstByLabel(row.original.type)
 
       return (
         <Badge
@@ -110,13 +91,9 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
             border: type?.color,
           }}
         >
-          {type?.name}
+          {type?.label}
         </Badge>
       )
-    },
-    filterFn: (row, id, filterValue) => {
-      const type = getTypeByName(row.original.type)
-      return filterValue.includes(type?.id)
     },
   },
   {
@@ -127,9 +104,6 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
   {
     accessorKey: 'expiration',
     header: 'Vencimiento',
-    sortingFn: (rowA, rowB) =>
-      new Date(rowA.original.lotLocation.lot.expirationDate ?? 0).getTime() -
-      new Date(rowB.original.lotLocation.lot.expirationDate ?? 0).getTime(),
     cell: ({ row }) => (
       <span className='capitalize'>
         {row.original.lotLocation.lot.expirationDate
@@ -143,7 +117,7 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
     header: 'Locación',
     cell: ({ row }) => {
       const location = row.original.lotLocation.location
-      const laboratory = getLaboratoryByName(location.laboratory)
+      const laboratory = getLaboratoryConstByLabel(location.laboratory)
 
       return (
         <div className='flex items-center gap-1.5 text-xs'>
@@ -160,7 +134,7 @@ export const productsColumns: ColumnDef<IFullAlert>[] = [
               fontSize: '0.7rem',
             }}
           >
-            {laboratory?.name}
+            {laboratory?.label}
           </Badge>
         </div>
       )

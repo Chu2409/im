@@ -20,22 +20,22 @@ export const routes: IRoute[] = [
     icon: <FileText />,
   },
   {
-    href: '/alerts',
+    href: '/alerts?status=0',
     label: 'Alertas',
     icon: <CircleAlert />,
   },
   {
-    href: '/products',
+    href: '/products?status=1',
     label: 'Productos',
     icon: <Tags />,
   },
   {
-    href: '/providers',
+    href: '/providers?status=1',
     label: 'Proveedores',
     icon: <Truck />,
   },
   {
-    href: '/locations',
+    href: '/locations?status=1',
     label: 'Locaciones',
     icon: <MapPinHouse />,
   },

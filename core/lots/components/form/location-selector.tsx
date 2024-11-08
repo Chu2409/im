@@ -4,7 +4,6 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from '@/core/shared/ui/command'
@@ -17,23 +16,56 @@ import { Separator } from '@/core/shared/ui/separator'
 import { cn } from '@/core/shared/utils/utils'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
-import { IOption } from '../../types'
+import { Location } from '@prisma/client'
+import { useCallback, useEffect, useState } from 'react'
+import debounce from 'just-debounce-it'
+import { Input } from '@/core/shared/ui/input'
+import { getLocationsToForm } from '@/core/locations/actions/get-locations-to-form'
 
-interface MultiComboboxProps {
-  title: string
+interface LocationsSelectorProps {
+  onAdd: (lotLocation?: Location) => void
   values: number[]
-  options: IOption<number>[]
-  onAdd: (value: number) => void
   disabled?: boolean
 }
 
-export const MultiCombobox: React.FC<MultiComboboxProps> = ({
-  title,
-  values,
-  options,
+export const LocationsSelector: React.FC<LocationsSelectorProps> = ({
   onAdd,
+  values,
   disabled,
 }) => {
+  const [locations, setLocations] = useState<Location[]>([])
+  const [inputValue, setInputValue] = useState<string>('')
+  const [searchValue, setSearchValue] = useState<string>(inputValue)
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    setInputValue(value)
+    debouncedValue(value)
+  }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedValue = useCallback(
+    debounce((value: string) => {
+      setSearchValue(value)
+    }, 500),
+    [],
+  )
+
+  useEffect(() => {
+    if (searchValue === '') {
+      setLocations([])
+      return
+    }
+
+    const fetchData = async () => {
+      const { data = [] } = await getLocationsToForm(searchValue)
+
+      setLocations(data)
+    }
+
+    fetchData()
+  }, [searchValue])
+
   return (
     <Popover>
       <PopoverTrigger asChild disabled={disabled}>
@@ -42,9 +74,7 @@ export const MultiCombobox: React.FC<MultiComboboxProps> = ({
           className='h-9 bg-white border border-black border-opacity-20 w-full flex items-center justify-start gap-2 text-stone-500 font-normal'
         >
           <PlusCircledIcon className='h-4 w-4' />
-
-          {title}
-
+          Seleccione las locaciones
           {values?.length > 0 && (
             <div className='ml-auto flex items-center'>
               <Separator orientation='vertical' className='mx-2 h-4' />
@@ -61,7 +91,7 @@ export const MultiCombobox: React.FC<MultiComboboxProps> = ({
       </PopoverTrigger>
 
       <PopoverContent
-        className='w-[250px] max-sm:w-[300px] xl:w-[340px] p-0'
+        className='p-0 -mt-1 w-[300px] sm:w-[250px] md:w-[280px] lg:w-[340px] xl:w-[400px]'
         align='start'
       >
         <Command
@@ -71,20 +101,25 @@ export const MultiCombobox: React.FC<MultiComboboxProps> = ({
               : 0
           }
         >
-          {options.length > 2 && <CommandInput placeholder='Buscar...' />}
+          <Input
+            placeholder='Ingrese la locación...'
+            className='mb-1'
+            onChange={handleChange}
+            value={inputValue}
+          />
 
           <CommandList>
-            <CommandEmpty>No hay opciones disponibles</CommandEmpty>
+            <CommandEmpty>No hay locaciones disponibles</CommandEmpty>
 
             <CommandGroup>
-              {options.map((option) => {
-                const isSelected = values.includes(option.value)
+              {locations.map((location) => {
+                const isSelected = values.includes(location.id)
                 return (
                   <CommandItem
-                    key={`${option.value}`}
-                    onSelect={() => onAdd(option.value)}
+                    key={`${location.id}`}
+                    onSelect={() => onAdd(location)}
                     disabled={isSelected}
-                    className='cursor-pointer capitalize w-full'
+                    className='cursor-pointer'
                   >
                     <div
                       className={cn(
@@ -97,7 +132,7 @@ export const MultiCombobox: React.FC<MultiComboboxProps> = ({
                       <CheckIcon className={cn('h-4 w-4')} />
                     </div>
 
-                    <span>{option.label}</span>
+                    <span>{`${location.name} - ${location.code} (${location.laboratory})`}</span>
                   </CommandItem>
                 )
               })}

@@ -7,14 +7,14 @@ import { Button } from '@/core/shared/ui/button'
 import { Input } from '@/core/shared/ui/input'
 
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
-import { IFilter } from './types'
 import { DataTableViewOptions } from './data-table-view-options'
 import { DataTableStatusFilter } from './data-table-status-filter'
+import { IDataTableFilter } from '../../types'
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
   inputFilterKey?: string
-  filters?: IFilter[]
+  filters?: IDataTableFilter[]
   statusColumn: boolean
   viewOptions: boolean
 }

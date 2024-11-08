@@ -1,18 +1,32 @@
 import { IConstant } from '@/core/shared/types'
 
-export const CATEGORIES = {
-  AGENTS: { id: 1, name: 'Reactivos', color: '#EB971F' },
-  INPUTS: { id: 2, name: 'Insumos', color: '#518AAD' },
-  EQUIPMENT: { id: 3, name: 'Equipos', color: '#50616B' },
-  MATERIALS: { id: 4, name: 'Materiales', color: '#967C57' },
+export const CATEGORIES: {
+  [key: string]: IConstant
+} = {
+  AGENTS: { id: 1, label: 'Reactivos', color: '#EB971F' },
+  INPUTS: { id: 2, label: 'Insumos', color: '#518AAD' },
+  EQUIPMENT: { id: 3, label: 'Equipos', color: '#50616B' },
+  MATERIALS: { id: 4, label: 'Materiales', color: '#967C57' },
 } as const
 
-type CategoryKey = keyof typeof CATEGORIES
+export const CATEGORIES_CONST: IConstant[] = Object.values(CATEGORIES)
+export const CATEGORIES_OPTIONS = CATEGORIES_CONST.map(({ id, label }) => ({
+  id,
+  label,
+}))
 
-export const getCategoryInfo = (key: CategoryKey): IConstant => CATEGORIES[key]
+export const getCategoryConstById = (id: number): IConstant | undefined =>
+  CATEGORIES_CONST.find((category) => category.id === id)
 
-export const getCategoryByName = (name: string): IConstant | undefined => {
-  return Object.values(CATEGORIES).find(
-    (category) => category.name.toLowerCase() === name.toLowerCase(),
+export const getCategoryConstByLabel = (label: string): IConstant | undefined =>
+  CATEGORIES_CONST.find(
+    (category) => category.label.toLowerCase() === label.toLowerCase(),
   )
-}
+
+export const getCategoryOptById = (id: number) =>
+  CATEGORIES_OPTIONS.find((category) => category.id === id)
+
+export const getCategoryOptByLabel = (label: string) =>
+  CATEGORIES_OPTIONS.find(
+    (category) => category.label.toLowerCase() === label.toLowerCase(),
+  )

@@ -1,7 +1,7 @@
 import prisma from '@/core/shared/utils/prisma'
-import { RESTOCK_LIMITS } from '../data/limits'
-import { TYPES } from '../data/types'
-import { calculateSeverity } from '../utils'
+import { RESTOCK_LIMITS } from '../../data/limits'
+import { TYPES } from '../../data/types'
+import { calculateSeverity } from '../../utils'
 
 export const checkLowStock = async () => {
   const lowStockProducts = await prisma.lotLocation.findMany({
@@ -12,7 +12,7 @@ export const checkLowStock = async () => {
       NOT: {
         alerts: {
           some: {
-            type: TYPES.RESTOCK.name,
+            type: TYPES.RESTOCK.label,
           },
         },
       },
@@ -29,9 +29,9 @@ export const checkLowStock = async () => {
 
       return prisma.alert.create({
         data: {
-          type: TYPES.RESTOCK.name,
+          type: TYPES.RESTOCK.label,
           lotLocationId: id,
-          severity: severity.name,
+          severity: severity.label,
         },
       })
     }),

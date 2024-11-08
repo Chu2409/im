@@ -3,8 +3,8 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { IItemWithLotLocation } from '../types'
 import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
-import { getLaboratoryByName } from '@/core/locations/data/labobratories'
 import { Badge } from '@/core/shared/ui/badge'
+import { getLaboratoryConstByLabel } from '@/core/locations/data/labobratories'
 
 export const itemsColumns: ColumnDef<IItemWithLotLocation>[] = [
   {
@@ -27,7 +27,7 @@ export const itemsColumns: ColumnDef<IItemWithLotLocation>[] = [
     accessorKey: 'location',
     header: 'Ubicación',
     cell: ({ row }) => {
-      const laboratory = getLaboratoryByName(
+      const laboratory = getLaboratoryConstByLabel(
         row.original.lotLocation.location.laboratory,
       )
 
@@ -44,7 +44,7 @@ export const itemsColumns: ColumnDef<IItemWithLotLocation>[] = [
               fontSize: '0.7rem',
             }}
           >
-            {laboratory?.name}
+            {laboratory?.label}
           </Badge>
         </div>
       )

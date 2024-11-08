@@ -1,34 +1,18 @@
 'use client'
 
 import { Header } from '@/core/shared/components/head/header'
-import { DataTable } from '@/core/shared/components/table/data-table'
+import { DataTable } from '@/core/shared/components/table/paginated/data-table'
 import { useLotModal } from '../hooks/use-lot-modal'
 import { IFullLot } from '../types'
 import { lotColumns } from './columns'
-import { CATEGORIES } from '@/core/products/data/categories'
 import { LotModal } from './modal'
-import { Location, Product, Provider } from '@prisma/client'
-
-const filters = [
-  {
-    key: 'category',
-    values: Object.values(CATEGORIES).map((category) => ({
-      value: category.id,
-      label: category.name,
-    })),
-  },
-]
+import { IPaginatedRes } from '@/core/shared/types/pagination'
+import { lotFilters } from '../data/filters'
 
 export const LotsClient = ({
-  lots,
-  locations,
-  products,
-  providers,
+  data,
 }: {
-  lots: IFullLot[]
-  locations: Location[]
-  products: Product[]
-  providers: Provider[]
+  data: IPaginatedRes<IFullLot> | undefined
 }) => {
   const onOpen = useLotModal((state) => state.onOpen)
 
@@ -41,18 +25,14 @@ export const LotsClient = ({
         onButtonClick={() => onOpen()}
       />
 
-      <LotModal
-        locations={locations}
-        products={products}
-        providers={providers}
-      />
+      <LotModal />
 
       <DataTable
         inputFilterKey='product'
-        data={lots}
-        filters={filters}
+        data={data}
+        filters={lotFilters}
         columns={lotColumns}
-        statusColumn={false}
+        enableStatusFilter={false}
       />
     </>
   )

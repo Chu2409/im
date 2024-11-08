@@ -1,13 +1,13 @@
 import { useState, useCallback } from 'react'
-import { ActionRes } from '../types'
 import useToastNotification from './use-notification'
 import { useToast } from './use-toast'
 import { useRouter } from 'next/navigation'
+import { IActionRes } from '../types/actions'
 
 interface UseFormSubmitProps<T, F> {
   initialData?: T
-  createFn: (values: F) => Promise<ActionRes<T>>
-  updateFn: (id: number, values: F) => Promise<ActionRes<T>>
+  createFn: (values: F) => Promise<IActionRes<T>>
+  updateFn: (id: number, values: F) => Promise<IActionRes<T>>
   toastTitle: string
   toastDescription: string
   onModalClose?: () => void

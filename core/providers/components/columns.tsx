@@ -1,6 +1,6 @@
 'use client'
 
-import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
+import { DataTableColumnHeader } from '@/core/shared/components/table/paginated/data-table-column-header'
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { Provider } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
@@ -18,19 +18,13 @@ export const providersColumns: ColumnDef<Provider>[] = [
   {
     accessorKey: 'name',
     meta: 'Nombre',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Nombre' />
-    ),
+    header: () => <DataTableColumnHeader title='Nombre' sort='name' />,
   },
   {
     accessorKey: 'status',
     meta: 'Estado',
     header: '',
     cell: ({ row }) => !row.original.active && <FlagIndicator />,
-    filterFn: (row, id, filterValue) => {
-      const value = row.original.active ? 1 : 0
-      return filterValue.includes(value)
-    },
   },
   {
     accessorKey: 'contact',

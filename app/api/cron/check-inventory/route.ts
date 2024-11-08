@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { checkExpirations } from '@/core/alerts/actions/check-expirations'
-import { checkLowStock } from '@/core/alerts/actions/check-low-stock'
-import { updateExpirationAlerts } from '@/core/alerts/actions/update-expiration-alerts'
-import { updateStockAlerts } from '@/core/alerts/actions/update-stock-alerts'
+import { checkExpirations } from '@/core/alerts/actions/cron/check-expirations'
+import { checkLowStock } from '@/core/alerts/actions/cron/check-low-stock'
+import { updateExpirationAlerts } from '@/core/alerts/actions/cron/update-expiration-alerts'
+import { updateStockAlerts } from '@/core/alerts/actions/cron/update-stock-alerts'
 import * as Sentry from '@sentry/nextjs'
 
 export const dynamic = 'force-dynamic'

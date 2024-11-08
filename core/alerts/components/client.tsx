@@ -1,51 +1,17 @@
 'use client'
 
 import { Header } from '@/core/shared/components/head/header'
-import { DataTable } from '@/core/shared/components/table/data-table'
+import { DataTable } from '@/core/shared/components/table/paginated/data-table'
 import { productsColumns } from './columns'
 import { IFullAlert } from '../types'
-import { CATEGORIES } from '@/core/products/data/categories'
-import { SEVERITIES } from '../data/severities'
-import { TYPES } from '../data/types'
+import { IPaginatedRes } from '@/core/shared/types/pagination'
+import { alertFilters } from '../data/filters'
 
-const filters = [
-  {
-    key: 'category',
-    values: Object.values(CATEGORIES).map((category) => ({
-      value: category.id,
-      label: category.name,
-    })),
-  },
-  {
-    key: 'severity',
-    values: Object.values(SEVERITIES).map((severity) => ({
-      value: severity.id,
-      label: severity.name,
-    })),
-  },
-  {
-    key: 'type',
-    values: Object.values(TYPES).map((type) => ({
-      value: type.id,
-      label: type.name,
-    })),
-  },
-  {
-    key: 'status',
-    values: [
-      {
-        value: 0,
-        label: 'Resueltas',
-      },
-      {
-        value: 1,
-        label: 'No Resueltas',
-      },
-    ],
-  },
-]
-
-export const AlertsClient = ({ alerts }: { alerts: IFullAlert[] }) => {
+export const AlertsClient = ({
+  data,
+}: {
+  data: IPaginatedRes<IFullAlert> | undefined
+}) => {
   return (
     <>
       <Header
@@ -54,11 +20,11 @@ export const AlertsClient = ({ alerts }: { alerts: IFullAlert[] }) => {
       />
 
       <DataTable
-        statusColumn={false}
-        data={alerts}
+        data={data}
         columns={productsColumns}
         inputFilterKey='product'
-        filters={filters}
+        filters={alertFilters}
+        enableStatusFilter={false}
       />
     </>
   )

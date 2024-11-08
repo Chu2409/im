@@ -2,14 +2,14 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { IFullLot } from '../types'
-import { getCategoryByName } from '@/core/products/data/categories'
+import { getCategoryConstByLabel } from '@/core/products/data/categories'
 import { Badge } from '@/core/shared/ui/badge'
 import { formatDate } from '@/core/shared/utils/utils'
-import { getLaboratoryByName } from '@/core/locations/data/labobratories'
-import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
+import { DataTableColumnHeader } from '@/core/shared/components/table/paginated/data-table-column-header'
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions-delete'
 import { useLotModal } from '../hooks/use-lot-modal'
 import { deleteLot } from '../actions/delete-lot'
+import { getLaboratoryConstByLabel } from '@/core/locations/data/labobratories'
 
 export const lotColumns: ColumnDef<IFullLot>[] = [
   {
@@ -22,7 +22,7 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
     accessorKey: 'product',
     header: 'Producto',
     cell: ({ row }) => {
-      const category = getCategoryByName(row.original.product.category)
+      const category = getCategoryConstByLabel(row.original.product.category)
 
       return (
         <div className='flex items-center gap-2'>
@@ -37,25 +37,16 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
               fontSize: '0.7rem',
             }}
           >
-            {category?.name}
+            {category?.label}
           </Badge>
         </div>
       )
     },
-    filterFn: (row, id, filterValue) =>
-      row.original.product.name
-        .toLowerCase()
-        .trim()
-        .includes(filterValue.toLowerCase().trim()),
   },
   {
     accessorKey: 'category',
     meta: 'Categoría',
     header: '',
-    filterFn: (row, id, filterValue) => {
-      const category = getCategoryByName(row.original.product.category)
-      return filterValue.includes(category?.id)
-    },
   },
   {
     accessorKey: 'quantity',
@@ -75,12 +66,7 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
   {
     accessorKey: 'orderDate',
     meta: 'Orden',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Orden' toggleVisibility />
-    ),
-    sortingFn: (rowA, rowB) =>
-      new Date(rowA.original.orderDate).getTime() -
-      new Date(rowB.original.orderDate).getTime(),
+    header: () => <DataTableColumnHeader sort='orderDate' title='Orden' />,
     cell: ({ row }) => (
       <span className='capitalize'>{formatDate(row.original.orderDate)}</span>
     ),
@@ -88,16 +74,9 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
   {
     accessorKey: 'expiration',
     meta: 'Vencimiento',
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title='Vencimiento'
-        toggleVisibility
-      />
+    header: () => (
+      <DataTableColumnHeader sort='expirationDate' title='Vencimiento' />
     ),
-    sortingFn: (rowA, rowB) =>
-      new Date(rowA.original.expirationDate ?? 0).getTime() -
-      new Date(rowB.original.expirationDate ?? 0).getTime(),
     cell: ({ row }) => (
       <span className='capitalize'>
         {row.original.expirationDate
@@ -112,7 +91,7 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
     cell: ({ row }) => (
       <div className='flex flex-col gap-1.5 justify-center'>
         {row.original.lotLocations.map((lotLocation) => {
-          const laboratory = getLaboratoryByName(
+          const laboratory = getLaboratoryConstByLabel(
             lotLocation.location.laboratory,
           )
 
@@ -134,7 +113,7 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
                   fontSize: '0.7rem',
                 }}
               >
-                {laboratory?.name}
+                {laboratory?.label}
               </Badge>
 
               <Badge

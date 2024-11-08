@@ -12,7 +12,7 @@ import {
 import { cn } from '@/core/shared/utils/utils'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { Trash } from 'lucide-react'
-import { IEditableRowLotLocation } from '../types'
+import { IEditableRowLotLocation } from '../../types'
 
 interface LotLocationDataTableProps {
   data: IEditableRowLotLocation[]

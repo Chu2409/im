@@ -1,14 +1,14 @@
 'use client'
 
-import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
+import { DataTableColumnHeader } from '@/core/shared/components/table/paginated/data-table-column-header'
 import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { Location } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 import { toggleLocationStatus } from '../actions/toggle-location-status'
 import { useLocationModal } from '../hooks/use-location-modal'
 import { Badge } from '@/core/shared/ui/badge'
-import { getLaboratoryByName } from '../data/labobratories'
 import { FlagIndicator } from '@/core/shared/components/flag-indicator'
+import { getLaboratoryConstByLabel } from '../data/labobratories'
 
 export const locationColumns: ColumnDef<Location>[] = [
   {
@@ -26,10 +26,6 @@ export const locationColumns: ColumnDef<Location>[] = [
     meta: 'Estado',
     header: '',
     cell: ({ row }) => !row.original.active && <FlagIndicator />,
-    filterFn: (row, id, filterValue) => {
-      const value = row.original.active ? 1 : 0
-      return filterValue.includes(value)
-    },
   },
   {
     accessorKey: 'code',
@@ -37,16 +33,12 @@ export const locationColumns: ColumnDef<Location>[] = [
   },
   {
     accessorKey: 'laboratory',
-    filterFn: (row, id, filterValue) => {
-      const laboratory = getLaboratoryByName(row.original.laboratory)
-      return filterValue.includes(laboratory?.id)
-    },
     meta: 'Laboratorio',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Laboratorio' />
+    header: () => (
+      <DataTableColumnHeader sort='laboratory' title='Laboratorio' />
     ),
     cell: ({ row }) => {
-      const laboratory = getLaboratoryByName(row.original.laboratory)
+      const laboratory = getLaboratoryConstByLabel(row.original.laboratory)
 
       return (
         <Badge
@@ -57,7 +49,7 @@ export const locationColumns: ColumnDef<Location>[] = [
             border: laboratory?.color,
           }}
         >
-          {laboratory?.name}
+          {laboratory?.label}
         </Badge>
       )
     },

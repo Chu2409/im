@@ -20,23 +20,23 @@ import {
 import { IOption } from '../../types'
 import { useState } from 'react'
 
-interface ComboboxProps<T> {
-  options: IOption<T>[]
-  value?: T
+interface ComboboxProps {
+  options: IOption[]
+  value?: number
   selectMessage: string
-  onChange: (value?: T) => void
+  onChange: (value?: number) => void
   disabled?: boolean
   className?: string
 }
 
-export function Combobox<T>({
+export function Combobox({
   options,
   value,
   selectMessage,
   onChange,
   disabled,
   className,
-}: ComboboxProps<T>) {
+}: ComboboxProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -53,7 +53,7 @@ export function Combobox<T>({
           )}
         >
           {value
-            ? options.find((option) => option.value === value)?.label
+            ? options.find((option) => option.id === value)?.label
             : selectMessage}
           <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
@@ -78,9 +78,9 @@ export function Combobox<T>({
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
-                  key={`${option.value}`}
+                  key={`${option.id}`}
                   onSelect={() => {
-                    onChange(option.value === value ? undefined : option.value)
+                    onChange(option.id === value ? undefined : option.id)
                     setOpen(false)
                   }}
                 >
@@ -89,7 +89,7 @@ export function Combobox<T>({
                   <Check
                     className={cn(
                       'ml-auto h-4 w-4',
-                      value === option.value ? 'opacity-100' : 'opacity-0',
+                      value === option.id ? 'opacity-100' : 'opacity-0',
                     )}
                   />
                 </CommandItem>

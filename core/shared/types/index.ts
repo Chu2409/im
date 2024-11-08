@@ -1,31 +1,25 @@
-import { ACTIONS } from '../data/actions'
-import { TABLES } from '../data/tables'
-
 export interface IRoute {
   href: string
   label: string
   icon: React.ReactElement
 }
 
-export interface IConstant {
+export interface IOption {
   id: number
-  name: string
+  label: string
+}
+
+export interface IConstant extends IOption {
   color: string
 }
 
-export interface IOption<T> {
-  label: string
-  value: T
+export interface IDataTableFilter {
+  key: string
+  values: IOption[]
 }
 
-export interface ActionRes<T> {
-  data?: T
-  error?: string
-}
-
-export interface ILog {
-  entityId?: number
-  table: (typeof TABLES)[keyof typeof TABLES]
-  action: (typeof ACTIONS)[keyof typeof ACTIONS]
-  content?: object
+export interface IDatTablePaginatedFilter {
+  key: string
+  values: IOption[]
+  getById: (id: number) => IOption | undefined
 }

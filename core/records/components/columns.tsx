@@ -1,6 +1,6 @@
 'use client'
 
-import { DataTableColumnHeader } from '@/core/shared/components/table/data-table-column-header'
+import { DataTableColumnHeader } from '@/core/shared/components/table/paginated/data-table-column-header'
 import { formatDate } from '@/core/shared/utils/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { useRecord } from '../hooks/use-record'
@@ -19,9 +19,7 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
   {
     accessorKey: 'date',
     meta: 'Fecha',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Fecha' />
-    ),
+    header: () => <DataTableColumnHeader sort='start' title='Fecha' />,
     cell: ({ row }) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const setRecord = useRecord((state) => state.setRecord)
@@ -35,9 +33,6 @@ export const recordsColumns: ColumnDef<IRecordWithItems>[] = [
         </div>
       )
     },
-    sortingFn: (rowA, rowB) =>
-      new Date(rowA.original.start).getTime() -
-      new Date(rowB.original.start).getTime(),
   },
   {
     id: 'actions',

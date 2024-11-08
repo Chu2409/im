@@ -2,20 +2,18 @@
 
 import { Header } from '@/core/shared/components/head/header'
 import { recordsColumns } from './columns'
-import { DataTable } from '@/core/shared/components/table/data-table'
+import { DataTable } from '@/core/shared/components/table/paginated/data-table'
 import { IRecordWithItems } from '../types'
 import { useRecord } from '../hooks/use-record'
 import { RecordModal } from './modal'
 import { useRecordModal } from '../hooks/use-record-modal'
 import { ItemsClient } from '@/core/items/components/client'
-import { IFullLotLocation } from '@/core/lots/types'
+import { IPaginatedRes } from '@/core/shared/types/pagination'
 
 export const RecordsClient = ({
-  records,
-  lotProducts,
+  data,
 }: {
-  records: IRecordWithItems[]
-  lotProducts: IFullLotLocation[]
+  data: IPaginatedRes<IRecordWithItems> | undefined
 }) => {
   const currentRecord = useRecord((state) => state.record)
   const setRecord = useRecord((state) => state.setRecord)
@@ -35,7 +33,7 @@ export const RecordsClient = ({
         onButtonClick={handleClick}
       />
 
-      <RecordModal lotProducts={lotProducts} />
+      <RecordModal />
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
         <div className='order-2 lg:order-1'>
@@ -44,10 +42,9 @@ export const RecordsClient = ({
           </p>
 
           <DataTable
-            data={records}
+            data={data}
             columns={recordsColumns}
-            statusColumn={false}
-            viewOptions={false}
+            enableViewOptions={false}
           />
         </div>
 

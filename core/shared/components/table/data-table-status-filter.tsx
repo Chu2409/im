@@ -18,7 +18,7 @@ import {
   PopoverTrigger,
 } from '@/core/shared/ui/popover'
 import { Separator } from '@/core/shared/ui/separator'
-import { status } from '../../data/status-options'
+import { STATUSES } from '../../data/statuses'
 import { useEffect } from 'react'
 
 interface DataTableStatusFilterProps<TData, TValue> {
@@ -52,8 +52,8 @@ export function DataTableStatusFilter<TData, TValue>({
               </Badge>
 
               <div className='hidden space-x-1 lg:flex'>
-                {status
-                  .filter((option) => selectedValues.has(option.value))
+                {Object.values(STATUSES)
+                  .filter((option) => selectedValues.has(option.id))
                   .map((option) => (
                     <Badge
                       variant='secondary'
@@ -73,15 +73,15 @@ export function DataTableStatusFilter<TData, TValue>({
         <Command>
           <CommandList>
             <CommandGroup>
-              {status.map((option) => {
-                const isSelected = selectedValues.has(option.value)
+              {Object.values(STATUSES).map((option) => {
+                const isSelected = selectedValues.has(option.id)
 
                 return (
                   <CommandItem
                     key={option.label}
                     onSelect={() => {
-                      if (isSelected) selectedValues.delete(option.value)
-                      else selectedValues.add(option.value)
+                      if (isSelected) selectedValues.delete(option.id)
+                      else selectedValues.add(option.id)
 
                       const filterValues = Array.from(selectedValues)
                       column?.setFilterValue(

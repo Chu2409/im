@@ -1,17 +1,8 @@
 import { Modal } from '@/core/shared/components/modal/modal'
 import { useLotModal } from '../hooks/use-lot-modal'
-import { Location, Product, Provider } from '@prisma/client'
-import { LotForm } from './form'
+import { LotForm } from './form/form'
 
-export const LotModal = ({
-  locations,
-  products,
-  providers,
-}: {
-  locations: Location[]
-  products: Product[]
-  providers: Provider[]
-}) => {
+export const LotModal = () => {
   const initialData = useLotModal((state) => state.lot)
   const isOpen = useLotModal((state) => state.isOpen)
   const onClose = useLotModal((state) => state.onClose)
@@ -23,13 +14,7 @@ export const LotModal = ({
       isOpen={isOpen}
       onClose={onClose}
     >
-      <LotForm
-        initialData={initialData}
-        locations={locations}
-        onModalClose={onClose}
-        products={products}
-        providers={providers}
-      />
+      <LotForm initialData={initialData} onModalClose={onClose} />
     </Modal>
   )
 }
