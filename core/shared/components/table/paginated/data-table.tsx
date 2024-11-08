@@ -18,14 +18,14 @@ import {
 import { DataTableToolbar } from './data-table-toolbar'
 import { DataTablePagination } from './data-table-pagination'
 import { useEffect } from 'react'
-import { IFilter } from './types'
 import { IPaginatedRes } from '@/core/shared/types/pagination'
+import { IDatTablePaginatedFilter } from '@/core/shared/types'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: IPaginatedRes<TData> | undefined
   inputFilterKey?: string
-  filters?: IFilter[]
+  filters?: IDatTablePaginatedFilter[]
   enableViewOptions?: boolean
   enableStatusFilter?: boolean
 }

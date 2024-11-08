@@ -17,7 +17,7 @@ import {
   PopoverTrigger,
 } from '@/core/shared/ui/popover'
 import { Separator } from '@/core/shared/ui/separator'
-import { STATUSES, getEstatusById } from '@/core/shared/data/statuses'
+import { STATUSES, getStatusById } from '@/core/shared/data/statuses'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
   formUrlArrayQuery,
@@ -30,7 +30,7 @@ export const DataTableStatusFilter = () => {
   const status = searchParams.getAll('status')
 
   const selected = status
-    .map((status) => getEstatusById(Number(status))?.id)
+    .map((status) => getStatusById(Number(status))?.id)
     .filter((status) => status != null)
 
   const handleChange = (value: number, isSelected: boolean) => {

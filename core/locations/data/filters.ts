@@ -1,7 +1,7 @@
-import { IFilter } from '@/core/shared/components/table/paginated/types'
 import { getLaboratoryOptById, LABORATORIES_OPTIONS } from './labobratories'
+import { IDatTablePaginatedFilter } from '@/core/shared/types'
 
-export const locationFilters: IFilter[] = [
+export const locationFilters: IDatTablePaginatedFilter[] = [
   {
     key: 'laboratory',
     values: LABORATORIES_OPTIONS,

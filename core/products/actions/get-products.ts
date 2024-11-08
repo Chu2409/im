@@ -1,6 +1,7 @@
 'use server'
 
 import {
+  getConstantsLabels,
   getStatusWhere,
   isValidField,
   isValidSortOrder,
@@ -15,25 +16,19 @@ import { getCategoryConstById } from '../data/categories'
 export const getProducts = async (params: IProductPaginationParams) => {
   const { skip, page, size } = getPaginationParams(params)
 
+  const categories = getConstantsLabels(getCategoryConstById, params.category)
+
   const where: Prisma.ProductWhereInput = {
     ...(params.search
       ? { name: { contains: params.search, mode: 'insensitive' } }
       : {}),
     ...getStatusWhere(params.status),
-    ...(params.category
+    ...(categories
       ? {
           category: {
-            in:
-              typeof params.category === 'string'
-                ? [getCategoryConstById(Number(params.category))?.label].filter(
-                    (cat) => cat != null,
-                  )
-                : params.category
-                    .map(
-                      (category) =>
-                        getCategoryConstById(Number(category))?.label,
-                    )
-                    .filter((cat) => cat != null),
+            ...(typeof categories === 'string'
+              ? { contains: categories }
+              : { in: categories }),
             mode: 'insensitive',
           },
         }

@@ -2,9 +2,9 @@ import {
   CATEGORIES_OPTIONS,
   getCategoryOptById,
 } from '@/core/products/data/categories'
-import { IFilter } from '@/core/shared/components/table/paginated/types'
+import { IDatTablePaginatedFilter } from '@/core/shared/types'
 
-export const lotFilters: IFilter[] = [
+export const lotFilters: IDatTablePaginatedFilter[] = [
   {
     key: 'category',
     values: CATEGORIES_OPTIONS,

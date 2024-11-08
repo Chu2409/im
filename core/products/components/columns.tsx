@@ -32,10 +32,6 @@ export const productsColumns: ColumnDef<Product>[] = [
     accessorKey: 'category',
     meta: 'Categoría',
     header: () => <DataTableColumnHeader title='Categoría' sort='category' />,
-    filterFn: (row, id, filterValue) => {
-      const category = getCategoryConstByLabel(row.original.category)
-      return filterValue.includes(category?.id)
-    },
     cell: ({ row }) => {
       const category = getCategoryConstByLabel(row.original.category)
 

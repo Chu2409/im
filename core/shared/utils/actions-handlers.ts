@@ -21,7 +21,7 @@ export const handleAction = async <T>(
   } catch (error: unknown) {
     const context = {
       timestamp: getEcuadorTimestamp(),
-      action: log?.action.name || 'Desconocido',
+      action: log?.action.label || 'Desconocido',
     }
 
     let errorMessage: string
@@ -89,8 +89,8 @@ const handleLog = async ({ entityId, table, action, content }: ILog) => {
     data: {
       user: session.user!.name!,
       entityId,
-      table: table.name,
-      action: action.name,
+      table: table.label,
+      action: action.label,
       content: JSON.stringify(content),
     },
   })

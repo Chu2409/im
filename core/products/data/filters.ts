@@ -1,7 +1,7 @@
-import { IFilter } from '@/core/shared/components/table/paginated/types'
 import { CATEGORIES_OPTIONS, getCategoryOptById } from './categories'
+import { IDatTablePaginatedFilter } from '@/core/shared/types'
 
-export const productFilters: IFilter[] = [
+export const productFilters: IDatTablePaginatedFilter[] = [
   {
     key: 'category',
     values: CATEGORIES_OPTIONS,

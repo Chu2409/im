@@ -67,9 +67,6 @@ export const lotColumns: ColumnDef<IFullLot>[] = [
     accessorKey: 'orderDate',
     meta: 'Orden',
     header: () => <DataTableColumnHeader sort='orderDate' title='Orden' />,
-    sortingFn: (rowA, rowB) =>
-      new Date(rowA.original.orderDate).getTime() -
-      new Date(rowB.original.orderDate).getTime(),
     cell: ({ row }) => (
       <span className='capitalize'>{formatDate(row.original.orderDate)}</span>
     ),

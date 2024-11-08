@@ -7,17 +7,17 @@ import { Button } from '@/core/shared/ui/button'
 import { Input } from '@/core/shared/ui/input'
 
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
-import { IFilter } from './types'
-import { DataTableViewOptions } from './data-table-view-options'
+import { DataTableViewOptions } from '../data-table-view-options'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { ChangeEvent } from 'react'
 import { formUrlQuery } from '@/core/shared/utils/pagination'
 import debounce from 'debounce'
 import { DataTableStatusFilter } from './data-table-status-filter'
+import { IDatTablePaginatedFilter } from '@/core/shared/types'
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
-  filters?: IFilter[]
+  filters?: IDatTablePaginatedFilter[]
   inputFilterKey?: string
   enableViewOptions: boolean
   enableStatusFilter: boolean

@@ -1,7 +1,7 @@
 'use client'
 
 import { DataTableColumnHeader } from '@/core/shared/components/table/paginated/data-table-column-header'
-import { DataTableRowActions } from '@/core/shared/components/table/paginated/data-table-row-actions'
+import { DataTableRowActions } from '@/core/shared/components/table/data-table-row-actions'
 import { Provider } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 import { toggleProviderStatus } from '../actions/toggle-provider-status'

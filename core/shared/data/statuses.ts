@@ -1,8 +1,18 @@
-export const STATUSES = {
-  ACTIVE: { label: 'Activo', id: 1 },
-  INACTIVE: { label: 'Inactivo', id: 0 },
+import { IOption } from '../types'
+
+export const STATUSES: {
+  [key: string]: IOption
+} = {
+  ACTIVE: { id: 1, label: 'Activo' },
+  INACTIVE: { id: 0, label: 'Inactivo' },
 } as const
 
-export const getEstatusById = (id: number) => {
-  return Object.values(STATUSES).find((type) => type.id === id)
-}
+export const STATUSES_OPTIONS = Object.values(STATUSES)
+
+export const getStatusById = (id: number) =>
+  STATUSES_OPTIONS.find((type) => type.id === id)
+
+export const getStatusByLabel = (label: string) =>
+  STATUSES_OPTIONS.find(
+    (type) => type.label.toLowerCase() === label.toLowerCase(),
+  )
