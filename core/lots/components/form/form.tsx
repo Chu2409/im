@@ -18,16 +18,17 @@ import {
   IEditableRowLotLocation,
   IFullLot,
   IUpsertLotLocationBulkProps,
-} from '../types'
+} from '../../types'
 import { Input } from '@/core/shared/ui/input'
-import { Location, Lot, Product, Provider } from '@prisma/client'
+import { Lot, Product, Provider } from '@prisma/client'
 import { DatePicker } from '@/core/shared/components/date-picker'
-import { Combobox } from '@/core/shared/components/combobox/combobox'
-import { MultiCombobox } from '@/core/shared/components/combobox/multi-combobox'
-import { LotLocationFormDataTable } from './form-data-table'
-import { createLotWithLocations } from '../actions/create-lot-with-locations'
-import { updateLotWithLocations } from '../actions/update-lot-with-locations'
+import { createLotWithLocations } from '../../actions/create-lot-with-locations'
+import { updateLotWithLocations } from '../../actions/update-lot-with-locations'
 import useFormSubmit from '@/core/shared/hooks/use-form-submit'
+import { ProductsSelector } from './products-selector'
+import { LotLocationFormDataTable } from './form-data-table'
+import { ProvidersSelector } from './providers-selector'
+import { LocationsSelector } from './location-selector'
 
 const formSchema = z.object({
   quantityPurchased: z.coerce
@@ -52,15 +53,9 @@ type formType = z.infer<typeof formSchema>
 
 export const LotForm = ({
   initialData,
-  locations,
-  providers,
-  products,
   onModalClose,
 }: {
   initialData?: IFullLot
-  locations: Location[]
-  products: Product[]
-  providers: Provider[]
   onModalClose: () => void
 }) => {
   const form = useForm<formType>({
@@ -79,6 +74,13 @@ export const LotForm = ({
       providerId: initialData?.providerId,
     },
   })
+
+  const [productSelected, setProductSelected] = useState<Product | undefined>(
+    () => initialData?.product,
+  )
+  const [providerSelected, setProviderSelected] = useState<
+    Provider | undefined
+  >(() => initialData?.provider || undefined)
 
   const action = initialData ? 'Actualizar lote' : 'Crear lote'
   const toastTitle = initialData ? 'Lote actualizado' : 'Lote creado'
@@ -144,15 +146,12 @@ export const LotForm = ({
                 <FormLabel>Producto</FormLabel>
 
                 <FormControl>
-                  <Combobox
-                    options={products.map((product) => ({
-                      id: product.id,
-                      label: product.name,
-                    }))}
-                    value={field.value}
-                    selectMessage='Selecciona un producto'
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onChange={field.onChange}
+                  <ProductsSelector
+                    value={productSelected}
+                    onChange={(product) => {
+                      setProductSelected(product)
+                      field.onChange(product?.id)
+                    }}
                     disabled={isLoading}
                   />
                 </FormControl>
@@ -233,15 +232,12 @@ export const LotForm = ({
                 <FormLabel>Proveedor</FormLabel>
 
                 <FormControl>
-                  <Combobox
-                    options={providers.map((provider) => ({
-                      id: provider.id,
-                      label: provider.name,
-                    }))}
-                    value={field.value || undefined}
-                    selectMessage='Seleccione un proveedor'
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onChange={field.onChange}
+                  <ProvidersSelector
+                    value={providerSelected}
+                    onChange={(provider) => {
+                      setProviderSelected(provider)
+                      field.onChange(provider?.id)
+                    }}
                     disabled={isLoading}
                   />
                 </FormControl>
@@ -312,35 +308,28 @@ export const LotForm = ({
             <FormLabel>Locaciones</FormLabel>
 
             <FormControl>
-              <MultiCombobox
+              <LocationsSelector
                 disabled={isLoading}
-                title='Seleccione las locaciones...'
                 values={lotLocationsTable.map(
                   (lotLocation) => lotLocation.location.id,
                 )}
-                options={locations.map((location) => ({
-                  id: location.id,
-                  label: `${location.name} - ${location.code} (${location.laboratory})`,
-                }))}
-                onAdd={(locationId) => {
-                  const location = locations.find(
-                    (location) => location.id === locationId,
-                  )!
+                onAdd={(location) => {
+                  if (location) {
+                    const newLotLocationsTable = lotLocationsTable.concat({
+                      location: {
+                        id: location.id,
+                        name: `${location.name} - ${location.code}  (${location.laboratory})`,
+                      },
+                      quantity: {
+                        value: 1,
+                      },
+                      isSaved: false,
+                      toDelete: false,
+                      toEdit: false,
+                    })
 
-                  const newLotLocationsTable = lotLocationsTable.concat({
-                    location: {
-                      id: location.id,
-                      name: `${location.name} - ${location.code}  (${location.laboratory})`,
-                    },
-                    quantity: {
-                      value: 1,
-                    },
-                    isSaved: false,
-                    toDelete: false,
-                    toEdit: false,
-                  })
-
-                  setLotLocationsTable(newLotLocationsTable)
+                    setLotLocationsTable(newLotLocationsTable)
+                  }
                 }}
               />
             </FormControl>

@@ -46,7 +46,7 @@ export const getLotProductsToRecord = async (search: string) => {
         },
         location: true,
       },
-      take: 30,
+      take: 20,
     })
 
   return await handleAction(

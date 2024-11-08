@@ -11,11 +11,8 @@ const LotsPage = async ({
   const params = await searchParams
 
   const { data } = await getFullLots(params)
-  // const { data: locations = [] } = await getLocations()
-  // const { data: products = [] } = await getProducts()
-  // const { data: providers = [] } = await getProviders()
 
-  return <LotsClient data={data} locations={[]} products={[]} providers={[]} />
+  return <LotsClient data={data} />
 }
 
 export default LotsPage

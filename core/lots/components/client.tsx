@@ -6,20 +6,13 @@ import { useLotModal } from '../hooks/use-lot-modal'
 import { IFullLot } from '../types'
 import { lotColumns } from './columns'
 import { LotModal } from './modal'
-import { Location, Product, Provider } from '@prisma/client'
 import { IPaginatedRes } from '@/core/shared/types/pagination'
 import { lotFilters } from '../data/filters'
 
 export const LotsClient = ({
   data,
-  locations,
-  products,
-  providers,
 }: {
   data: IPaginatedRes<IFullLot> | undefined
-  locations: Location[]
-  products: Product[]
-  providers: Provider[]
 }) => {
   const onOpen = useLotModal((state) => state.onOpen)
 
@@ -32,11 +25,7 @@ export const LotsClient = ({
         onButtonClick={() => onOpen()}
       />
 
-      <LotModal
-        locations={locations}
-        products={products}
-        providers={providers}
-      />
+      <LotModal />
 
       <DataTable
         inputFilterKey='product'
