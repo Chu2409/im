@@ -16,11 +16,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/core/shared/ui/sheet'
-import { CircleUser, Menu, Package2 } from 'lucide-react'
+import { CircleUser, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { IRoute } from '../../types'
 import { signOut } from 'next-auth/react'
+import { IconSvg } from './icon'
 
 export const Topbar = ({
   routes,
@@ -49,8 +50,8 @@ export const Topbar = ({
                 className='flex items-center gap-3 text-lg font-semibold'
                 onClick={() => setIsOpen(false)}
               >
-                <Package2 className='h-6 w-6' />
-                <span className='sr-only'>Acme Inc</span>
+                <IconSvg className='w-8 h-8' />
+                <span className='sr-only'>Genomyc</span>
                 Genomyc
               </Link>
             </SheetTitle>
