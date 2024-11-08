@@ -1,7 +1,7 @@
-import { Package2 } from 'lucide-react'
 import Link from 'next/link'
 import { IRoute } from '../../types'
 import { cn } from '@/core/shared/utils/utils'
+import { IconSvg } from './icon'
 
 export const Sidebar = ({
   routes,
@@ -14,7 +14,7 @@ export const Sidebar = ({
     <div className='hidden border-r bg-muted/40 md:block space-y-2'>
       <div className='flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6'>
         <Link href='/' className='flex items-center gap-3 font-semibold'>
-          <Package2 className='h-6 w-6' />
+          <IconSvg className='w-8' />
           <span className=''>Genomyc</span>
         </Link>
       </div>

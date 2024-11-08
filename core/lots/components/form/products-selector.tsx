@@ -108,6 +108,7 @@ export function ProductsSelector({
                     onChange(product.id === value?.id ? undefined : product)
                     setOpen(false)
                   }}
+                  className='cursor-pointer'
                 >
                   {product.name}
 

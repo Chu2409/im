@@ -119,7 +119,7 @@ export const LocationsSelector: React.FC<LocationsSelectorProps> = ({
                     key={`${location.id}`}
                     onSelect={() => onAdd(location)}
                     disabled={isSelected}
-                    className='cursor-pointer capitalize w-full'
+                    className='cursor-pointer'
                   >
                     <div
                       className={cn(

@@ -108,6 +108,7 @@ export function ProvidersSelector({
                     onChange(provider.id === value?.id ? undefined : provider)
                     setOpen(false)
                   }}
+                  className='cursor-pointer'
                 >
                   {provider.name}
 

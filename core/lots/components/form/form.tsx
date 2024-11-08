@@ -118,7 +118,22 @@ export const LotForm = ({
     onModalClose,
   })
 
-  const handleSubmit = async (values: formType) =>
+  const handleSubmit = async (values: formType) => {
+    if (lotLocationsTable.length > 0) {
+      const totalQuantity = lotLocationsTable.reduce(
+        (acc, lotLocation) => acc + lotLocation.quantity.value,
+        0,
+      )
+
+      if (totalQuantity !== values.quantityPurchased) {
+        form.setError('quantityPurchased', {
+          type: 'manual',
+          message: 'La cantidad total de las locaciones no coincide',
+        })
+        return
+      }
+    }
+
     await onSubmit(
       {
         ...values,
@@ -129,6 +144,7 @@ export const LotForm = ({
       },
       form,
     )
+  }
 
   return (
     <Form {...form}>
