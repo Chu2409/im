@@ -58,34 +58,31 @@ export const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      setIsLoading(true)
+    setIsLoading(true)
 
-      const res = await signIn('credentials', {
-        dni: values.dni,
-        password: values.password,
-        redirect: false,
+    const res = await signIn('credentials', {
+      dni: values.dni,
+      password: values.password,
+      redirect: false,
+    })
+
+    if (res?.error) {
+      toast({
+        variant: 'destructive',
+        title: 'Ingreso fallido',
+        description: 'Credenciales incorrectas, intenta de nuevo',
       })
 
-      if (res?.error) throw new Error(res?.error)
-
+      setIsLoading(false)
+    } else {
       const { data: user } = await getUserByDni(values.dni)
-
-      router.push('/inventory')
       toast({
         variant: 'success',
         title: 'Ingreso exitoso',
         description: `Bienvenido de vuelta ${user?.firstName}!`,
       })
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: 'Ingreso fallido',
-        description: error.message,
-      })
-    } finally {
-      setIsLoading(false)
+
+      router.push('/inventory')
     }
   }
 
