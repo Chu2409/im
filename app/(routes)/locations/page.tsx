@@ -3,8 +3,6 @@ import { LocationsClient } from '@/core/locations/components/client'
 import { ILocationPaginationParams } from '@/core/locations/types/pagination'
 import { ISearchParams } from '@/core/shared/types/pagination'
 
-export const revalidate = 0
-
 const LocationsPage = async ({
   searchParams,
 }: ISearchParams<ILocationPaginationParams>) => {

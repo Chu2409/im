@@ -3,8 +3,6 @@ import { AlertsClient } from '@/core/alerts/components/client'
 import { IAlertPaginationParams } from '@/core/alerts/types/pagination'
 import { ISearchParams } from '@/core/shared/types/pagination'
 
-export const revalidate = 0
-
 const AlertsPage = async ({
   searchParams,
 }: ISearchParams<IAlertPaginationParams>) => {

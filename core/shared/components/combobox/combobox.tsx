@@ -24,7 +24,7 @@ interface ComboboxProps {
   options: IOption[]
   value?: number
   selectMessage: string
-  onChange: (value?: number) => void
+  onChange: (value?: string) => void
   disabled?: boolean
   className?: string
 }
@@ -80,7 +80,7 @@ export function Combobox({
                 <CommandItem
                   key={`${option.id}`}
                   onSelect={() => {
-                    onChange(option.id === value ? undefined : option.id)
+                    onChange(option.id === value ? undefined : option.label)
                     setOpen(false)
                   }}
                 >
