@@ -46,7 +46,7 @@ export const Topbar = ({
           <SheetHeader>
             <SheetTitle className='flex gap-4'>
               <Link
-                href='#'
+                href='/inventory'
                 className='flex items-center gap-3 text-lg font-semibold'
                 onClick={() => setIsOpen(false)}
               >
