@@ -37,7 +37,7 @@ export function DataTableFacetedFilter({
   options,
   getById,
 }: DataTableFacetedFilterProps) {
-  const router = useRouter()
+  const { replace } = useRouter()
   const searchParams = useSearchParams()
   const status = searchParams.getAll(paramKey)
 
@@ -60,7 +60,7 @@ export function DataTableFacetedFilter({
         value: value.toString(),
       })
 
-    router.push(url, { scroll: false })
+    replace(url, { scroll: false })
   }
 
   return (

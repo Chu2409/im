@@ -32,7 +32,7 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const inputColumn = inputFilterKey ? table.getColumn(inputFilterKey) : null
 
-  const router = useRouter()
+  const { replace } = useRouter()
   const searchParams = useSearchParams()
   const pathName = usePathname()
 
@@ -55,14 +55,14 @@ export function DataTableToolbar<TData>({
         value,
       })
 
-      router.push(url, { scroll: false })
+      replace(url, { scroll: false })
     }, 500),
     [],
   )
 
   const handleClearFilters = () => {
     setInputValue('')
-    router.push(pathName, { scroll: false })
+    replace(pathName, { scroll: false })
   }
 
   return (

@@ -3,8 +3,6 @@ import { RecordsClient } from '@/core/records/components/client'
 import { IRecordPaginationParams } from '@/core/records/types/pagination'
 import { ISearchParams } from '@/core/shared/types/pagination'
 
-export const revalidate = 0
-
 const RecordsPage = async ({
   searchParams,
 }: ISearchParams<IRecordPaginationParams>) => {

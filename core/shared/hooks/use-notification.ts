@@ -9,7 +9,7 @@ interface ToastOptions {
 }
 
 const useToastNotification = <T>(toast: (options: ToastOptions) => void) => {
-  const router = useRouter()
+  const { refresh } = useRouter()
 
   const showNotification = useCallback(
     (
@@ -32,10 +32,10 @@ const useToastNotification = <T>(toast: (options: ToastOptions) => void) => {
           title: toastTitle,
           description: toastDescription,
         })
-        router.refresh()
+        refresh()
       }
     },
-    [toast, router],
+    [toast, refresh],
   )
 
   return showNotification

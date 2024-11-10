@@ -34,7 +34,7 @@ export function DataTableRowActions({
   errorMessage,
   onEdit,
 }: DataTableRowActionsProps) {
-  const router = useRouter()
+  const { refresh } = useRouter()
   const { toast } = useToast()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -52,7 +52,7 @@ export function DataTableRowActions({
         description: deleteMessage || 'El elemento ha sido eliminado',
       })
 
-      router.refresh()
+      refresh()
     } else {
       toast({
         variant: 'destructive',

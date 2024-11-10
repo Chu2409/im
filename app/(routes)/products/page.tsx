@@ -3,8 +3,6 @@ import { ProductsClient } from '@/core/products/components/client'
 import { IProductPaginationParams } from '@/core/products/types/pagination'
 import { ISearchParams } from '@/core/shared/types/pagination'
 
-export const revalidate = 0
-
 const ProductsPage = async ({
   searchParams,
 }: ISearchParams<IProductPaginationParams>) => {

@@ -29,7 +29,7 @@ export function DataTableRowActions({
   resolved,
   toggleResolved,
 }: DataTableRowActionsProps) {
-  const router = useRouter()
+  const { refresh } = useRouter()
   const { toast } = useToast()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -51,7 +51,7 @@ export function DataTableRowActions({
         description,
       })
 
-      router.refresh()
+      refresh()
     } else {
       toast({
         variant: 'destructive',

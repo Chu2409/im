@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { z } from 'zod'
@@ -49,6 +49,11 @@ export const LoginForm = () => {
       password: '',
     },
   })
+
+  useEffect(() => {
+    // Prefetch the dashboard page
+    router.prefetch('/inventory')
+  }, [router])
 
   const [isLoading, setIsLoading] = useState(false)
 
