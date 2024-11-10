@@ -23,7 +23,7 @@ const useFormSubmit = <T, F>({
 }: UseFormSubmitProps<T, F>) => {
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
-  const router = useRouter()
+  const { refresh } = useRouter()
 
   const showNotification = useToastNotification(toast)
 
@@ -43,7 +43,7 @@ const useFormSubmit = <T, F>({
       if (!result.error) {
         form.reset()
         if (onModalClose) onModalClose()
-        router.refresh()
+        refresh()
       }
     },
     [
@@ -54,7 +54,7 @@ const useFormSubmit = <T, F>({
       toastTitle,
       toastDescription,
       onModalClose,
-      router,
+      refresh,
     ],
   )
 
