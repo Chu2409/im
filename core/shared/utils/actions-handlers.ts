@@ -4,7 +4,7 @@ import { getEcuadorTimestamp } from './utils'
 import { IPaginatedRes } from '../types/pagination'
 import { IActionRes, ILog } from '../types/actions'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/core/auth/consts/auth-options'
+import { authOptions } from '@/core/auth/data/auth-options'
 import prisma from './prisma'
 
 export const handleAction = async <T>(
