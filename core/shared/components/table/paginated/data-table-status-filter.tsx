@@ -25,7 +25,7 @@ import {
 } from '@/core/shared/utils/pagination'
 
 export const DataTableStatusFilter = () => {
-  const router = useRouter()
+  const { replace } = useRouter()
   const searchParams = useSearchParams()
   const status = searchParams.getAll('status')
 
@@ -48,7 +48,7 @@ export const DataTableStatusFilter = () => {
         value: value.toString(),
       })
 
-    router.push(url, { scroll: false })
+    replace(url, { scroll: false })
   }
 
   return (

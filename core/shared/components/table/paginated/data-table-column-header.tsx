@@ -27,7 +27,7 @@ export function DataTableColumnHeader({
   className,
 }: DataTableColumnHeaderProps) {
   const searchParams = useSearchParams()
-  const router = useRouter()
+  const { replace } = useRouter()
 
   const order = searchParams.get('order')
   const sortParam = searchParams.get('sort')
@@ -47,7 +47,7 @@ export function DataTableColumnHeader({
       ],
     })
 
-    router.push(url, { scroll: false })
+    replace(url, { scroll: false })
   }
 
   return (

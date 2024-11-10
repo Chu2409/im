@@ -17,7 +17,7 @@ interface DataTablePaginationProps {
 }
 
 export function DataTablePagination({ metadata }: DataTablePaginationProps) {
-  const router = useRouter()
+  const { replace } = useRouter()
   const searchParams = useSearchParams()
 
   const handlePagination = (page: number) => {
@@ -27,7 +27,7 @@ export function DataTablePagination({ metadata }: DataTablePaginationProps) {
       params: searchParams,
     })
 
-    router.push(newUrl)
+    replace(newUrl, { scroll: false })
   }
 
   const handlePageSize = (size: number) => {
@@ -37,7 +37,7 @@ export function DataTablePagination({ metadata }: DataTablePaginationProps) {
       params: searchParams,
     })
 
-    router.push(newUrl)
+    replace(newUrl, { scroll: false })
   }
 
   return (
