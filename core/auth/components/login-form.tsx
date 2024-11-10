@@ -72,7 +72,6 @@ export const LoginForm = () => {
       const { data: user } = await getUserByDni(values.dni)
 
       router.push('/inventory')
-      router.refresh()
       toast({
         variant: 'success',
         title: 'Ingreso exitoso',

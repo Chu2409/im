@@ -1,5 +1,5 @@
 import { LoginForm } from '@/core/auth/components/login-form'
-import { authOptions } from '@/core/auth/consts/auth-options'
+import { authOptions } from '@/core/auth/data/auth-options'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 
