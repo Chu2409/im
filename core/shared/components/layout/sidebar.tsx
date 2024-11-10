@@ -13,7 +13,10 @@ export const Sidebar = ({
   return (
     <div className='hidden border-r bg-muted/40 md:block space-y-2'>
       <div className='flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6'>
-        <Link href='/' className='flex items-center gap-3 font-semibold'>
+        <Link
+          href='/inventory'
+          className='flex items-center gap-3 font-semibold'
+        >
           <IconSvg className='w-8 h-8' />
           <span className=''>Genomyc</span>
         </Link>
