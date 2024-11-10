@@ -51,7 +51,6 @@ export const LoginForm = () => {
   })
 
   useEffect(() => {
-    // Prefetch the dashboard page
     router.prefetch('/inventory')
   }, [router])
 

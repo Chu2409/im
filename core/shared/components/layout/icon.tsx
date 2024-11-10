@@ -13,7 +13,7 @@ export const IconSvg: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     style={{}}
     fill='currentColor'
     xmlSpace='preserve'
-    {...props} // Permite pasar propiedades como `width`, `height`, etc.
+    {...props}
   >
     <g id='Artboard' />
     <g id='Multicolor'>

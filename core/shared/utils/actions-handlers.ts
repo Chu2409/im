@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import * as Sentry from '@sentry/nextjs'
 import { getEcuadorTimestamp } from './utils'
 import { IPaginatedRes } from '../types/pagination'
@@ -58,6 +57,7 @@ export const handleAction = async <T>(
         )
       })
     } else {
+      // eslint-disable-next-line no-console
       console.error('Server Action Error:', {
         path,
         errorMessage,
